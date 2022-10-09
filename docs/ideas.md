@@ -1,9 +1,12 @@
 # Team Kappa
 ## Application Name: Come Look At My Food (working title)
-## Team Overview:
+## Team Overview
 Jiaqi Ye (JY2024)
+
 Isabella Chilton (ichilt15)
+
 Daksh Dangi (Kasagi009)
+
 ## Innovative Idea
 Have you ever wanted to find the perfect recipe that matches your cravings and preferences, but were too lazy to browse online? Our project idea is a website where users can post recipes and conveniently browse other people’s recipes, automatically calculating how much the recipe matches your own preferences. Our application closely mimics the functionality of Tinder, where you “swipe” left (no) or right (yes) if the food/recipe you see on the screen suits your liking. If you “match,” you can then chat with and discuss cooking tips with the creator who uploaded the recipe. Features include posting recipes, likes and/or rating system, comments, and reactions. Our app focuses on convenience and community-building.
 
