@@ -15,7 +15,9 @@
 
 # Wireframes Screenshots
 Main Feed Page
+
 ![Main Feed Page](screenshots-milestone1/main-feed-screenshot.png)
+
 This is the main page where users can discover new recipes made by other users. Users can cycle through recipes and select ones that they wanna match with. Users can see recipe info underneath the photo of the food.
 
 Account and Profile Settings Pages
