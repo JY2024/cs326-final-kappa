@@ -14,10 +14,34 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-lg fixed-top">
-                <button class="btn"><i class="fa-solid fa-user"></i></button>
-                <button class="btn"><i class="fa-sharp fa-solid fa-gear"></i></button>
+                <!-- <button class="btn"><i class="fa-solid fa-user"></i></button>
+                <button class="btn"><i class="fa-sharp fa-solid fa-gear"></i></button> -->
+                <i class="fa-solid fa-user"></i>
+                <i class="fa-sharp fa-solid fa-gear"></i> 
+                <i class="fa-solid fa-check icon-large"></i>
+                <i class="fa-sharp fa-solid fa-xmark icon-large"></i>
+                <!-- <i class="fa-sharp fa-solid fa-timer"></i> -->
+                
             </nav>
         </header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2">
+                    <p class="plen" >Time Consuming</p>
+                    <br><br>
+                    <p class="pspice" >Very Spicy</p>
+                    <br><br>
+                    <p class="pveg" >Vegetarian</p>
+                    <br><br><br><br><br><br><br><br><br><br><br><br>
+                    <label for="yummy" class="lyum">Yum Meter</label>
+                    <meter id="yummy" value="80" min="0" max="100">80/100</meter><br>
+                </div>
+                <div class="col-6">
+                </div>
+                <div class="col-4">
+                </div>
+            </div>
+        </div>
         <!-- Required scripts: jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://kit.fontawesome.com/2e578293cd.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
