@@ -21,3 +21,8 @@ body {
     flex-grow: 1;
     max-width: 20%;
 }
+
+img {
+    width: 200px;
+    height: 200px; 
+}
