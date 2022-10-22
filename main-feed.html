@@ -11,6 +11,7 @@
         <title>Discover</title>
     </head>
     <body>
+        <!-- Navigation Bar -->
         <nav>
             <ul class="nav bg-light justify-content-end">
                 <li class="nav-item">
@@ -22,6 +23,7 @@
         </nav>
         <div class="top-buffer"></div>
         <div class="container-fluid">
+            <!-- YES/NO Buttons -->
             <div class="row justify-content-md-center">
                 <div class="col-3 btn-group" role="group">
                     <button type="button" class="btn btn-danger">NO</button>
@@ -29,44 +31,20 @@
                 </div>
             </div>
             <div class="top-buffer"></div>
+            <!-- Food Carousel -->
             <div class="row justify-content-md-center">
                 <div id="foodCarousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <div class="card" style="width: 18rem;">
-                                <img src="./food1.jpg" class="d-block w-100" alt="Fries and sauce"/>
-                                <div class="card-body">
-                                    <h5 class="card-title text-start">Fries With Sauce</h5>
-                                    <h6 class="card-title text-start">Person McPerson</h5>
-                                    <p class="card-text text-start" id="preferences"></p>
-                                    <p class="card-text text-start" id="prepare-time"></p>
-                                    <p class="card-text text-start" id="rating"></p>
-                                </div>
-                            </div>
+                            <img src="./food1.jpg" class="d-block w-100" alt="Fries and sauce"/>
+                            
                         </div>
                         <div class="carousel-item">
-                            <div class="card" style="width: 18rem;">
-                                <img src="./food2.jpeg" class="d-block w-100" alt="Black pepper chicken"/>
-                                <div class="card-body">
-                                    <h5 class="card-title text-start">Black Pepper Chicken</h5>
-                                    <h6 class="card-title text-start">Ms. Person</h5>
-                                    <p class="card-text text-start" id="preferences"></p>
-                                    <p class="card-text text-start" id="prepare-time"></p>
-                                    <p class="card-text text-start" id="rating"></p>
-                                </div>
-                            </div>
+                            
+                            <img src="./food2.jpeg" class="d-block w-100" alt="Black pepper chicken"/>
                         </div>
                         <div class="carousel-item">
-                            <div class="card" style="width: 18rem;">
-                                <img src="./food3.jpeg" class="d-block w-100" alt="Fried rice"/>
-                                <div class="card-body">
-                                    <h5 class="card-title text-start">Fried Rice</h5>
-                                    <h6 class="card-title text-start">Hungry Person</h5>
-                                    <p class="card-text text-start" id="preferences"></p>
-                                    <p class="card-text text-start" id="prepare-time"></p>
-                                    <p class="card-text text-start" id="rating"></p>
-                                </div>
-                            </div>
+                            <img src="./food3.jpeg" class="d-block w-100" alt="Fried rice"/>
                         </div>
                     </div>
                         <a class="carousel-control-prev" role="button" href="#foodCarousel" data-slide="prev">
@@ -79,8 +57,68 @@
                         </a>
                 </div>
             </div>
+            <div class="top-buffer"></div>
+            <!-- Recipe Collapse Box -->
+            <div class="row justify-content-md-center">
+                <div class="col-6">
+                    <span class="border border-dark">
+                        <div class="container" id="recipe-box">
+                            <h3>Fries and Sauce</h3>
+                            <p class="collapse" id="collapseBox" aria-expanded="false">
+                                <h5>JayLikesCooking</h5>
+                                Icons Placeholder<br>
+                                Time to Prepare Placeholder<br>
+                                Ratings Placeholder<br>
+                                <hr>
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Ingredients</h5>
+                                        </div>
+                                        <p class="mb-1">
+                                            <ul>
+                                                <li>Fries <small>40 pieces</small></li>
+                                                <li>Sauce <small>2 Gallons</small></li>
+                                                <li>Vegetables <small>5 Cups</small></li>
+                                                <li>Onions <small>1 Cup</small></li>
+                                            </ul>
+                                        </p>
+                                        <small>You can add any types of vegetables that you want.<br>Make sure you get enough fries.</small>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">How to Make</h5>
+                                    </div>
+                                        <p class="mb-1">
+                                            <br>
+                                            1. Etiam tempor orci eu lobortis. Mauris pharetra et ultrices neque ornare aenean euismod elementum. Sed adipiscing diam donec adipiscing tristique risus nec feugiat.<br><br>
+                                            2. Pharetra magna ac placerat vestibulum lectus mauris. Faucibus scelerisque eleifend donec pretium. Ornare aenean euismod elementum nisi. At tempor commodo<br><br>
+                                            ullamcorper a lacus. Aliquet nec ullamcorper sit amet risus nullam. Neque vitae tempus quam pellentesque nec. Egestas purus viverra accumsan in nisl nisi<br><br>
+                                            3. scelerisque eu ultrices. Leo vel orci porta non pulvinar. Pellentesque habitant morbi tristique senectus et. Cras tincidunt lobortis feugiat vivamus at augue<br><br>
+                                            eget arcu. Tempor commodo ullamcorper a lacus vestibulum sed. Urna nec tincidunt praesent semper. Vestibulum rhoncus est pellentesque elit ullamcorper dignissim<br><br>
+                                            4. cras tincidunt. In arcu cursus euismod quis viverra.
+                                        </p>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Tips and Notes</h5>
+                                        </div>
+                                        <p class="mb-1">
+                                            <br>
+                                            Fames ac turpis egestas maecenas pharetra convallis posuere<br>
+                                            Nullam vehicula ipsum a arcu cursus vitae. Nam aliquam sem et tortor consequat id porta nibh venenatis.<br>
+                                            Sed blandit libero volutpat sed cras ornare arcu dui. Auctor augue mauris augue neque gravida in.<br><br>
+                                        <small class="text-muted">JayLikesCooking</small>
+                                    </a>
+                                </div>
+                            </p>
+                            <a role="button" class="collapsed" data-toggle="collapse" href="#collapseBox" 
+                                aria-expanded="false" aria-controls="collapseBox"></a>
+                        </div>
+                    </span>
+                </div>
+            </div>
         </div>
-
         <!-- Required scripts: jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
