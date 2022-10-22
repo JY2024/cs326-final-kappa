@@ -15,6 +15,7 @@ body {
     border-style: solid;
     border-color: #287EC7;
     background-color: white;
+    justify-content: center;
 }
 
 #sidebar-wrapper {
@@ -29,4 +30,9 @@ img {
 
 #preferences-list {
     padding-left: 3em;
+}
+
+#page-content {
+    padding-left: 3em;
+    max-width: 100%;
 }
