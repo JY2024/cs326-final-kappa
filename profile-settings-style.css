@@ -3,7 +3,6 @@ body {
     background-color: rgba(251, 225, 146, 255);
     display: flex;
     flex-direction: column;
-
 }
 
 .navbar {
@@ -13,19 +12,20 @@ body {
 .border-box {
     border-width: 3px;
     border-style: solid;
-    border-color: #287EC7;
+    border-color: black;
     background-color: white;
     justify-content: center;
+    width: 500px;
 }
 
 #sidebar-wrapper {
     flex-grow: 1;
-    max-width: 20%;
+    min-width: 20%;
 }
 
 img {
     width: 200px;
-    height: 200px; 
+    height: 200px;
 }
 
 #preferences-list {
@@ -33,6 +33,23 @@ img {
 }
 
 #page-content {
-    padding-left: 3em;
+    padding-left: 5em;
     max-width: 100%;
+}
+
+#page-content-wrapper {
+    min-width: 80%;
+    height: 700px;
+}
+
+.heading {
+    justify-content: center;
+}
+
+.sidebar-heading {
+    justify-content: center
+}
+
+hr {
+    width: 50%
 }
