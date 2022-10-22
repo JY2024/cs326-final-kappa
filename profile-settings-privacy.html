@@ -1,6 +1,7 @@
-<!-- Settings: Privacy-->
+<!-- Settings: Security-->
 <!doctype html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -14,7 +15,110 @@
 </head>
 
 <body>
-    
+    <div class="d-flex" id="wrapper">
+        <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light">
+                <h3>Account Settings</h3>
+            </div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Personal
+                    Information</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile
+                    Display</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Security</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Privacy</a>
+            </div>
+        </div>
+        <div id="page-content-wrapper">
+            <!-- Top Navigation-->
+            <nav class="navbar navbar-expand-lg border-end">
+                <!-- Container wrapper -->
+                <div class="container-fluid">
+                    <!-- Toggle button -->
+                    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+                        data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <!-- Collapsible wrapper -->
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Left links -->
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                            </li>
+                        </ul>
+                        <!-- Left links -->
+                    </div>
+                    <!-- Right elements -->
+                    <div class="d-flex align-items-center">
+                        <!-- Settings Icon -->
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="bi bi-cup-straw"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Page Content -->
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <br><br>
+                    <p class="border-box">Privacy</p>
+                    <hr>
+                </div>
+                <div class="row">
+                    <form>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" value="">Username
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" value="">Description
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" value="">Preferences
+                            </label>
+                        </div>
+                        <div id="preferences-list">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" value="">Vegan
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" value="">Vegetarian
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" value="">Low Spice Tolerance
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" value="">Lactose Intolerant
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" value="">Recipes
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <!-- Required scripts: jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
