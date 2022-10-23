@@ -46,3 +46,9 @@ Privacy Page\
 This is the page in the account settings where users can edit their privacy preferences, choosing which information to show to the public: username, description, preferences, recipes, etc.
 
 # HTML & CSS Screenshots
+Profile Page\
+![Profile Page](screenshots-milestone1/profile-screenshot-myrecipes.png)\
+![Profile Page](screenshots-milestone1/profile-screenshot-savedrecipes.png)\
+
+Recipe Creation Pop-up\
+![Create Recipe Pop-up](screenshots-milestone1/createrecipe-screenshot.png)\
