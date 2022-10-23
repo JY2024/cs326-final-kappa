@@ -20,6 +20,15 @@ This is the main page where users can discover new recipes made by other users. 
 
 Account and Profile Settings Pages
 
+Profile Page\
+![Profile Page](screenshots-milestone1/profile-screenshot-wireframe.png)\
+![Profile Page2](screenshots-milestone1/profile-screenshot2-wireframe.png)\
+This is the main profile page. Here, users can view recipes that they have written or recipdes that they have matches with. They can also view their profile information such as profile picture, username, preferences, and bio.
+
+Recipe Creation Pop-up\
+![Create Recipe Pop-up](screenshots-milestone1/createrecipe-screenshot-wireframe.png)\
+When users clicks the "Create Recipe" button on the profile page, this window will pop up, allowing users to create a new recipe.
+
 Personal Information Page\
 ![Personal Information Page](screenshots-milestone1/personal-info-screenshot.png)\
 This is the page in the account settings where users can edit their personal information: name, location, and preferences.
