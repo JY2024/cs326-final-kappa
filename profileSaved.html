@@ -35,17 +35,17 @@
       </div>
       <div class="container d-flex justify-content-center">
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="myBtn" autocomplete="off">
+            <input type="radio" class="btn-check" name="btnradio" id="myBtn" checked>
             <label class="btn btn-outline-primary" for="myBtn">My Recipes</label>
           
-            <input type="radio" class="btn-check" name="btnradio" id="savedBtn" autocomplete="off" checked>
+            <input type="radio" class="btn-check" name="btnradio" id="savedBtn">
             <label class="btn btn-outline-primary" for="savedBtn">Saved Recipes</label>
           </div>
       </div>    
-      <div class="container text-center" id="Saved Recipes">
+      <div class="container text-center">
         <div class="row pad">
           <div class="col">
-            <div class="card" style="width: 18rem;" id="savedRecipeCard">
+            <div class="card" style="width: 18rem;">
               <img src="./images/profile-page-food1.jfif" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title text-start">Recipe1</h5>
@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="col">
-            <div class="card" style="width: 18rem;" id="savedRecipeCard">
+            <div class="card" style="width: 18rem;">
               <img src="./images/profile-page-food2.jfif" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title text-start">Recipe2</h5>
@@ -67,7 +67,7 @@
             </div>
           </div>
           <div class="col">
-            <div class="card" style="width: 18rem;" id="savedRecipeCard">
+            <div class="card" style="width: 18rem;">
               <img src="./images/profile-page-food3.jfif" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title text-start">Recipe3</h5>
@@ -80,7 +80,7 @@
         </div>
         <div class="row pad">
             <div class="col">
-              <div class="card" style="width: 18rem;" id="savedRecipeCard">
+              <div class="card" style="width: 18rem;">
                 <img src="./images/profile-page-food4.jfif" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title text-start">Recipe4</h5>
@@ -91,7 +91,7 @@
               </div>
             </div>
             <div class="col">
-              <div class="card" style="width: 18rem;" id="savedRecipeCard">
+              <div class="card" style="width: 18rem;">
                 <img src="./images/profile-page-food5.jfif" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title text-start">Recipe5</h5>
@@ -102,7 +102,7 @@
               </div>
             </div>
             <div class="col">
-              <div class="card" style="width: 18rem;" id="savedRecipeCard">
+              <div class="card" style="width: 18rem;">
                 <img src="./images/profile-page-food6.jfif" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title text-start">Recipe6</h5>
@@ -122,57 +122,57 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <div class="row"><label for="title">Recipe Name: </label><input type="text" id="titleInput"><br><br></div>
-              <div class="row"><label for="img">Upload Image: </label><i class="bi bi-upload"></i><br><br></div>
-              <div class="row"><label for="ingredients">Ingredients: </label><input type="text" id="ingredientInput"><br><br></div>
-              <div class="row"><label for="instructions">Instructions: </label><input type="text" id="intructionInput"><br><br></div>
-              <div class="row"><label for="preferences">Preferences: </label></div>
+              <div class="row"><label>Recipe Name: </label><input type="text" id="titleInput"><br><br></div>
+              <div class="row"><label>Upload Image: </label><i class="bi bi-upload"></i><br><br></div>
+              <div class="row"><label>Ingredients: </label><input type="text" id="ingredientInput"><br><br></div>
+              <div class="row"><label>Instructions: </label><input type="text" id="intructionInput"><br><br></div>
+              <div class="row"><label>Preferences: </label></div>
               <div class="row">
                 <div class="col">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="vegetarianCheck">Vegetarian</label>
+                    <input class="form-check-input" type="checkbox"><label>Vegetarian</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="veganCheck">Vegan</label>
+                    <input class="form-check-input" type="checkbox"><label>Vegan</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="glutenCheck">Contains Gluten</label>
+                    <input class="form-check-input" type="checkbox"><label>Contains Gluten</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="dairyCheck">Contains Dairy</label>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="pescetarianCheck">Pescetarian</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="ketoCheck">Keto</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="carbCheck">Low Carb</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="proteinCheck">High Protein</label>
+                    <input class="form-check-input" type="checkbox"><label>Contains Dairy</label>
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="shellfishCheck">Contains Shellfish</label>
+                    <input class="form-check-input" type="checkbox"><label>Pescetarian</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="nutsCheck">Contains Nuts</label>
+                    <input class="form-check-input" type="checkbox"><label>Keto</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="soyCheck">Contains Soy</label>
+                    <input class="form-check-input" type="checkbox"><label>Low Carb</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox"><label for="sugarCheck">Sugar Free</label>
+                    <input class="form-check-input" type="checkbox"><label>High Protein</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox"><label>Contains Shellfish</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox"><label>Contains Nuts</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox"><label>Contains Soy</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox"><label>Sugar Free</label>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <label for="prepTime">Est Time to Prepare: </label>
+                <label>Est Time to Prepare: </label>
                 <div class="col text-center">30 mins.</div>
                 <div class="col text-center">90 mins.</div>
                 <div class="col text-center">120+ mins.</div>
