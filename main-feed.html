@@ -19,13 +19,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <!-- Container wrapper -->
         <div class="container-fluid">
-            <!-- Toggle button -->
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-                data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-            <!-- Collapsible wrapper -->
+            <!-- Wrapper -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -60,14 +54,13 @@
             <div id="foodCarousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="./food1.jpg" class="d-block w-100" alt="Fries and sauce" />
+                        <img src="./food1.jpg" class="d-block w-100" alt="Fries and sauce">
                     </div>
                     <div class="carousel-item">
-
-                        <img src="./food2.jpeg" class="d-block w-100" alt="Black pepper chicken" />
+                        <img src="./food2.jpeg" class="d-block w-100" alt="Black pepper chicken">
                     </div>
                     <div class="carousel-item">
-                        <img src="./food3.jpeg" class="d-block w-100" alt="Fried rice" />
+                        <img src="./food3.jpeg" class="d-block w-100" alt="Fried rice">
                     </div>
                 </div>
                 <a class="carousel-control-prev" role="button" href="#foodCarousel" data-slide="prev">
@@ -84,76 +77,74 @@
         <!-- Recipe Collapse Box -->
         <div class="row justify-content-md-center">
             <div class="col-6">
-                <span class="border border-dark">
-                    <div class="container" id="recipe-box">
-                        <br>
-                        <h3>Fries and Sauce</h3>
-                        <p class="collapse" id="collapseBox" aria-expanded="false">
-                        <h5>JayLikesCooking</h5>
-                        <i class="bi bi-cup-hot-fill"></i><i class="bi bi-droplet-half"></i><br>
-                        <i class="bi bi-alarm-fill"></i> 30 Minutes<br>
-                        <i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i
-                            class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i
-                            class="bi bi-heart-half"></i><br>
-                        <hr>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Ingredients</h5>
-                                </div>
-                                <p class="mb-1">
-                                    <ul>
-                                        <li>Fries <small>40 pieces</small></li>
-                                        <li>Sauce <small>2 Gallons</small></li>
-                                        <li>Vegetables <small>5 Cups</small></li>
-                                        <li>Onions <small>1 Cup</small></li>
-                                    </ul>
-                                </p>
+                <div class="container border border-dark" id="recipe-box">
+                    <br>
+                    <h3>Fries and Sauce</h3>
+                    <h5>JayLikesCooking</h5>
+                    <!-- Icons for quick information about the recipe-->
+                    <i class="bi bi-cup-hot-fill"></i><i class="bi bi-droplet-half"></i><br>
+                    <i class="bi bi-alarm-fill"></i> 30 Minutes<br>
+                    <!-- Rating -->
+                    <i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i
+                        class="bi bi-heart-fill"></i><i class="bi bi-heart-half"></i><br>
+                    <hr>
+                    <!-- Recipe-->
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Ingredients</h5>
+                            </div>
+                            <p class="mb-1">
+                                <ul>
+                                    <li>Fries <small>40 pieces</small></li>
+                                    <li>Sauce <small>2 Gallons</small></li>
+                                    <li>Vegetables <small>5 Cups</small></li>
+                                    <li>Onions <small>1 Cup</small></li>
+                                </ul>
                                 <small>You can add any types of vegetables that you want.<br>Make sure you get enough
                                     fries.</small>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">How to Make</h5>
-                                </div>
-                                <p class="mb-1">
-                                    <br>
-                                    1. Etiam tempor orci eu lobortis. Mauris pharetra et ultrices neque ornare aenean
-                                    euismod elementum. Sed adipiscing diam donec adipiscing tristique risus nec
-                                    feugiat.<br><br>
-                                    2. Pharetra magna ac placerat vestibulum lectus mauris. Faucibus scelerisque
-                                    eleifend donec pretium. Ornare aenean euismod elementum nisi. At tempor commodo
-                                    ullamcorper a lacus. Aliquet nec ullamcorper sit amet risus nullam. Neque vitae
-                                    tempus quam pellentesque nec. Egestas purus viverra accumsan in nisl nisi.<br><br>
-                                    3. Scelerisque eu ultrices. Leo vel orci porta non pulvinar. Pellentesque habitant
-                                    morbi tristique senectus et. Cras tincidunt lobortis feugiat vivamus at augue
-                                    eget arcu. Tempor commodo ullamcorper a lacus vestibulum sed. Urna nec tincidunt
-                                    praesent semper. Vestibulum rhoncus est pellentesque elit ullamcorper
-                                    dignissim.<br><br>
-                                    4. Cras tincidunt. In arcu cursus euismod quis viverra.
-                                </p>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Tips and Notes</h5>
-                                </div>
-                                <p class="mb-1">
-                                    <br>
-                                    <small>
-                                        Fames ac turpis egestas maecenas pharetra convallis posuere<br>
-                                        Nullam vehicula ipsum a arcu cursus vitae. Nam aliquam sem et tortor consequat
-                                        id porta nibh venenatis.<br>
-                                        Sed blandit libero volutpat sed cras ornare arcu dui. Auctor augue mauris augue
-                                        neque gravida in.<br><br><br>
-                                    </small>
-                                    <small class="text-muted">JayLikesCooking</small>
-                            </a>
-                        </div>
-                        </p>
-                        <a role="button" class="collapsed" data-toggle="collapse" href="#collapseBox"
-                            aria-expanded="false" aria-controls="collapseBox"></a>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">How to Make</h5>
+                            </div>
+                            <p class="mb-1">
+                                <br>
+                                1. Etiam tempor orci eu lobortis. Mauris pharetra et ultrices neque ornare aenean
+                                euismod elementum. Sed adipiscing diam donec adipiscing tristique risus nec
+                                feugiat.<br><br>
+                                2. Pharetra magna ac placerat vestibulum lectus mauris. Faucibus scelerisque
+                                eleifend donec pretium. Ornare aenean euismod elementum nisi. At tempor commodo
+                                ullamcorper a lacus. Aliquet nec ullamcorper sit amet risus nullam. Neque vitae
+                                tempus quam pellentesque nec. Egestas purus viverra accumsan in nisl nisi.<br><br>
+                                3. Scelerisque eu ultrices. Leo vel orci porta non pulvinar. Pellentesque habitant
+                                morbi tristique senectus et. Cras tincidunt lobortis feugiat vivamus at augue
+                                eget arcu. Tempor commodo ullamcorper a lacus vestibulum sed. Urna nec tincidunt
+                                praesent semper. Vestibulum rhoncus est pellentesque elit ullamcorper
+                                dignissim.<br><br>
+                                4. Cras tincidunt. In arcu cursus euismod quis viverra.
+                            </p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Tips and Notes</h5>
+                            </div>
+                            <p class="mb-1">
+                                <br>
+                                <small>
+                                    Fames ac turpis egestas maecenas pharetra convallis posuere<br>
+                                    Nullam vehicula ipsum a arcu cursus vitae. Nam aliquam sem et tortor consequat
+                                    id porta nibh venenatis.<br>
+                                    Sed blandit libero volutpat sed cras ornare arcu dui. Auctor augue mauris augue
+                                    neque gravida in.<br><br><br>
+                                </small>
+                                <small class="text-muted">JayLikesCooking</small>
+                            </p>
+                        </a>
                     </div>
-                </span>
+                    <a role="button" class="collapsed" data-toggle="collapse" href="#collapseBox"
+                        aria-expanded="false"></a>
+                </div>
             </div>
         </div>
     </div>
