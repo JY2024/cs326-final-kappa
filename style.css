@@ -1,1 +1,20 @@
-*
+.nav{
+    background-color: #fbe192;
+}
+
+.container{
+    background-color: #fbe192;
+}
+
+.body{
+    background-color: #fbe192;
+}
+
+.pad{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.hide{
+    display: block;
+}
