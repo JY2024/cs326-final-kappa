@@ -6,7 +6,7 @@
 
 # Division of Labor
 * Wireframe Design: Everyone
-* Profile Account Pages: Jiaqi Ye
+* Profile Account Settings Pages: Jiaqi Ye
 * Main Feed Page: Jiaqi Ye
 * Profile Home Page: Isabella Chilton
 * Recipe Creation Popup: Isabella Chilton
@@ -18,8 +18,6 @@ Main Feed Page\
 ![Main Feed Page](screenshots-milestone1/main-feed-screenshot.png)\
 This is the main page where users can discover new recipes made by other users. Users can cycle through recipes and select ones that they wanna match with. Users can see recipe info underneath the photo of the food.
 
-Account and Profile Settings Pages
-
 Profile Page\
 ![Profile Page](screenshots-milestone1/profile-screenshot-wireframe.png)\
 ![Profile Page2](screenshots-milestone1/profile-screenshot2-wireframe.png)\
@@ -28,6 +26,8 @@ This is the main profile page. Here, users can view recipes that they have writt
 Recipe Creation Pop-up\
 ![Create Recipe Pop-up](screenshots-milestone1/createrecipe-screenshot-wireframe.png)\
 When users clicks the "Create Recipe" button on the profile page, this window will pop up, allowing users to create a new recipe.
+
+Profile Account Settings Pages
 
 Personal Information Page\
 ![Personal Information Page](screenshots-milestone1/personal-info-screenshot.png)\
@@ -46,9 +46,26 @@ Privacy Page\
 This is the page in the account settings where users can edit their privacy preferences, choosing which information to show to the public: username, description, preferences, recipes, etc.
 
 # HTML & CSS Screenshots
+Main Feed Page\
+![Main Feed Page](screenshots-milestone1/feed-actual1.png)\
+![Main Feed Page](screenshots-milestone1/feed-actual2.png)\
+![Main Feed Page](screenshots-milestone1/feed-actual3.png)\
+
 Profile Page\
 ![Profile Page](screenshots-milestone1/profile-screenshot-myrecipes.png)\
 ![Profile Page](screenshots-milestone1/profile-screenshot-savedrecipes.png)\
 
 Recipe Creation Pop-up\
 ![Create Recipe Pop-up](screenshots-milestone1/createrecipe-screenshot.png)\
+
+Personal Information Page\
+![Personal Information Page](screenshots-milestone1/personal-info-actual.png)\
+
+Profile Display Page\
+![Profule Display Page](screenshots-milestone1/profile-display-actual.png)\
+
+Security Page\
+![Security Page](screenshots-milestone1/security-actual.png)\
+
+Privacy Page\
+![Privacy Page](screenshots-milestone1/privacy-actual.png)\
