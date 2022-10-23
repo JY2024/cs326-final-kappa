@@ -1,0 +1,21 @@
+body {
+    background-color: rgba(243,193,157,255);
+}
+.navbar {
+    background-color: rgba(255,255,255,255);
+}
+.top-buffer {
+    margin-top: 40px;
+}
+.carousel-item {
+    width: 500px;
+    height: 400px;
+}
+.carousel-item>img {
+    width: 100%;
+    height: 100%;
+    border: 3px solid rgb(111, 122, 32);
+}
+#recipe-box {
+    background-color: rgba(247,242,239,255);
+}
