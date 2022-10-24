@@ -45,6 +45,14 @@ Privacy Page\
 ![Privacy Page](screenshots-milestone1/privacy-screenshot.png)\
 This is the page in the account settings where users can edit their privacy preferences, choosing which information to show to the public: username, description, preferences, recipes, etc.
 
+Recipe Page\
+![Recipe Page](screenshots-milestone1/RecipePage-wireframe)\
+This is the page displayed to users when they are considering if they like a given dish or not. Along with an image of the actual dish, users are provided with a comment section and icons indicating various attributes for the dish.
+
+Chat Page\
+![Chat Page](screenshots-milestone1/ChatPage-wireframe)\
+This is the page on which users interact with other users with regards to questions about preparation, recipes, etc.
+
 # HTML & CSS Screenshots
 Main Feed Page\
 ![Main Feed Page](screenshots-milestone1/feed-actual1.png)\
@@ -69,3 +77,9 @@ Security Page\
 
 Privacy Page\
 ![Privacy Page](screenshots-milestone1/privacy-actual.png)\
+
+Recipe Page\
+![Recipe Page](screenshots-milestone1/RecipePage-actual)\
+
+Chat Page\
+![Chat Page](screenshots-milestone1/ChatPage-actual)\
