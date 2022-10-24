@@ -21,7 +21,7 @@ This is the main page where users can discover new recipes made by other users. 
 Profile Page\
 ![Profile Page](screenshots-milestone1/profile-screenshot-wireframe.png)\
 ![Profile Page2](screenshots-milestone1/profile-screenshot2-wireframe.png)\
-This is the main profile page. Here, users can view recipes that they have written or recipes that they have matches with. They can also view their profile information such as profile picture, username, preferences, and bio.
+This is the main profile page. Here, users can view recipes that they have written or recipes that they have matched with. They can also view their profile information such as profile picture, username, preferences, and bio.
 
 Recipe Creation Pop-up\
 ![Create Recipe Pop-up](screenshots-milestone1/createrecipe-screenshot-wireframe.png)\
