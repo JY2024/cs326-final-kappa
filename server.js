@@ -91,13 +91,19 @@ function updateLocationErrorHandler(req, res, next) {
 }
 function updatePreferences(req, res) {
     // ex. /user/update?username=Jay1024
-    // req.body contains {img: some image information}
-
+    // req.body contains {preference1: something, preference2: something}
+    updatePreferencesObj(req.body);
+    res.end();
 }
 function updatePreferencesErrorHandler(req, res, next) {
     // ex. /user/update?username=Jay1024
-    // req.body contains {img: some image information}
-
+    // req.body contains {preference1: something, preference2: something}
+    const exists = existsUser(req.params.username);
+    if (!exists) {
+        sendError(res, 'user-nonexistent');
+    } else {
+        next();
+    }
 }
 function updateDescription(req, res) {
     // ex. /user/update?username=Jay1024
