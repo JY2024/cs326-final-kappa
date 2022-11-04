@@ -1,5 +1,5 @@
-import { createUserObj, createCommentObj, existsUser, existsRecipe, updateCommentObj, existsComment,
-    deleteUserObj, deleteCommentObj, getUserInfo, getCommentInfo} from './database.js';
+import { createUserObj, createCommentObj, existsUser, existsRecipe, updateCommentObj, updateDescriptionObj, 
+    updateLocationObj, existsComment, deleteUserObj, deleteCommentObj, getUserInfo, getCommentInfo} from './database.js';
 // Utility Functions
 
 // function parse(url) {
@@ -65,28 +65,54 @@ function readUserErrorHandler(req, res, next) {
 }
 // OTHER FUNCTIONS FOR UPDATE USER INFO
 function updateProfilePicture(req, res) {
-
+    // ex. /user/update?username=Jay1024
+    // req.body contains {img: some image information}
+    // ADD: update image functionality
 }
 function updateProfilePictureErrorHandler(req, res, next) {
-
+    // ex. /user/update?username=Jay1024
+    // req.body contains {img: some image information}
+    // ADD: error handling for images (how do you send an image via http request object?)
 }
 function updateLocation(req, res) {
-
+    // ex. /user/update?username=Jay1024
+    // req.body contains {location: string}
+    updateLocationObj(req.body.location);
+    res.end();
 }
 function updateLocationErrorHandler(req, res, next) {
-
+    // ex. /user/update?username=Jay1024
+    // req.body contains {location: string}
+    if (req.body.location.length === 0) {
+        sendError(res, 'location-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
+    } else {
+        next();
+    }
 }
 function updatePreferences(req, res) {
+    // ex. /user/update?username=Jay1024
+    // req.body contains {img: some image information}
 
 }
 function updatePreferencesErrorHandler(req, res, next) {
+    // ex. /user/update?username=Jay1024
+    // req.body contains {img: some image information}
 
 }
 function updateDescription(req, res) {
-
+    // ex. /user/update?username=Jay1024
+    // req.body contains {description: string}
+    updateDescriptionObj(req.body.description);
+    res.end();
 }
 function updateDescriptionErrorHandler(req, res, next) {
-
+    // ex. /user/update?username=Jay1024
+    // req.body contains {description: string}
+    if (req.body.description.length === 0) {
+        sendError(res, 'description-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
+    } else {
+        next();
+    }
 }
 
 function deleteUser(req, res) {
