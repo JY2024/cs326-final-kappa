@@ -1,4 +1,4 @@
-import { createUserObj, createCommentObj, existsUser, existsRecipe, deleteUserObj, deleteCommentObj } from './database.js';
+import { createUserObj, createCommentObj, existsUser, existsRecipe, existsComment, deleteUserObj, deleteCommentObj, getUserInfo} from './database.js';
 // Utility Functions
 
 // function parse(url) {
@@ -48,10 +48,17 @@ async function createUserErrorHandler(req, res, next) {
     }
 }
 function readUser(req, res) {
-
+    // ex. /user/read?username=Jay1024
+    return getUserInfo(req.query.username);
 }
-function readUserErrorHandler(req, res, next) {
-
+async function readUserErrorHandler(req, res, next) {
+    // ex. /user/read?username=Jay1024
+    const exists = await existsUser(req.params.username);
+    if (!exists) {
+        sendError(res, 'user-nonexistent');
+    } else {
+        next();
+    }
 }
 function updateUser(req, res) {
 
@@ -67,7 +74,7 @@ function deleteUser(req, res) {
 }
 async function deleteUserErrorHandler(req, res, next) {
     // ex. /user/delete?username=Jay1024
-    const exists = await existsUser(req.params.user);
+    const exists = await existsUser(req.params.username);
     if (!exists) {
         sendError(res, 'user-nonexistent');
     } else {
