@@ -1,4 +1,4 @@
-import { createUserObj, existsUser} from './database.js';
+import { createUserObj, createCommentObj, existsUser, existsRecipe } from './database.js';
 // Utility Functions
 
 // function parse(url) {
@@ -10,7 +10,7 @@ import { createUserObj, existsUser} from './database.js';
 //     return queryObj;
 // }
 function containsSpecialChar(str) {
-    return /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test();
+    return /[`!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?~]/.test();
 }
 function containsNumber(str) {
     return /\d/.test();
@@ -46,7 +46,7 @@ async function createUserErrorHandler(req, res, next) {
         next();
     }
 }
-function updateUser() {
+function updateUser(req, res) {
     
 }
 
@@ -55,8 +55,23 @@ function deleteUser() {
 }
 
 // Comments
-function createComment() {
-
+function createComment(req, res) {
+    createCommentObj(req.params.sender, req.params.recipe.split('-')[0], req.params.recipe.split('-')[1], req.body.text);
+    res.end();
+}
+async function createCommentErrorHandler(req, res, next) {
+    // Comment has user who created it, recipe linked to comment, comment text
+    // ex. /recipe/id/comment/new?sender=Jay1024&recipe=Bella12-38463 ... req.body contains the text
+    // This is assuming that the other user allows comments
+    const recipeComponents = req.params.recipe.split('-');
+    const exists = await existsRecipe(recipeComponents[0], recipeComponents[1]);
+    if (!exists) {
+        sendError(res, 'recipe-nonexistent');
+    } else if (req.body.text.length === 0) {
+        sendError(res, 'comment-length');
+    } else {
+        next();
+    }
 }
 function updateComment() {
 

@@ -1,11 +1,16 @@
 // DataBase Functions
 // User
-export function existsUser(username) {
+export function createUserObj(username, password, displayName) {
 
 }
-export function createUserObj(username, password, displayName) {
+export function existsUser(username) {
 
 }
 
 // Comments
-export function 
+export function createCommentObj(sender, receiver, recipeId, text) {
+
+}
+export function existsRecipe() {
+    
+}
