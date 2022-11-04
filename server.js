@@ -1,4 +1,4 @@
-import { createUserObj, createCommentObj, existsUser, existsRecipe, deleteUserObj } from './database.js';
+import { createUserObj, createCommentObj, existsUser, existsRecipe, deleteUserObj, deleteCommentObj } from './database.js';
 // Utility Functions
 
 // function parse(url) {
@@ -47,10 +47,18 @@ async function createUserErrorHandler(req, res, next) {
         next();
     }
 }
+function readUser(req, res) {
+
+}
+function readUserErrorHandler(req, res, next) {
+
+}
 function updateUser(req, res) {
 
 }
+function updateUserErrorHandler(res, res, next) {
 
+}
 function deleteUser(req, res) {
     // ex. /user/delete?username=Jay1024
     deleteUserObj(req.params.username);
@@ -87,9 +95,28 @@ async function createCommentErrorHandler(req, res, next) {
         next();
     }
 }
+function readComment(req, res) {
+
+}
+function readCommentErrorHandler(req, res, next) {
+
+}
 function updateComment() {
 
 }
-function deleteComment() {
-
+function deleteComment(req, res) {
+    // ex. /recipe/id/comment/delete?comment_id=03948774
+    const recipeInfo = readComment(req.params.comment_id);
+    deleteCommentObj(req.params.comment_id);
+    // ADD: update the page to reflect the changes (the same page but without the deleted comment) -- maybe serve the page again?
+    res.end();
+}
+async function deleteCommentErrorHandling(req, res, next) {
+    // ex. /recipe/id/comment/delete?comment_id=03948774
+    const exists = await existsComment(req.params.comment_id);
+    if (!exists) {
+        sendError(res, 'comment-nonexistent');
+    } else {
+        next();
+    }
 }
