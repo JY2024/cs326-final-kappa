@@ -1,5 +1,5 @@
 import { createUserObj, createCommentObj, existsUser, existsRecipe, updateCommentObj, updateDescriptionObj, 
-    updateLocationObj, existsComment, deleteUserObj, deleteCommentObj, getUserInfo, getCommentInfo} from './database.js';
+    updateLocationObj, updateProfilePictureObj, existsComment, deleteUserObj, deleteCommentObj, getUserInfo, getCommentInfo} from './database.js';
 // Utility Functions
 
 // function parse(url) {
@@ -68,11 +68,13 @@ function updateProfilePicture(req, res) {
     // ex. /user/update?username=Jay1024
     // req.body contains {img: some image information}
     // ADD: update image functionality
+    updateProfilePictureObj(req.params.username, req.params.path, req.body.blob);
 }
 function updateProfilePictureErrorHandler(req, res, next) {
     // ex. /user/update?username=Jay1024
     // req.body contains {img: some image information}
-    // ADD: error handling for images (how do you send an image via http request object?)
+    // ADD: error handling for images (size constraints?)
+    next();
 }
 function updateLocation(req, res) {
     // ex. /user/update?username=Jay1024
