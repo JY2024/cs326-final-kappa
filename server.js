@@ -1,4 +1,4 @@
-import { createUserObj, createCommentObj, existsUser, existsRecipe } from './database.js';
+import { createUserObj, createCommentObj, existsUser, existsRecipe, deleteUserObj } from './database.js';
 // Utility Functions
 
 // function parse(url) {
@@ -24,6 +24,7 @@ function sendError(res, errorMessage) {
 
 // User
 function createUser(req, res) {
+    // ex. /user/new?username=jay1024&password=123&displayName=Jay
     createUserObj(req.params.username, req.params.password, req.params.displayName);
     res.json({displayName: req.params.displayName});
     res.end();
@@ -47,15 +48,28 @@ async function createUserErrorHandler(req, res, next) {
     }
 }
 function updateUser(req, res) {
-    
+
 }
 
-function deleteUser() {
-
+function deleteUser(req, res) {
+    // ex. /user/delete?username=Jay1024
+    deleteUserObj(req.params.username);
+    res.redirect('./homepage.html'); // or whatever we end up calling it
+    res.end();
+}
+async function deleteUserErrorHandler(req, res, next) {
+    // ex. /user/delete?username=Jay1024
+    const exists = await existsUser(req.params.user);
+    if (!exists) {
+        sendError(res, 'user-nonexistent');
+    } else {
+        next();
+    }
 }
 
 // Comments
 function createComment(req, res) {
+    // ex. /recipe/id/comment/new?sender=Jay1024&recipe=Bella12-38463 ... req.body contains the text
     createCommentObj(req.params.sender, req.params.recipe.split('-')[0], req.params.recipe.split('-')[1], req.body.text);
     res.end();
 }
