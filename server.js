@@ -1,4 +1,5 @@
-import { createUserObj, createCommentObj, existsUser, existsRecipe, existsComment, deleteUserObj, deleteCommentObj, getUserInfo} from './database.js';
+import { createUserObj, createCommentObj, existsUser, existsRecipe, updateCommentObj, existsComment,
+    deleteUserObj, deleteCommentObj, getUserInfo, getCommentInfo} from './database.js';
 // Utility Functions
 
 // function parse(url) {
@@ -29,10 +30,10 @@ function createUser(req, res) {
     res.json({displayName: req.params.displayName});
     res.end();
 }
-async function createUserErrorHandler(req, res, next) {
+function createUserErrorHandler(req, res, next) {
     // On creation, user has username, password, and display name
     // ex. /user/new?username=jay1024&password=123&displayName=Jay
-    const exists = await existsUser(req.params.username);
+    const exists = existsUser(req.params.username);
     if (req.params.username.length < 10 || req.params.username.length > 20) {
         sendError(res, 'username-length');
     } else if (req.params.password.length < 10) {
@@ -53,30 +54,50 @@ function readUser(req, res) {
     res.json(info); // NOTE: it may not end up being in JSON format already; in that case, it needs to be converted
     res.end();
 }
-async function readUserErrorHandler(req, res, next) {
+function readUserErrorHandler(req, res, next) {
     // ex. /user/read?username=Jay1024
-    const exists = await existsUser(req.params.username);
+    const exists = existsUser(req.params.username);
     if (!exists) {
         sendError(res, 'user-nonexistent');
     } else {
         next();
     }
 }
-function updateUser(req, res) {
+// OTHER FUNCTIONS FOR UPDATE USER INFO
+function updateProfilePicture(req, res) {
 
 }
-function updateUserErrorHandler(res, res, next) {
+function updateProfilePictureErrorHandler(req, res, next) {
 
 }
+function updateLocation(req, res) {
+
+}
+function updateLocationErrorHandler(req, res, next) {
+
+}
+function updatePreferences(req, res) {
+
+}
+function updatePreferencesErrorHandler(req, res, next) {
+
+}
+function updateDescription(req, res) {
+
+}
+function updateDescriptionErrorHandler(req, res, next) {
+
+}
+
 function deleteUser(req, res) {
     // ex. /user/delete?username=Jay1024
     deleteUserObj(req.params.username);
     res.redirect('./homepage.html'); // NOTE: or whatever we end up calling it
     res.end();
 }
-async function deleteUserErrorHandler(req, res, next) {
+function deleteUserErrorHandler(req, res, next) {
     // ex. /user/delete?username=Jay1024
-    const exists = await existsUser(req.params.username);
+    const exists = existsUser(req.params.username);
     if (!exists) {
         sendError(res, 'user-nonexistent');
     } else {
@@ -90,12 +111,12 @@ function createComment(req, res) {
     createCommentObj(req.params.sender, req.params.recipe.split('-')[0], req.params.recipe.split('-')[1], req.body.text);
     res.end();
 }
-async function createCommentErrorHandler(req, res, next) {
+function createCommentErrorHandler(req, res, next) {
     // Comment has user who created it, recipe linked to comment, comment text
     // ex. /recipe/id/comment/new?sender=Jay1024&recipe=Bella12-38463 ... req.body contains the text
     // This is assuming that the other user allows comments
     const recipeComponents = req.params.recipe.split('-');
-    const exists = await existsRecipe(recipeComponents[0], recipeComponents[1]);
+    const exists = existsRecipe(recipeComponents[0], recipeComponents[1]);
     if (!exists) {
         sendError(res, 'recipe-nonexistent');
     } else if (req.body.text.length === 0) {
@@ -110,17 +131,32 @@ function readComment(req, res) {
     res.json(info); // NOTE: Might not end up being JSON
     res.end();
 }
-async function readCommentErrorHandler(req, res, next) {
+function readCommentErrorHandler(req, res, next) {
     // ex. /recipe/id/comment/read?comment_id=03948774
-    const exists = await existsComment(req.query.comment_id);
+    const exists = existsComment(req.query.comment_id);
     if (!exists) {
         sendError(res, 'comment-nonexistent');
     } else {
         next();
     }
 }
-function updateComment() {
-
+function updateComment(req, res) {
+    // ex. /recipe/id/comment/update?comment_id=03948774
+    // req.body contains new text
+    updateCommentObj(req.params.comment_id, req.body.text);
+    res.end();
+}
+function updateCommentErrorHandler(req, res, next) {
+    // ex. /recipe/id/comment/update?comment_id=03948774
+    // req.body contains new text
+    const exists = existsComment(comment_id);
+    if (!exists) {
+        sendError(res, 'comment-nonexistent');
+    } else if (req.body.text.length === 0) {
+        sendError(res, 'comment-length');
+    } else {
+        next();
+    }
 }
 function deleteComment(req, res) {
     // ex. /recipe/id/comment/delete?comment_id=03948774
@@ -129,9 +165,9 @@ function deleteComment(req, res) {
     // ADD: update the page to reflect the changes (the same page but without the deleted comment) -- maybe serve the page again?
     res.end();
 }
-async function deleteCommentErrorHandling(req, res, next) {
+function deleteCommentErrorHandling(req, res, next) {
     // ex. /recipe/id/comment/delete?comment_id=03948774
-    const exists = await existsComment(req.params.comment_id);
+    const exists = existsComment(req.params.comment_id);
     if (!exists) {
         sendError(res, 'comment-nonexistent');
     } else {
