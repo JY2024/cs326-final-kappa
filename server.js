@@ -49,7 +49,9 @@ async function createUserErrorHandler(req, res, next) {
 }
 function readUser(req, res) {
     // ex. /user/read?username=Jay1024
-    return getUserInfo(req.query.username);
+    const info = getUserInfo(req.query.username);
+    res.json(info); // NOTE: it may not end up being in JSON format already; in that case, it needs to be converted
+    res.end();
 }
 async function readUserErrorHandler(req, res, next) {
     // ex. /user/read?username=Jay1024
@@ -69,7 +71,7 @@ function updateUserErrorHandler(res, res, next) {
 function deleteUser(req, res) {
     // ex. /user/delete?username=Jay1024
     deleteUserObj(req.params.username);
-    res.redirect('./homepage.html'); // or whatever we end up calling it
+    res.redirect('./homepage.html'); // NOTE: or whatever we end up calling it
     res.end();
 }
 async function deleteUserErrorHandler(req, res, next) {
@@ -103,10 +105,19 @@ async function createCommentErrorHandler(req, res, next) {
     }
 }
 function readComment(req, res) {
-
+    // ex. /recipe/id/comment/read?comment_id=03948774
+    const info = getCommentInfo(req.query.comment_id);
+    res.json(info); // NOTE: Might not end up being JSON
+    res.end();
 }
-function readCommentErrorHandler(req, res, next) {
-
+async function readCommentErrorHandler(req, res, next) {
+    // ex. /recipe/id/comment/read?comment_id=03948774
+    const exists = await existsComment(req.query.comment_id);
+    if (!exists) {
+        sendError(res, 'comment-nonexistent');
+    } else {
+        next();
+    }
 }
 function updateComment() {
 
