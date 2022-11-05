@@ -1,5 +1,6 @@
 import { createUserObj, createCommentObj, existsUser, existsRecipe, updateCommentObj, updateDescriptionObj, 
-    updateLocationObj, updateProfilePictureObj, existsComment, deleteUserObj, deleteCommentObj, getUserInfo, getCommentInfo} from './database.js';
+    updateLocationObj, updateProfilePictureObj, existsComment, deleteUserObj, deleteCommentObj, getUserInfo, getCommentInfo, 
+    createChatObj, getMessageHistory, updateChat, deleteChatObj} from './database.js';
 // Utility Functions
 
 // function parse(url) {
@@ -10,6 +11,12 @@ import { createUserObj, createCommentObj, existsUser, existsRecipe, updateCommen
 //     }
 //     return queryObj;
 // }
+
+const express = require('express');
+const app = express();
+const PORT = 8080;
+app.use(express.json());
+
 function containsSpecialChar(str) {
     return /[`!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?~]/.test();
 }
@@ -139,6 +146,20 @@ function deleteUserErrorHandler(req, res, next) {
     }
 }
 
+//REST Commands
+//POST– This creates a new record in the database.
+// GET– This request reads information sourced from a database.
+// PUT/PATCH– This updates an object.
+// DELETE– This removes a record from the database.
+// CRUD Commands
+// CREATE– This creates a new record through INSERT statements. In REST, this is a POST command. 
+// READ/RETRIEVE– These procedures grab data based on input parameters. In REST, this is equivalent to a GET command.
+// UPDATE– This updates data without overwriting it. In REST, this is a PUT request. 
+// DELETE- This removes data from the database. REST uses the same request to delete data. 
+
+
+
+
 // Comments
 function createComment(req, res) {
     // ex. /recipe/id/comment/new?sender=Jay1024&recipe=Bella12-38463 ... req.body contains the text
@@ -204,6 +225,73 @@ function deleteCommentErrorHandling(req, res, next) {
     const exists = existsComment(req.params.comment_id);
     if (!exists) {
         sendError(res, 'comment-nonexistent');
+    } else {
+        next();
+    }
+}
+
+//Chat Page
+function createChat(req, res){
+    //ex. /chat/new?sender=daktshh&reciever=Jay1024
+    createChatObj(req.query.sender, req.query.reciever, req.body.text);
+    res.end();
+}
+function createChatHandler(req, res, next) {
+    // Comment has user who created it, recipe linked to comment, comment text
+    // ex. /recipe/id/comment/new?sender=Jay1024&recipe=Bella12-38463 ... req.body contains the text
+    // This is assuming that the other user allows comments
+    const exists = existsUser(req.params.reciever);
+    if (!exists) {
+        sendError(res, 'user-nonexistent');
+    } else if (req.body.text.length === 0) {
+        sendError(res, 'message-length');
+    } else {
+        next();
+    }
+}
+function readChat(req, res) {
+    // ex. /chat/read?user=daktshh&reciever=temp
+    const messages = getMessageHistory(req.query.user, req.query.reciever);
+    res.json(messages); // NOTE: Might not end up being JSON
+    res.end();
+}
+function readChatErrorHandler(req, res, next) {
+    // ex. /chat/read?user=daktshh&reciever=temp
+    const exists = existsUser(req.query.reciever);
+    const messages = getMessageHistory(req.query.user, req.query.reciever);
+    if (!exists) {
+        sendError(res, 'cousermment-nonexistent');
+    } else if(Object.keys(messages).length === 0) {
+        sendError(res, 'Start a new chat with this user!');
+    } else {
+        next();
+    }
+}
+function updateChat(req, res) {
+    // ex. /chat/update?user=daktshh&reciever=temp
+    updateChat(req.query.user, req.query.reciever, req.body.text);
+    res.end();
+}
+function updateChatErrorHandler(req, res, next) {
+    // ex. /chat/update?user=daktshh&reciever=temp
+    const exists = existsUser(req.query.reciever);
+    if (!exists) {
+        sendError(res, 'user-nonexistent');
+    } else {
+        next();
+    }
+}
+function deleteChat(req, res) {
+    // ex. /chat/delete?user=daktshh&reciever=temp
+    deleteChatObj(req.query.user, req.query.reciever);
+    // ADD: update the page to reflect the changes (the same page but without the deleted comment) -- maybe serve the page again?
+    res.end();
+}
+function deleteChatErrorHandler(req, res, next) {
+    // ex. /chat/delete?user=daktshh&reciever=temp
+    const exists = existsUser(req.params.reciever);
+    if (!exists) {
+        sendError(res, 'user-nonexistent');
     } else {
         next();
     }
