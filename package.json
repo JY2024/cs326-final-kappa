@@ -1,0 +1,27 @@
+{
+  "name": "node.js",
+  "version": "1.0.0",
+  "description": "final",
+  "main": "database.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JY2024/cs326-final-kappa.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JY2024/cs326-final-kappa/issues"
+  },
+  "homepage": "https://github.com/JY2024/cs326-final-kappa#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "faker": "^5.5.3"
+  }
+}
