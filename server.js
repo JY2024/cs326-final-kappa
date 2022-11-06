@@ -17,6 +17,7 @@
 // app.listen(port);
 
 import express, { response } from 'express'
+import {createUserObj, createRecipeObj} from './database.js';
 import esm from 'esm'
 // const esm = require('esm')(module);
 const db = esm('./database.js');
@@ -57,12 +58,14 @@ function createUser(req, res) {
         req.query.displayName == undefined) {
         return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
     }
-    return db.createUserObj(req.query.username, req.query.password, req.query.displayName);
+    // return db.createUserObj(req.query.username, req.query.password, req.query.displayName);
+    return createUserObj(req.query.username, req.query.password, req.query.displayName);
 }
 
 function createRecipe(req, res){
     // ex. /recipe/new
     // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
     // JSON status returned
-    return db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
+    // return db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
+    return createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
 }
