@@ -61,7 +61,8 @@ function createUser(req, res) {
         return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
     }
     // return db.createUserObj(req.query.username, req.query.password, req.query.displayName);
-    return createUserObj(req.query.username, req.query.password, req.query.displayName);
+    // return createUserObj(req.query.username, req.query.password, req.query.displayName);
+    res.send(createUserObj(req.query.username, req.query.password, req.query.displayName));
 }
 
 function createRecipe(req, res){
