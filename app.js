@@ -3,7 +3,7 @@ import * as server from './server.js'
 // const server = require('./server.js');
 const app = express();
 app.use(express.json());
-const port = 3000;
+// const port = 3000;
 // const path = require('path');
 import * as path from 'path';
 import { fileURLToPath } from 'url';
