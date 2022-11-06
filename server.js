@@ -47,10 +47,10 @@ app.get('/user/new', (req, res) => {
     res.send(createUser(req, res));
 });
 
-app.post('/recipe/new', (req, res) => {
-    console.log("IN HERE check check");
-    res.send(createRecipe(req, res));
-});
+// app.post('/recipe/new', (req, res) => {
+//     console.log("IN HERE check check");
+//     res.send(createRecipe(req, res));
+// });
 
 function createUser(req, res) {
     // ex. /user/new?username=jay1024&password=123&displayName=Jay
