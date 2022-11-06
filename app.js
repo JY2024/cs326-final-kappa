@@ -1,9 +1,13 @@
-import express from 'express'
+import express, { response } from 'express'
 import * as server from './server.js'
 // const server = require('./server.js');
 const app = express();
 app.use(express.json());
 const port = 3000;
+
+app.get('/', (req,res) => {
+  response.send("IM HERE");
+})
 
 app.get('/user/read', [server.readUserErrorHandler, server.readUser]);
 
