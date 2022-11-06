@@ -2,9 +2,9 @@
 // User
 export function createUserObj(username, password, displayName) {
     console.log("'" + username + "' is added to the database");
-    if (username == 'Bella') {
-        return {Status: 'ERROR', Username: username, errMessage: "Username '" + username + "' already exists"}
-    }
+    // if (username == 'Bella') {
+    //     return {Status: 'ERROR', Username: username, errMessage: "Username '" + username + "' already exists"}
+    // }
     return {Status: 'SUCCESS', Username: username}
 }
 
