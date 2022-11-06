@@ -65,6 +65,7 @@ function createUser(req, res) {
 }
 
 function createRecipe(req, res){
+    console.log("why am i here");
     // ex. /recipe/new
     // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
     // JSON status returned
