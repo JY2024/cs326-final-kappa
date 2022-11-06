@@ -21,7 +21,8 @@
 <script>
 var form=document.getElementById('play')
 
-form.addEventListener('click', () => {
+form.addEventListener('click', checkpost);
+function checkpost(){
     console.log("IN HERE");
     // e.preventDefault()
 
@@ -55,7 +56,7 @@ form.addEventListener('click', () => {
             console.log('Request failed', error);
         });
 
-});
+};
 
 </script>
 </html>
