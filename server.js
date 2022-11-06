@@ -70,3 +70,7 @@ function createRecipe(req, res){
     // return db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
     return createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
 }
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
+  });
