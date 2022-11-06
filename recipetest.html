@@ -32,7 +32,7 @@
     
         console.log(JSON.stringify({recipeName:recipeName, author:author, ingredients:ingredients, instructions:instructions}))
     
-        await fetch('https://test-326.herokuapp.com/recipe/new', { 
+        try{ await fetch('https://test-326.herokuapp.com/recipe/new', { 
             mode: 'cors',
             method: 'POST',
             headers: {
@@ -50,9 +50,10 @@
                 console.log('Request succeeded with JSON response', data);
                 title=document.getElementById("recipeName");
                 body.innerHTML = data.body;
-            }).catch(function (error) {
-                console.log('Request failed', error);
-            });
+            })
+        } catch(error) {
+            console.log('Request failed', error);
+        };
     
     });
     
