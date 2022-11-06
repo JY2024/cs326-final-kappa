@@ -17,6 +17,7 @@
 // app.listen(port);
 
 import express, { response } from 'express'
+const esm = require('esm')(module);
 const db = esm('./database.js');
 // const server = require('./server.js');
 const app = express();
