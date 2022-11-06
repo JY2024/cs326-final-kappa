@@ -1,27 +1,7 @@
-// {
-//   "name": "recipetest",
-//   "version": "1.0.0",
-//   "description": "",
-//   "main": "server.js",
-//   "engines": {
-//     "node": "14.x"
-//   },
-//   "type": "module",
-//   "scripts": {
-//     "test": "echo \"Error: no test specified\" && exit 1",
-//     "start": "node server.js"
-//   },
-//   "author": "",
-//   "license": "ISC",
-//   "dependencies": {
-//     "express": "^4.18.2"
-//   }
-// }
-
 {
-  "name": "recipetest",
+  "name": "final-326",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "app.js",
   "directories": {
     "doc": "docs"
   },
@@ -30,7 +10,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "ejs": "^3.1.5",
