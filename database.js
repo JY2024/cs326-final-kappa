@@ -12,6 +12,7 @@ export function createUserObj(username, password, displayName) {
 export function createRecipeObj(title, author, ingredients, instructions) {
     console.log("'" + title + ":" + author + ":" + ingredients + ":" + instructions + "'");
     if (title == 'Pizza' && author == "Bella") {
+        console.log("in here");
         return {Status: 'ERROR', Recipename: 'MyPiza', errMessage: "Recipename '" + title + "' already exists with id " + 1987}
     }
     return {Status: 'SUCCESS', Recipename: 'MyPiza', recipeId: '1987'}
