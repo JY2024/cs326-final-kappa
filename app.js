@@ -4,6 +4,7 @@ import * as server from './server.js'
 const app = express();
 app.use(express.json());
 // const port = 3000;
+port = process.env.PORT
 // const path = require('path');
 import * as path from 'path';
 import { fileURLToPath } from 'url';
