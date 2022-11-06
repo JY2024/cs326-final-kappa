@@ -1,24 +1,42 @@
-const port = 8080
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
+// const port = 8080
+// const express = require('express');
+// const bodyParser = require('body-parser');
+// const app = express();
 //Require and import cannot be used together so esm is used to get database.js
 //npm install esm
 const esm = require('esm')(module);
 const db = esm('./database.js');
-const cors = require('cors');
+// const cors = require('cors');
 //Middle-ware.
 //app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 //app.use(bodyParser.text());
 //app.use(express.urlencoded({ extended: false }));
 //app.use(express.json)
-app.listen(port);
+// app.listen(port);
+
+import express, { response } from 'express'
+import * as server from './server.js'
+// const server = require('./server.js');
+const app = express();
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+// const port = 3000;
+const port = process.env.PORT
+// const path = require('path');
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 //ROUTES
 app.get('/', (req, res) => {
     console.log('At home');
+    res.sendFile(path.join(__dirname, 'recipetest.html'));
 });
 
 app.get('/user/new', (req, res) => {
