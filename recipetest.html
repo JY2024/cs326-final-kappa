@@ -3,7 +3,7 @@
     <script>
         const check=document.getElementById('form');
         
-        check.addEventListener('submit', async function(e){
+        check.addEventListener('submit', function(e){
             console.log("IN HERE");
             e.preventDefault()
         
@@ -15,7 +15,7 @@
         
             console.log(JSON.stringify({recipeName:recipeName, author:author, ingredients:ingredients, instructions:instructions}))
         
-            await fetch('https://test-326.herokuapp.com/recipe/new', { 
+            fetch('https://test-326.herokuapp.com/recipe/new', { 
                 // mode: 'no-cors',
                 method: 'POST',
                 headers: {
