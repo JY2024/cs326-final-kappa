@@ -20,12 +20,11 @@
 <script>
 const check=document.getElementById('form');
 
-check.addEventListener('submit', checkpost);
-function checkpost(){
+check.addEventListener('submit', function(e){
     console.log("IN HERE");
-    // e.preventDefault()
+    e.preventDefault()
 
-    // console.log(e)
+    console.log(e)
     var recipeName=document.getElementById('recipeName').value
     var author=document.getElementById('author').value
     var ingredients=document.getElementById('ingredients').value
@@ -55,7 +54,7 @@ function checkpost(){
             console.log('Request failed', error);
         });
 
-};
+});
 
 </script>
 </html>
