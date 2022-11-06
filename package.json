@@ -1,7 +1,6 @@
 {
-  "name": "cs326-final-kappa-1",
+  "name": "final-326",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "directories": {
     "doc": "docs"
@@ -14,5 +13,10 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
