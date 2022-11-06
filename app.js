@@ -4,10 +4,10 @@ import * as server from './server.js'
 const app = express();
 app.use(express.json());
 const port = 3000;
+const path = require("path");
 
 app.get('/', (req,res) => {
-  console.log("IM IN HERE");
-  res.send("IM HERE");
+  res.sendFile(path.join(__dirname, './html_files', 'profile.html'));
 })
 
 app.get('/user/read', [server.readUserErrorHandler, server.readUser]);
