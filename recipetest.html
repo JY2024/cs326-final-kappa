@@ -17,7 +17,7 @@
     <h7 id="instructions"></h7>
     </div>
 </body>
-<!-- <script>
+<script>
     const check=document.getElementById('form');
     
     check.addEventListener('submit', function(e){
@@ -46,17 +46,15 @@
             //instructions: instructions,
             //},
             body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions
-        })
-            .then(function (data) {
+        }).then(function (data) {
                 console.log('Request succeeded with JSON response', data);
                 title=document.getElementById("recipeName");
                 body.innerHTML = data.body;
-            })
-            .catch(function (error) {
+            }).catch(function (error) {
                 console.log('Request failed', error);
             });
     
     });
     
-    </script> -->
+    </script>
 </html>
