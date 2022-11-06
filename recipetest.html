@@ -7,6 +7,7 @@
        <input type="text", id="author" placeholder="Author" value="Bella"/></br>
        <textarea type="text", id="ingredients" rows="3" cols="100" placeholder="Ingredients">Dough, Tomato Sauce, Cheese</textarea></br>
        <textarea type="text", id="instructions" rows="3" cols="100" placeholder="Instructions">Make base, spread sauce, sprinkle cheese</textarea></br>
+       <!-- <button type = "button" id = "play" style="float: center;"> Submit!</button> -->
        <input type="submit" id="post-json" value="POST JSON"/></br>
     </form>
     <div>
@@ -18,7 +19,7 @@
     </div>
 </body>
 <script>
-var form=document.getElementById('form')
+var form=document.getElementById('post-json')
 
 form.addEventListener('submit', function(e){
     console.log("IN HERE");
