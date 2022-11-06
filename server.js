@@ -5,7 +5,7 @@
 //Require and import cannot be used together so esm is used to get database.js
 //npm install esm
 // const esm = require('esm')(module);
-const db = esm('./database.js');
+// const db = esm('./database.js');
 // const cors = require('cors');
 //Middle-ware.
 //app.use(cors());
@@ -17,7 +17,7 @@ const db = esm('./database.js');
 // app.listen(port);
 
 import express, { response } from 'express'
-import * as server from './server.js'
+const db = esm('./database.js');
 // const server = require('./server.js');
 const app = express();
 app.use(express.json());
