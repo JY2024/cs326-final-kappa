@@ -16,6 +16,7 @@
 //app.use(express.json)
 // app.listen(port);
 
+import bodyParser from "body-parser";
 import express, { response } from 'express'
 import {createUserObj, createRecipeObj} from './database.js';
 // import esm from 'esm'
