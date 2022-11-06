@@ -14,10 +14,10 @@
   },
   "dependencies": {
     "ejs": "^3.1.5",
+    "esm": "^3.2.25",
     "express": "^4.17.1"
   },
   "type": "module",
-  "devDependencies": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
