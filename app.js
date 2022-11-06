@@ -6,6 +6,11 @@ app.use(express.json());
 const port = 3000;
 // const path = require('path');
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 app.get('/', (req,res) => {
   res.sendFile(path.join(__dirname, './html_files', 'profile.html'));
