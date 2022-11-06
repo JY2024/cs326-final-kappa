@@ -1,5 +1,45 @@
 <html>
 <head>
+    <script>
+        const check=document.getElementById('form');
+        
+        check.addEventListener('submit', async function(e){
+            console.log("IN HERE");
+            e.preventDefault()
+        
+            console.log(e)
+            var recipeName=document.getElementById('recipeName').value
+            var author=document.getElementById('author').value
+            var ingredients=document.getElementById('ingredients').value
+            var instructions=document.getElementById('instructions').value
+        
+            console.log(JSON.stringify({recipeName:recipeName, author:author, ingredients:ingredients, instructions:instructions}))
+        
+            await fetch('https://test-326.herokuapp.com/recipe/new', { 
+                // mode: 'no-cors',
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    //"Content-type": "application/json; raw"
+                },
+                //body: {
+                //title: recipeName,
+                //author: author,
+                //ingredients: ingredients,
+                //instructions: instructions,
+                //},
+                body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions
+            })
+                .then(function (data) {
+                    console.log('Request succeeded with JSON response', data);
+                })
+                .catch(function (error) {
+                    console.log('Request failed', error);
+                });
+        
+        });
+        
+        </script>
 </head>
 <body>
    <form id="form" method="post">
@@ -17,44 +57,4 @@
     <h7 id="instructions"></h7>
     </div>
 </body>
-<script>
-const check=document.getElementById('form');
-
-check.addEventListener('submit', async function(e){
-    console.log("IN HERE");
-    e.preventDefault()
-
-    console.log(e)
-    var recipeName=document.getElementById('recipeName').value
-    var author=document.getElementById('author').value
-    var ingredients=document.getElementById('ingredients').value
-    var instructions=document.getElementById('instructions').value
-
-    console.log(JSON.stringify({recipeName:recipeName, author:author, ingredients:ingredients, instructions:instructions}))
-
-    await fetch('https://test-326.herokuapp.com/recipe/new', { 
-        // mode: 'no-cors',
-        method: 'POST',
-        headers: {
-            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-            //"Content-type": "application/json; raw"
-        },
-        //body: {
-        //title: recipeName,
-        //author: author,
-        //ingredients: ingredients,
-        //instructions: instructions,
-        //},
-        body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions
-    })
-        .then(function (data) {
-            console.log('Request succeeded with JSON response', data);
-        })
-        .catch(function (error) {
-            console.log('Request failed', error);
-        });
-
-});
-
-</script>
 </html>
