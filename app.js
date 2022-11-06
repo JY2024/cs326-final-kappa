@@ -6,7 +6,7 @@ app.use(express.json());
 const port = 3000;
 
 app.get('/', (req,res) => {
-  response.send("IM HERE");
+  res.send("IM HERE");
 })
 
 app.get('/user/read', [server.readUserErrorHandler, server.readUser]);
