@@ -18,9 +18,9 @@
 
 import express, { response } from 'express'
 import {createUserObj, createRecipeObj} from './database.js';
-import esm from 'esm'
+// import esm from 'esm'
 // const esm = require('esm')(module);
-const db = esm('./database.js');
+// const db = esm('./database.js');
 // const server = require('./server.js');
 const app = express();
 app.use(express.json());
