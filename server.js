@@ -48,6 +48,7 @@ app.get('/user/new', (req, res) => {
 });
 
 app.post('/recipe/new', (req, res) => {
+    console.log("IN HERE");
     res.send(createRecipe(req, res));
 });
 
