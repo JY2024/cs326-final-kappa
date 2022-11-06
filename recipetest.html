@@ -33,7 +33,7 @@
         console.log(JSON.stringify({recipeName:recipeName, author:author, ingredients:ingredients, instructions:instructions}))
     
         fetch('https://test-326.herokuapp.com/recipe/new', { 
-            // mode: 'no-cors',
+            mode: 'cors',
             method: 'POST',
             headers: {
                 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
