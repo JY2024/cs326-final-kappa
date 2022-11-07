@@ -57,8 +57,8 @@ app.get('/login?:query', (req, res) => {
         return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
     }
     const ret = authUserObj(req, res); //removed json.parse
-    console.log("recieved status update ", ret);
-    if(ret.Status === "Error"){
+    console.log("recieved status update ", ret.Status);
+    if(ret.Status === "ERROR"){
         res.send("Invalid Login, please try again");
     }
     else{
