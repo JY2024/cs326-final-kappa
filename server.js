@@ -83,7 +83,13 @@ app.get('/profile-settings-personal-info.html', (req, res) => {
 app.get('/images/:imageid', (req, res) => {
     console.log('HERE FOR THE PICTURES');
     console.log(req.params.imageid);
-    res.sendFile(path.join(__dirname, '/htmlFiles/images/', req.params.imageid));
+    res.sendFile(path.join(__dirname, '/images/', req.params.imageid));
+});
+
+app.get('/CSSFiles/:cssid', (req, res) => {
+    console.log('HERE FOR THE PICTURES');
+    console.log(req.params.cssid);
+    res.sendFile(path.join(__dirname, '/CSSFiles/', req.params.cssid));
 });
 
 app.get('/user/new', (req, res) => {
