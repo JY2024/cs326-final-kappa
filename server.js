@@ -46,10 +46,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login?:query', (req, res) => {
-    console.log(req.query);
     console.log('user tried to login');
     if (req.query.email == '' || req.query.password == '') {
-        return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
+
+        res.send({Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'});
     }
     const ret = authUserObj(req); 
     console.log("recieved status update ", ret.Status);
