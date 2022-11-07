@@ -54,6 +54,7 @@ app.get('/login?:query', (req, res) => {
     const ret = authUserObj(req); 
     console.log("recieved status update ", ret.Status);
     if(ret.Status === "ERROR"){
+        console.log("IN HERE");
         res.sendFile(path.join(__dirname, '/webPages/htmlFiles/incorrectLogin.html'));
         // res.send("Invalid Login, please try again");
     }
