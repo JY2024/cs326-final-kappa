@@ -80,7 +80,7 @@ app.get('/profile-settings-personal-info.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'profile-settings-personal-info.html'));
 });
 
-app.get('/images/:imageid', (req, res) => {
+app.get('/htmlFiles/images/:imageid', (req, res) => {
     console.log('HERE FOR THE PICTURES');
     console.log(req.params.imageid);
     res.sendFile(path.join(__dirname, '/images/', req.params.imageid));
