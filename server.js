@@ -44,10 +44,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'recipetest.html'));
 });
 
-app.get('/profile.html', (req, res) => {
-    console.log('new');
-    res.sendFile(path.join(__dirname, 'profile.html'));
-});
+// app.get('/profile.html', (req, res) => {
+//     console.log('new');
+//     res.sendFile(path.join(__dirname, 'profile.html'));
+// });
 
 app.get('/user/new', (req, res) => {
     res.send(createUser(req, res));
