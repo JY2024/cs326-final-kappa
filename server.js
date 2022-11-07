@@ -48,8 +48,8 @@ app.get('/', (req, res) => {
 app.get('/login?:query', (req, res) => {
     console.log('user tried to login');
     if (req.query.email == '' || req.query.password == '') {
-
-        res.send({Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'});
+        res.sendFile(path.join(__dirname, '/webPages/htmlFiles/incorrectLogin.html'));
+        // res.send({Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'});
     }
     const ret = authUserObj(req); 
     console.log("recieved status update ", ret.Status);
