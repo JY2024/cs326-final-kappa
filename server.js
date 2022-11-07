@@ -53,7 +53,7 @@ app.get('/', (req, res) => {
 
 app.get('/login?:query', (req, res) => {
     console.log('user tried to login');
-    if (req.query.email == undefined || req.query.password == undefined) {
+    if (req.query.email == '' || req.query.password == '') {
         return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
     }
     const ret = authUserObj(req); //removed json.parse
@@ -62,7 +62,7 @@ app.get('/login?:query', (req, res) => {
         res.send("Invalid Login, please try again");
     }
     else{
-        res.sendFile(path.join(__dirname, '/htmlFiles/index.html'));
+        res.sendFile(path.join(__dirname, '/htmlFiles/main-feed.html'));
     }
 });
 
