@@ -24,6 +24,7 @@ import {createUserObj, createRecipeObj} from './database.js';
 // const db = esm('./database.js');
 // const server = require('./server.js');
 const app = express();
+express.static('RecipeTest')
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
