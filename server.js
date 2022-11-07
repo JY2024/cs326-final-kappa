@@ -50,6 +50,12 @@ app.get('/profile.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'profile.html'));
 });
 
+app.get('/images', (req, res) => {
+    console.log('HERE FOR THE PICTURES');
+    console.log(req.params);
+    res.sendFile(path.join(__dirname, req.params));
+});
+
 app.get('/user/new', (req, res) => {
     res.send(createUser(req, res));
 });
