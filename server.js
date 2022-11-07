@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 
 app.get('/', (req, res) => {
     console.log('At home');
-    res.sendFile(path.join(__dirname, './htmlFiles/index.html'));
+    res.sendFile(path.join(__dirname, '/htmlFiles/index.html'));
 });
 
 app.get('/profile.html', (req, res) => {
