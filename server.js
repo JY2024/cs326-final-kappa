@@ -50,7 +50,7 @@ app.get('/profile.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'profile.html'));
 });
 
-app.get('/images', (req, res) => {
+app.get('/images/:imageid', (req, res) => {
     console.log('HERE FOR THE PICTURES');
     console.log(req.params);
     res.sendFile(path.join(__dirname, req.params));
