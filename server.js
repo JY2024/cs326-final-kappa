@@ -37,6 +37,7 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 app.use(express.static(path.join(__dirname, 'RecipeTest')));
+console.log(path.join(__dirname, 'RecipeTest'));
 
 //ROUTES
 app.get('/', (req, res) => {
