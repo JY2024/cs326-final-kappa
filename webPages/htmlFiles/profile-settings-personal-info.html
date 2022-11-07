@@ -23,10 +23,10 @@
             <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Personal
                     Information <i class="bi bi-caret-left-fill"></i></a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile
-                    Display</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Security</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Privacy</a>
+                <button class="btn" id="display"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile
+                    Display</a></button>
+                <button class="btn" id="security"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Security</a></button>
+                <button class="btn" id="privacy"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Privacy</a></button>
             </div>
         </div>
         <div id="page-content-wrapper">
@@ -123,5 +123,18 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 </body>
-
+<script>
+    const display = document.getElementById('display');
+    const security = document.getElementById('security');
+    const privacy = document.getElementById('privacy');
+    display.addEventListener('click', () =>{
+        window.location = "/profile-settings-profile-display.html";
+    });
+    security.addEventListener('click', () =>{
+        window.location = "/profile-settings-security.html";
+    });
+    privacy.addEventListener('click', () =>{
+        window.location = "/profile-settings-privacy.html";
+    });
+</script>
 </html>
