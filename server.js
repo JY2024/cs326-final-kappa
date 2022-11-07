@@ -66,11 +66,6 @@ app.get('/profile.html', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile.html'));
 });
 
-app.get('/profile-settings-personal-info.html', (req, res) => {
-    console.log('profile check');
-    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-personal-info.html'));
-});
-
 app.get('/images/:imageid', (req, res) => {
     console.log('HERE FOR THE PICTURES');
     console.log(req.params.imageid);
@@ -81,6 +76,26 @@ app.get('/CSSFiles/:cssid', (req, res) => {
     console.log('HERE FOR THE PICTURES');
     console.log(req.params.cssid);
     res.sendFile(path.join(__dirname, '/webPages/CSSFiles/', req.params.cssid));
+});
+
+app.get('/profile-settings-personal-info.html', (req, res) => {
+    console.log('profile check');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-personal-info.html'));
+});
+
+app.get('/profile-settings-profile-display.html', (req, res) => {
+    console.log('display check');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-profile-display.html'));
+});
+
+app.get('/profile-settings-privacy.html', (req, res) => {
+    console.log('privacy check');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-privacy.html'));
+});
+
+app.get('/profile-settings-security.html', (req, res) => {
+    console.log('security check');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-security.html'));
 });
 
 app.get('/user/new', (req, res) => {
