@@ -47,16 +47,10 @@ app.get('/', (req, res) => {
 
 app.get('/login?:query', (req, res) => {
     console.log('user tried to login');
-    // if (req.query.email == '' || req.query.password == '') {
-    //     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/incorrectLogin.html'));
-    //     // res.send({Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'});
-    // }
     const ret = authUserObj(req); 
     console.log("recieved status update ", ret.Status);
     if(ret.Status === "ERROR"){
-        console.log("IN HERE");
         res.sendFile(path.join(__dirname, '/webPages/htmlFiles/incorrectLogin.html'));
-        // res.send("Invalid Login, please try again");
     }
     else{
         res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
@@ -69,12 +63,12 @@ app.get('/main-feed.html', (req, res) => {
 
 app.get('/profile.html', (req, res) => {
     console.log('new');
-    res.sendFile(path.join(__dirname, 'profile.html'));
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile.html'));
 });
 
 app.get('/profile-settings-personal-info.html', (req, res) => {
     console.log('profile check');
-    res.sendFile(path.join(__dirname, 'profile-settings-personal-info.html'));
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-personal-info.html'));
 });
 
 app.get('/images/:imageid', (req, res) => {
