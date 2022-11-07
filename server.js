@@ -36,7 +36,8 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-app.use(express.static(path.join(__dirname, '/login')));
+// app.use(express.static(path.join(__dirname, '/login')));
+app.use(express.static('login'));
 console.log(path.join(__dirname));
 
 //ROUTES
