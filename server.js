@@ -53,7 +53,7 @@ app.get('/profile.html', (req, res) => {
 app.get('/images/:imageid', (req, res) => {
     console.log('HERE FOR THE PICTURES');
     console.log(req.params.imageid);
-    res.sendFile(path.join(__dirname, req.params.imageid));
+    res.sendFile(path.join(__dirname, '/images/', req.params.imageid));
 });
 
 app.get('/user/new', (req, res) => {
