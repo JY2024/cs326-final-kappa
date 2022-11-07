@@ -45,6 +45,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'recipetest.html'));
 });
 
+app.get('/', (req, res) => {
+    console.log('At home');
+    res.sendFile(path.join(__dirname, './htmlFiles/index.html'));
+});
+
 app.get('/profile.html', (req, res) => {
     console.log('new');
     res.sendFile(path.join(__dirname, 'profile.html'));
