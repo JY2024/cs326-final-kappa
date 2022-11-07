@@ -19,6 +19,7 @@ export function createRecipeObj(title, author, ingredients, instructions) {
 }
 
 export function authUserObj(email, password) {
+    console.log("the email is: ", email, "and the pwd is: ", password);
     if (email !== 'test' && password !== "test") {
         console.log("in here");
         return {Status: 'ERROR'}
