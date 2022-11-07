@@ -23,8 +23,8 @@
             <div class="list-group list-group-flush">
                 <button class="btn" id="personal"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Personal
                     Information</a></button>
-                <button class="btn"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a></button>
-                    Display <i class="bi bi-caret-left-fill"></i></a>
+                    <button class="btn"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile
+                        Display</a></button>
                 <button class="btn" id="security"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Security</a></button>
                 <button class="btn" id="privacy"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Privacy</a></button>
             </div>
@@ -45,7 +45,7 @@
                         <!-- Left links -->
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                                <button class="btn" id="profile"><a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a></button>
                             </li>
                         </ul>
                         <!-- Left links -->
@@ -55,7 +55,7 @@
                         <!-- Settings Icon -->
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="bi bi-cup-straw"></i></a>
+                                <button class="btn" id="feed"><a class="nav-link" href="#"><i class="bi bi-cup-straw"></i></a></button>
                             </li>
                         </ul>
                     </div>
@@ -107,6 +107,8 @@
     const privacy = document.getElementById('privacy');
     const security = document.getElementById('security');
     const personal = document.getElementById('personal');
+    const profile = document.getElementBId('profile');
+    const feed = document.getElementById('feed');
     privacy.addEventListener('click', () =>{
         window.location = "/profile-settings-privacy.html";
     });
@@ -115,6 +117,12 @@
     });
     personal.addEventListener('click', () =>{
         window.location = "/profile-settings-personal-info.html";
+    });
+    profile.addEventListener('click', () =>{
+        window.location = "/profile.html";
+    });
+    feed.addEventListener('click', () =>{
+        window.location = "/main-feed.html";
     });
 </script>
 </html>

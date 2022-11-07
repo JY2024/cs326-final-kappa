@@ -45,7 +45,7 @@
                         <!-- Left links -->
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                                <button class="btn" id="profile"><a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a></button>
                             </li>
                         </ul>
                         <!-- Left links -->
@@ -55,7 +55,7 @@
                         <!-- Settings Icon -->
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="bi bi-cup-straw"></i></a>
+                                <button class="btn" id="feed"><a class="nav-link" href="#"><i class="bi bi-cup-straw"></i></a></button>
                             </li>
                         </ul>
                     </div>
@@ -127,6 +127,8 @@
     const display = document.getElementById('display');
     const security = document.getElementById('security');
     const privacy = document.getElementById('privacy');
+    const profile = document.getElementBId('profile');
+    const feed = document.getElementById('feed');
     display.addEventListener('click', () =>{
         window.location = "/profile-settings-profile-display.html";
     });
@@ -135,6 +137,12 @@
     });
     privacy.addEventListener('click', () =>{
         window.location = "/profile-settings-privacy.html";
+    });
+    profile.addEventListener('click', () =>{
+        window.location = "/profile.html";
+    });
+    feed.addEventListener('click', () =>{
+        window.location = "/main-feed.html";
     });
 </script>
 </html>
