@@ -36,19 +36,13 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-// app.use(express.static(path.join(__dirname, '/login')));
-app.use(express.static('login'));
 console.log(path.join(__dirname));
 
 //ROUTES
-// app.get('/', (req, res) => {
-//     console.log('At home');
-//     res.sendFile(path.join(__dirname, 'recipetest.html'));
-// });
 
 app.get('/', (req, res) => {
     console.log('At home');
-    res.sendFile(path.join(__dirname, '/htmlFiles/index.html'));
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/index.html'));
 });
 
 app.get('/login?:query', (req, res) => {
@@ -62,7 +56,7 @@ app.get('/login?:query', (req, res) => {
         res.send("Invalid Login, please try again");
     }
     else{
-        res.sendFile(path.join(__dirname, '/htmlFiles/main-feed.html'));
+        res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
     }
 });
 
@@ -83,13 +77,13 @@ app.get('/profile-settings-personal-info.html', (req, res) => {
 app.get('/images/:imageid', (req, res) => {
     console.log('HERE FOR THE PICTURES');
     console.log(req.params.imageid);
-    res.sendFile(path.join(__dirname, '/htmlFiles/images/', req.params.imageid));
+    res.sendFile(path.join(__dirname, '/webPages/images/', req.params.imageid));
 });
 
 app.get('/CSSFiles/:cssid', (req, res) => {
     console.log('HERE FOR THE PICTURES');
     console.log(req.params.cssid);
-    res.sendFile(path.join(__dirname, '/htmlFiles/CSSFiles/', req.params.cssid));
+    res.sendFile(path.join(__dirname, '/webPages/CSSFiles/', req.params.cssid));
 });
 
 app.get('/user/new', (req, res) => {
@@ -100,14 +94,6 @@ app.post('/recipe/new', (req, res) => {
     console.log("IN HERE check check");
     res.send(console.log(createRecipe(req, res)));
 });
-
-function authUser(req, res){
-    if (req.query.email == undefined || req.query.password == undefined) {
-        return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
-    }
-    console.log("so far so good");
-    res.send(authUserObj(req.query.email, req.query.password));
-}
 
 function createUser(req, res) {
     // ex. /user/new?username=jay1024&password=123&displayName=Jay
