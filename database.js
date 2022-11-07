@@ -17,3 +17,11 @@ export function createRecipeObj(title, author, ingredients, instructions) {
     }
     return {Status: 'SUCCESS', Recipename: 'MyPiza', recipeId: '1987'}
 }
+
+export function authUserObj(email, password) {
+    if (email !== 'test' && password !== "test") {
+        console.log("in here");
+        return {Status: 'ERROR', Recipename: 'MyPiza', errMessage: "Recipename '" + title + "' already exists with id " + 1987}
+    }
+    return {Status: 'SUCCESS', Recipename: 'MyPiza', recipeId: '1987'}
+}

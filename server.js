@@ -18,7 +18,7 @@
 
 import bodyParser from "body-parser";
 import express, { response } from 'express'
-import {createUserObj, createRecipeObj} from './database.js';
+import {createUserObj, createRecipeObj, authUserObj} from './database.js';
 // import esm from 'esm'
 // const esm = require('esm')(module);
 // const db = esm('./database.js');
@@ -50,6 +50,17 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/htmlFiles/index.html'));
 });
 
+app.get('/:login', (req, res) => {
+    console.log('user tried to login');
+    authUser(req, res).then(res.sendFile(path.join(__dirname, '/htmlFiles/index.html'))).catch((error) => {
+        console.log('Authentication failed', error);
+    });
+});
+
+app.get('/main-feed.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'main-feed.html'));
+});
+
 app.get('/profile.html', (req, res) => {
     console.log('new');
     res.sendFile(path.join(__dirname, 'profile.html'));
@@ -74,6 +85,13 @@ app.post('/recipe/new', (req, res) => {
     console.log("IN HERE check check");
     res.send(console.log(createRecipe(req, res)));
 });
+
+function authUser(req, res){
+    if (req.query.email == undefined || req.query.password == undefined) {
+        return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
+    }
+    res.send(authUserObj(req.query.email, req.query.password));
+}
 
 function createUser(req, res) {
     // ex. /user/new?username=jay1024&password=123&displayName=Jay
