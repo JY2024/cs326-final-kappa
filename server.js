@@ -58,7 +58,7 @@ app.get('/login?:query', (req, res) => {
 });
 
 app.get('/main-feed.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'main-feed.html'));
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
 });
 
 app.get('/profile.html', (req, res) => {
