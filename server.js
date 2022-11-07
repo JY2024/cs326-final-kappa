@@ -24,7 +24,6 @@ import {createUserObj, createRecipeObj} from './database.js';
 // const db = esm('./database.js');
 // const server = require('./server.js');
 const app = express();
-express.static('RecipeTest')
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -37,6 +36,7 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+express.static(path.join(__dirname, 'RecipeTest'));
 
 //ROUTES
 app.get('/', (req, res) => {
