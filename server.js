@@ -50,6 +50,11 @@ app.get('/profile.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'profile.html'));
 });
 
+app.get('/profile-settings-personal-info.html', (req, res) => {
+    console.log('profile check');
+    res.sendFile(path.join(__dirname, 'profile-settings-personal-info.html'));
+});
+
 app.get('/images/:imageid', (req, res) => {
     console.log('HERE FOR THE PICTURES');
     console.log(req.params.imageid);
