@@ -91,6 +91,7 @@ function authUser(req, res){
     if (req.query.email == undefined || req.query.password == undefined) {
         return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
     }
+    console.log("so far so good");
     res.send(authUserObj(req.query.email, req.query.password));
 }
 
