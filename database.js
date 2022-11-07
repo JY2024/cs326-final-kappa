@@ -21,7 +21,7 @@ export function createRecipeObj(title, author, ingredients, instructions) {
 export function authUserObj(email, password) {
     if (email !== 'test' && password !== "test") {
         console.log("in here");
-        return {Status: 'ERROR', Recipename: 'MyPiza', errMessage: "Recipename '" + title + "' already exists with id " + 1987}
+        return {Status: 'ERROR'}
     }
-    return {Status: 'SUCCESS', Recipename: 'MyPiza', recipeId: '1987'}
+    return {Status: 'SUCCESS'}
 }
