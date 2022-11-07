@@ -36,8 +36,8 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-app.use(express.static(path.join(__dirname, 'RecipeTest')));
-console.log(path.join(__dirname, 'RecipeTest'));
+app.use(express.static(path.join(__dirname, '/login')));
+console.log(path.join(__dirname));
 
 //ROUTES
 // app.get('/', (req, res) => {
@@ -45,12 +45,12 @@ console.log(path.join(__dirname, 'RecipeTest'));
 //     res.sendFile(path.join(__dirname, 'recipetest.html'));
 // });
 
-app.get('/', (req, res) => {
+app.get('/login', (req, res) => {
     console.log('At home');
     res.sendFile(path.join(__dirname, '/htmlFiles/index.html'));
 });
 
-app.get('/?:login', (req, res) => {
+app.get('/login/:query', (req, res) => {
     console.log('user tried to login');
     authUser(req, res).then(res.sendFile(path.join(__dirname, '/htmlFiles/index.html'))).catch((error) => {
         console.log('Authentication failed', error);
