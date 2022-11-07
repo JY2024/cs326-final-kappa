@@ -40,10 +40,10 @@ app.use(express.static(path.join(__dirname, 'RecipeTest')));
 console.log(path.join(__dirname, 'RecipeTest'));
 
 //ROUTES
-app.get('/', (req, res) => {
-    console.log('At home');
-    res.sendFile(path.join(__dirname, 'recipetest.html'));
-});
+// app.get('/', (req, res) => {
+//     console.log('At home');
+//     res.sendFile(path.join(__dirname, 'recipetest.html'));
+// });
 
 app.get('/', (req, res) => {
     console.log('At home');
