@@ -18,9 +18,9 @@ export function createRecipeObj(title, author, ingredients, instructions) {
     return {Status: 'SUCCESS', Recipename: 'MyPiza', recipeId: '1987'}
 }
 
-export function authUserObj(email, password) {
-    console.log("the email is: ", email, "and the pwd is: ", password);
-    if (email !== 'test' && password !== "test") {
+export function authUserObj(req) {
+    console.log("the email is: ", req.query.email, "and the pwd is: ", req.query.password);
+    if (req.query.email !== 'test' && req.query.password !== "test") {
         console.log("in here");
         return {Status: 'ERROR'}
     }
