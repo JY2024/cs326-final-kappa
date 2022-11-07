@@ -109,7 +109,6 @@ app.post('/recipe/new', (req, res) => {
 
 function createUser(req, res) {
     // ex. /user/new?username=jay1024&password=123&displayName=Jay
-    // JSON status returned
     if (req.query.username == undefined ||
         req.query.password == undefined ||
         req.query.displayName == undefined) {
