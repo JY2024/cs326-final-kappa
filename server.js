@@ -50,7 +50,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/htmlFiles/index.html'));
 });
 
-app.get('/:login', (req, res) => {
+app.get('/?:login', (req, res) => {
     console.log('user tried to login');
     authUser(req, res).then(res.sendFile(path.join(__dirname, '/htmlFiles/index.html'))).catch((error) => {
         console.log('Authentication failed', error);
