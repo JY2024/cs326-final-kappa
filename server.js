@@ -54,6 +54,7 @@ app.get('/', (req, res) => {
 app.get('/login?:query', (req, res) => {
     console.log('user tried to login');
     const ret = JSON.parse(authUser(req, res));
+    console.log("recieved status update");
     if(ret.Status === "Error"){
         res.send("Invalid Login, please try again");
     }
