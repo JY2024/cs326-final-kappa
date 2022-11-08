@@ -18,7 +18,8 @@
 
 import bodyParser from "body-parser";
 import express, { response } from 'express'
-import {createUserObj, createRecipeObj, authUserObj} from './database.js';
+// import {createUserObj, createRecipeObj, authUserObj} from './database.js';
+import * as db from './database.js';
 // import esm from 'esm'
 // const esm = require('esm')(module);
 // const db = esm('./database.js');
@@ -47,7 +48,7 @@ app.get('/', (req, res) => {
 
 app.get('/login?:query', (req, res) => {
     console.log('user tried to login');
-    const ret = authUserObj(req); 
+    const ret = db.authUserObj(req); 
     console.log("recieved status update ", ret.Status);
     if(ret.Status === "ERROR"){
         res.sendFile(path.join(__dirname, '/webPages/htmlFiles/incorrectLogin.html'));
@@ -98,34 +99,64 @@ app.get('/profile-settings-security.html', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-security.html'));
 });
 
-app.get('/user/new', (req, res) => {
-    res.send(createUser(req, res));
-});
+app.get('/user/new', (req, res) => {        res.send(createUser(req, res)); });
+app.get('/user/delete', (req, res) => {     res.send(deleteUser(req, res)); });
 
-app.post('/recipe/new', (req, res) => {
-    console.log("IN HERE check check");
-    res.send(console.log(createRecipe(req, res)));
-});
+app.post('/recipe/new', (req, res) => {     res.send(createRecipe(req, res));   });
+app.get('/recipe/delete', (req, res) => {   res.send(deleteRecipe(req, res));   });
+
+app.get('/recipe/like/new', (req, res) =>       {res.send(createLike(req, res));   });
+app.get('/recipe/like/delete', (req, res) =>    {res.send(deleteLike(req, res));    });
+
+app.post('/recipe/comment/new', (req, res) =>    {res.send(createComment(req, res));    });
+app.get('/recipe/comment/delete', (req, res) => {res.send(deleteComment(req, res));    });
 
 function createUser(req, res) {
     // ex. /user/new?username=jay1024&password=123&displayName=Jay
+    // JSON status returned
     if (req.query.username == undefined ||
         req.query.password == undefined ||
         req.query.displayName == undefined) {
         return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
     }
-    // return db.createUserObj(req.query.username, req.query.password, req.query.displayName);
-    // return createUserObj(req.query.username, req.query.password, req.query.displayName);
-    res.send(createUserObj(req.query.username, req.query.password, req.query.displayName));
+    return db.createUserObj(req.query.username, req.query.password, req.query.displayName);
+}
+
+function deleteUser(req, res){
+    // ex. /user/delete?username=jay1024
+    return deleteUserObj(req.query.username);
 }
 
 function createRecipe(req, res){
-    console.log("why am i here");
     // ex. /recipe/new
     // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
     // JSON status returned
-    // return db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
     return createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
+}
+
+function deleteRecipe(req, res){
+    // ex. /recipe/delete?recipeID=1234&username=jay1024
+    return deleteRecipeObj(req.query.recipeID, req.query.username);
+}
+
+function createLike(req, res){
+    // ex. /recipe/like/new?sender=jay1024&recipeID=1234
+    return createLikeObj(req.query.sender, req.query.recipeID);
+}
+
+function deleteLike(req, res){
+    // ex. /recipe/like/delete?sender=jay1024&recipeID=1234
+    return deleteLikeObj(req.query.sender, req.query.recipeID);
+}
+
+function createComment(req, res){
+    // ex. /comment/new
+    return createCommentObj(req.body.sender, req.body.recipeID, req.body.text);
+}
+
+function deleteComment(req, res){
+    // ex. /comment/delete?sender=jay1024&recipeID=1234
+    return deleteCommentObj(req.query.sender, req.query.recipeID);
 }
 
 app.listen(port, () => {
