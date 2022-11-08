@@ -1,12 +1,11 @@
-const display = document.getElementById('display');
+const personal = document.getElementById('personal');
 const security = document.getElementById('security');
 const privacy = document.getElementById('privacy');
-const personal = document.getElementById('personal');
-const prof = document.getElementById('profile');
+const profile = document.getElementById('profile');
 const feed = document.getElementById('feed');
 
-display.addEventListener('click', () =>{
-    window.location = "/profile-settings-profile-display.html";
+personal.addEventListener('click', () =>{
+    window.location = "/profile-settings-personal-info.html";
 });
 security.addEventListener('click', () =>{
     window.location = "/profile-settings-security.html";
@@ -14,10 +13,7 @@ security.addEventListener('click', () =>{
 privacy.addEventListener('click', () =>{
     window.location = "/profile-settings-privacy.html";
 });
-personal.addEventListener('click', () =>{
-    window.location = "/profile-settings-personal-info.html";
-});
-prof.addEventListener('click', () =>{
+profile.addEventListener('click', () =>{
     window.location = "/profile.html";
 });
 feed.addEventListener('click', () =>{
