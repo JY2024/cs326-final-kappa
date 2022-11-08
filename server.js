@@ -18,7 +18,6 @@
 
 import bodyParser from "body-parser";
 import express, { response } from 'express'
-// import {createUserObj, createRecipeObj, authUserObj} from './database.js';
 import * as db from './database.js';
 // import esm from 'esm'
 // const esm = require('esm')(module);
@@ -74,9 +73,15 @@ app.get('/images/:imageid', (req, res) => {
 });
 
 app.get('/CSSFiles/:cssid', (req, res) => {
-    console.log('HERE FOR THE PICTURES');
+    console.log('HERE FOR THE css');
     console.log(req.params.cssid);
     res.sendFile(path.join(__dirname, '/webPages/CSSFiles/', req.params.cssid));
+});
+
+app.get('/jsFiles/:jsid', (req, res) => {
+    console.log('HERE FOR THE js');
+    console.log(req.params.jsid);
+    res.sendFile(path.join(__dirname, '/webPages/jsFiles/', req.params.jsid));
 });
 
 app.get('/profile-settings-personal-info.html', (req, res) => {
@@ -124,39 +129,39 @@ function createUser(req, res) {
 
 function deleteUser(req, res){
     // ex. /user/delete?username=jay1024
-    return deleteUserObj(req.query.username);
+    return db.deleteUserObj(req.query.username);
 }
 
 function createRecipe(req, res){
     // ex. /recipe/new
     // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
     // JSON status returned
-    return createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
+    return db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
 }
 
 function deleteRecipe(req, res){
     // ex. /recipe/delete?recipeID=1234&username=jay1024
-    return deleteRecipeObj(req.query.recipeID, req.query.username);
+    return db.deleteRecipeObj(req.query.recipeID, req.query.username);
 }
 
 function createLike(req, res){
     // ex. /recipe/like/new?sender=jay1024&recipeID=1234
-    return createLikeObj(req.query.sender, req.query.recipeID);
+    return db.createLikeObj(req.query.sender, req.query.recipeID);
 }
 
 function deleteLike(req, res){
     // ex. /recipe/like/delete?sender=jay1024&recipeID=1234
-    return deleteLikeObj(req.query.sender, req.query.recipeID);
+    return db.deleteLikeObj(req.query.sender, req.query.recipeID);
 }
 
 function createComment(req, res){
     // ex. /comment/new
-    return createCommentObj(req.body.sender, req.body.recipeID, req.body.text);
+    return db.createCommentObj(req.body.sender, req.body.recipeID, req.body.text);
 }
 
 function deleteComment(req, res){
     // ex. /comment/delete?sender=jay1024&recipeID=1234
-    return deleteCommentObj(req.query.sender, req.query.recipeID);
+    return db.deleteCommentObj(req.query.sender, req.query.recipeID);
 }
 
 app.listen(port, () => {
