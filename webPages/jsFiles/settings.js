@@ -6,20 +6,20 @@ const profile = document.getElementById('profile');
 const feed = document.getElementById('feed');
 
 display.addEventListener('click', () =>{
-    window.location = "/profile-settings-profile-display.html";
+    window.location = "./htmlFiles/profile-settings-profile-display.html";
 });
 security.addEventListener('click', () =>{
-    window.location = "/profile-settings-security.html";
+    window.location = "./htmlFiles/profile-settings-security.html";
 });
 privacy.addEventListener('click', () =>{
-    window.location = "/profile-settings-privacy.html";
+    window.location = "./htmlFiles/profile-settings-privacy.html";
 });
 personal.addEventListener('click', () =>{
-    window.location = "/profile-settings-personal-info.html";
+    window.location = "./htmlFiles/profile-settings-personal-info.html";
 });
 profile.addEventListener('click', () =>{
-    window.location = "/profile.html";
+    window.location = "./htmlFiles/profile.html";
 });
 feed.addEventListener('click', () =>{
-    window.location = "/main-feed.html";
+    window.location = "./htmlFiles/main-feed.html";
 });
