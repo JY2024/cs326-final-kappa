@@ -11,6 +11,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./CSSFiles/profile-settings-style.css">
+    <script type="module" src="./jsFiles/settings.js"></script>
     <title>Security</title>
 </head>
 
@@ -99,26 +100,4 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 </body>
-<script>
-    const privacy = document.getElementById('privacy');
-    const display = document.getElementById('display');
-    const personal = document.getElementById('personal');
-    const profile = document.getElementById('profile');
-    const feed = document.getElementById('feed');
-    privacy.addEventListener('click', () =>{
-        window.location = "/profile-settings-privacy.html";
-    });
-    display.addEventListener('click', () =>{
-        window.location = "/profile-settings-profile-display.html";
-    });
-    personal.addEventListener('click', () =>{
-        window.location = "/profile-settings-personal-info.html";
-    });
-    profile.addEventListener('click', () =>{
-        window.location = "/profile.html";
-    });
-    feed.addEventListener('click', () =>{
-        window.location = "/main-feed.html";
-    });
-</script>
 </html>
