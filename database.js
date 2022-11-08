@@ -20,7 +20,7 @@ export function createRecipeObj(title, author, ingredients, instructions) {
 
 export function authUserObj(req) {
     console.log("the email is: ", req.query.email, "and the pwd is: ", req.query.password);
-    if (req.query.email !== 'test' && req.query.password !== "test") {
+    if (req.query.email !== 'test' || req.query.password !== "test") {
         console.log("in here");
         return {Status: 'ERROR'}
     }
