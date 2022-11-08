@@ -1,4 +1,4 @@
-
+/*
 document.getElementById("myBtn").addEventListener("click",displayToggle)
 document.getElementById("savedBtn").addEventListener("click",displayToggle)
 
@@ -14,4 +14,4 @@ function displayToggle(){
         document.getElementById("My Recipes").innerHTML = lastContent;
     }
     console.log("You clicked a radio button");
-}
+}*/
