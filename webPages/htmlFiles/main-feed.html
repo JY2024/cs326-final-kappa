@@ -145,6 +145,7 @@
         const response = await fetch(request);
         if (response.ok) {
             const json = await response.json();
+            console.log('json is ' + json);
             // HEADER INFO
             document.getElementById('recipe_name').innerHTML = json.recipe_name;
             document.getElementById('creator').innerHTML = json.recipe_author;

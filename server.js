@@ -90,7 +90,8 @@ app.get('/user/delete', (req, res) => {     res.send(deleteUser(req, res)); });
 // [2] Recipe Functions
 app.post('/recipe/new', (req, res) => {     res.send(createRecipe(req, res));   });
 app.get('/recipe/delete', (req, res) => {   res.send(deleteRecipe(req, res));   });
-app.get('/recipe/read', (req, res) => {   res.send(readRecipe(req, res));   });
+app.get('/recipe/read', [readRecipeErrorHandler, readRecipe]);
+// app.get('/recipe/read', (req, res) => {   res.send(readRecipe(req, res));   });
 app.get('/recipe/list/my', (req, res) => {     res.send(readMyRecipes(req, res));     });
 app.get('/recipe/list/saved', (req, res) => {     res.send(readSavedRecipes(req, res));     });
 app.get('/recipe/detail', (req, res) => {    res.send(readRecipe(req, res));    });
@@ -219,7 +220,8 @@ function updateDescriptionErrorHandler(req, res, next) {
     // ex. /user/update?username=Jay1024
     // req.body contains {description: string}
     if (req.body.description.length === 0) {
-        sendError(res, 'description-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
+        // sendError(res, 'description-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
+        res.write(JSON.stringify({ result : 'error'}));
     } else {
         next();
     }
@@ -239,8 +241,22 @@ function createRecipe(req, res){
 }
 
 function readRecipe(req, res) {
+    console.log('entered readRecipe');
     // ex. /recipe/read?recipeID=1234
-    return db.getRecipeInfo(req.query.recipeID);
+    console.log('req query recipe id is ' + req.query.recipeID);
+    res.send(db.getRecipeInfo(req.query.recipeID));
+    res.end();
+}
+
+function readRecipeErrorHandler(req, res, next) {
+    if (false) {
+        console.log('entered recipe error handler');
+        // sendError(res, 'description-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
+        res.send(JSON.stringify({ result : 'error'}));
+    } else {
+        console.log('entered other part');
+        next();
+    }
 }
 
 function deleteRecipe(req, res){
