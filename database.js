@@ -80,7 +80,11 @@ export function getRecipeInfo(recipeID) {
     if(!existsRecipe(recipeID)){
         return {Status: 'ERROR', recipeID: recipeID, errMessage: "recipeID " + recipeID + " does not exist"};
     }
-    return {recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "filename.jpeg", ingredients: "dough, sauce, cheese", instruction: "knead dough, spread sauce, sprinkle cheese", preferences: [0,1,0,0,0,0,0], time: "approx 90 minutes", likes:2, rating: 3.4};
+    return JSON.stringify({recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "filename.jpeg",
+    ingredients: [{"Dough": "3 pounds"}, {"Sauce": "2 gallons"}, {"Cheese" : "3 cups"}],
+    instructions: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0],
+    time: "approx 90 minutes", likes:2, rating: 3.4, "ingredients_notes":"Feel free to experiment with toppings!",
+    tips_and_notes: "I love pizza, and I bet you do too! Come check out my profile for more pizza recipes! I'd love to hear about your spin on my recipe!"});
 }
 export function deleteRecipeObj(recipeID, username) {
     console.log("deleteRecipeObj: " + recipeID);

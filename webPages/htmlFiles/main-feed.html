@@ -79,11 +79,11 @@
             <div class="col-6">
                 <div class="container border border-dark" id="recipe-box">
                     <br>
-                    <h3>Fries and Sauce</h3>
-                    <h5>JayLikesCooking</h5>
+                    <h3 id="recipe_name">Fries and Sauce</h3>
+                    <h5 id="creator">JayLikesCooking</h5>
                     <!-- Icons for quick information about the recipe-->
                     <i class="bi bi-cup-hot-fill"></i><i class="bi bi-droplet-half"></i><br>
-                    <i class="bi bi-alarm-fill"></i> 30 Minutes<br>
+                    <i class="bi bi-alarm-fill"></i><span id="time"></span><br>
                     <!-- Rating -->
                     <i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i
                         class="bi bi-heart-fill"></i><i class="bi bi-heart-half"></i><br>
@@ -95,34 +95,15 @@
                                 <h5 class="mb-1">Ingredients</h5>
                             </div>
                             <p class="mb-1">
-                                <ul>
-                                    <li>Fries <small>40 pieces</small></li>
-                                    <li>Sauce <small>2 Gallons</small></li>
-                                    <li>Vegetables <small>5 Cups</small></li>
-                                    <li>Onions <small>1 Cup</small></li>
-                                </ul>
-                                <small>You can add any types of vegetables that you want.<br>Make sure you get enough
-                                    fries.</small>
+                                <ul id="ingredients"></ul>
+                                <small id="ingredients_notes"></small>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">How to Make</h5>
                             </div>
                             <p class="mb-1">
-                                <br>
-                                1. Etiam tempor orci eu lobortis. Mauris pharetra et ultrices neque ornare aenean
-                                euismod elementum. Sed adipiscing diam donec adipiscing tristique risus nec
-                                feugiat.<br><br>
-                                2. Pharetra magna ac placerat vestibulum lectus mauris. Faucibus scelerisque
-                                eleifend donec pretium. Ornare aenean euismod elementum nisi. At tempor commodo
-                                ullamcorper a lacus. Aliquet nec ullamcorper sit amet risus nullam. Neque vitae
-                                tempus quam pellentesque nec. Egestas purus viverra accumsan in nisl nisi.<br><br>
-                                3. Scelerisque eu ultrices. Leo vel orci porta non pulvinar. Pellentesque habitant
-                                morbi tristique senectus et. Cras tincidunt lobortis feugiat vivamus at augue
-                                eget arcu. Tempor commodo ullamcorper a lacus vestibulum sed. Urna nec tincidunt
-                                praesent semper. Vestibulum rhoncus est pellentesque elit ullamcorper
-                                dignissim.<br><br>
-                                4. Cras tincidunt. In arcu cursus euismod quis viverra.
+                                <span id="instructions"></span>
                             </p>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
@@ -131,14 +112,8 @@
                             </div>
                             <p class="mb-1">
                                 <br>
-                                <small>
-                                    Fames ac turpis egestas maecenas pharetra convallis posuere<br>
-                                    Nullam vehicula ipsum a arcu cursus vitae. Nam aliquam sem et tortor consequat
-                                    id porta nibh venenatis.<br>
-                                    Sed blandit libero volutpat sed cras ornare arcu dui. Auctor augue mauris augue
-                                    neque gravida in.<br><br><br>
-                                </small>
-                                <small class="text-muted">JayLikesCooking</small>
+                                <small id="tips_and_notes"></small><br><br>
+                                <small class="text-muted" id="creator_bottom"></small>
                             </p>
                         </a>
                     </div>
@@ -160,6 +135,58 @@
         crossorigin="anonymous"></script>
 </body>
 <script>
+    function fixURL(url) {
+        return url.substring(0, url.lastIndexOf('/'));
+    }
+    async function renderRecipe() {
+        // return {recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "filename.jpeg", ingredients: [{"dough": "3 pounds"}, {"sauce": "2 gallons"}, {"cheese" : "3 cups"}], instruction: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0], time: "approx 90 minutes", likes:2, rating: 3.4, "ingredients_notes":"Feel free to experiment with toppings!"};
+        
+        const request = new Request(fixURL(window.location.href) + '/recipe/read', {method: 'GET'});
+        const response = await fetch(request);
+        if (response.ok) {
+            const json = await response.json();
+            // HEADER INFO
+            document.getElementById('recipe_name').innerHTML = json.recipe_name;
+            document.getElementById('creator').innerHTML = json.recipe_author;
+            document.getElementById('creator_bottom').innerHTML = json.recipe_author;
+            // MISSING: render image, preferences here
+            document.getElementById('time').innerHTML = ' ' + json.time;
+            // MISSING: render rating here
+
+            // INGREDIENTS
+            const ingredList = document.getElementById('ingredients');
+            const listHolder = document.createElement('div');
+            for (const ingred of json.ingredients) {
+                const ingredName = Object.keys(ingred)[0];
+                const amount = ingred[ingredName];
+                const listElement = document.createElement('li');
+                const smallElement = document.createElement('small');
+                smallElement.appendChild(document.createTextNode(amount));
+                listElement.appendChild(document.createTextNode(ingredName + ' '));
+                listElement.appendChild(smallElement);
+                listHolder.appendChild(listElement);
+            }
+            ingredList.appendChild(listHolder);
+                // INGREDIENTS NOTES
+            document.getElementById('ingredients_notes').innerHTML = json.ingredients_notes;
+            
+            // INSTRUCTIONS
+            const instructionsHolder = document.getElementById('instructions');
+            for (let i = 1; i <= json.instructions.length; i++) {
+                instructionsHolder.appendChild(document.createTextNode(i + '. ' + json.instructions[i - 1]));
+                instructionsHolder.appendChild(document.createElement('br'));
+            }
+
+            // TIPS AND NOTES
+            const tipsSection = document.getElementById('tips_and_notes');
+            tipsSection.innerHTML = json.tips_and_notes;
+        }
+    }
+    function renderPreferences(prefArr) {
+
+    }
+
+    // NAVIGATION
     const settings = document.getElementById('settings');
     const profile = document.getElementById('profile');
     profile.addEventListener('click', () =>{
@@ -168,5 +195,6 @@
     settings.addEventListener('click', () =>{
         window.location = "/profile-settings-personal-info.html";
     });
+    window.onload = renderRecipe;
 </script>
 </html>
