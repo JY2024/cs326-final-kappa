@@ -17,7 +17,6 @@ export function getUserInfo(username) {
     return JSON.stringify({username: "Jay1024", display_name: "Jay", profile_picture: "filename.jpeg", location: "Amherst", preferences: [1,0,0,0,0,0,0], description: "I like to eat food"});
 }
 
-// NOTE: need more recipe database functions AND maybe functions for update recipe. These need to be stringified btw (maybe idk)
 export function getLikedRecipes(username) {
     //This will get full list of recipes liked by the user
     //return [{recipeID: 999, recipe_name: "Pizza", ...}, {recipeID: 1000, recipe_name: "Salad", ...}, {recipeID: 1001, recipe_name: "Soup", ...}];
