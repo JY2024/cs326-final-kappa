@@ -63,7 +63,7 @@ function createRecipe(req, res){
     // ex. /recipe/new
     // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
     // JSON status returned
-    return db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
+    return db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions, req.body.preferences, req.body.time);
 }
 
 function deleteRecipe(req, res){
@@ -83,7 +83,7 @@ function readSavedRecipes(req, res){
 
 function readRecipe(req, res){
     // ex. /recipe/detail?recipeID=1234
-    return db.getRecipeInfo(req.queryrecipeID);
+    return db.getRecipeInfo(req.query.recipeID);
 }
 
 function createLike(req, res){
