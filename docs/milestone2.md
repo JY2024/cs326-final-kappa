@@ -1,6 +1,14 @@
 # Come Look at My Food API
 
-
+Here are screenshots for examples of CRUD functionality:
+Create (a recipe)\
+![Create](screenshots-milestone2/create.png)\
+Read (recipe info on load, and render on the page)\
+![Read](screenshots-milestone2/read.png)\
+Update (press green button to add to user's saved recipes, updating user info)\
+![Update](screenshots-milestone2/update.png)\
+Delete (press the heart to delete a recipe from the user's saved recipes)\
+![Delete](screenshots-milestone2/delete.png)\
 
 Here is a brief and precise representation of APIs for the application:
 ![API 1](screenshots-milestone2/api1.png)\
