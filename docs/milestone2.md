@@ -1,16 +1,29 @@
-## Come Look at My Food API
+# Come Look at My Food API
 
-# Link
+## Link
 
-Link to the website on Heroku: https://test-326.herokuapp.com\
-The login username is test, the password is test.\
-Note: When you click the green button, it takes you to the recipe page.\
+Link to the website on Heroku: https://test-326.herokuapp.com
 
-# Breakdown of Labor
+The login username is test, the password is test.
+
+Note: When you click the green button, it takes you to the recipe page.
+
+## Breakdown of Labor
 
 API Documentation: Everyone
 
+Backend Skeleton Code (server.js, database.js):
 
+* Recipe Objects, Like Objects: Isabella
+* User Objects, Comment Objects: Jiaqi
+* Message Objects, Chat Object: Daksh
+
+Front-End Implementation:
+* Profile Page, Recipe Creation Popup: Isabella
+* Main Feed, Account Settings: Jiaqi
+* Recipe Page, Chat Page: Daksh
+
+Server Implementation/Deployment: Daksh
 
 # Examples of CRUD Functionality
 Here are screenshots for examples of CRUD functionality:
