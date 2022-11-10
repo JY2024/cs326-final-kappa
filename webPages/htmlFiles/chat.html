@@ -7,22 +7,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- Bootstrap CSS-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-        <link rel="stylesheet" href="chat-styles.css">
+        <link rel="stylesheet" href="./CSSFiles/chat-styles.css">
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <script type="module" src="./jsFiles/chat.js"></script>
         <title>Recipe Page</title>
     </head>
     <body>
         <header>
             <nav class="navbar navbar-expand-lg fixed-top">
-                <i class="fa-solid fa-user"></i>
-                <i class="fa-solid fa-pizza-slice"></i>
-                
+                <button class="btn" id="profile"><i class="fa-solid fa-user"></i></button>
+                <button class="btn" id="feed"><i class="fa-solid fa-pizza-slice"></i></button>
+                <!-- <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-pizza-slice"></i> -->
             </nav>
         </header>
         <div class="container-fluid">
             <div class="row box">
-                <div class="col-3">
-                    <div class="row chat">
+                <div class="col-3" id="chats">
+                    <!-- <div class="row chat">
                         <p class="person">John Johnson</p>
                     </div>
                     <div class="row chat">
@@ -36,24 +38,24 @@
                     </div>
                     <div class="row chat">
                         <p class="person">Joseph Johnson</p>
-                    </div>
+                    </div> -->
                 </div>
-                <div class="col-9">
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                    <div class="container darker">
+                <div class="col-9" id="convo">
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <!-- <div class="container darker">
                         <p>Hey! I had a couple questions regarding your recipe.</p>
                         <span class="time-left">11:01</span>
-                      </div>
-                      <div class="container">
+                    </div>
+                    <div class="container">
                         <p>I'd be happy to help!</p>
                         <span class="time-right">11:02</span>
-                      </div>
-                      <div class="container darker">
+                    </div>
+                    <div class="container darker">
                         <p>Are there any substitues we could use for dairy?</p>
                         <span class="time-left">11:05</span>
-                      </div>
-                      <label for="comment">Type here:</label>
-                      <input type="text" id="comment">
+                    </div> -->
+                      <!-- <label for="comment">Type here:</label>
+                      <input type="text" id="comment"> -->
                 </div>
             </div>
         </div>
