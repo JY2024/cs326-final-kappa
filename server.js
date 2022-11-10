@@ -160,6 +160,7 @@ function readUserErrorHandler(req, res, next) {
 }
 function readMyRecipes(req, res){
     // ex. /recipe/list/my?username=jay1024
+
     return db.getMyRecipes(req.query.username);
 }
 
