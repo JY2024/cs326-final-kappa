@@ -17,14 +17,21 @@ export function getUserInfo(username) {
     return JSON.stringify({username: "Jay1024", display_name: "Jay", profile_picture: "filename.jpeg", location: "Amherst", preferences: [1,0,0,0,0,0,0], description: "I like to eat food"});
 }
 
-export function getLikedRecipes(username) {
+export function getSavedRecipes(username) {
     //This will get full list of recipes liked by the user
-    //return [{recipeID: 999, recipe_name: "Pizza", ...}, {recipeID: 1000, recipe_name: "Salad", ...}, {recipeID: 1001, recipe_name: "Soup", ...}];
+    return [{recipeID: 1999, recipe_name: "Fries", author: "Arnold123", img:"feed-food1.jpg"}, 
+    {recipeID: 1998, recipe_name: "Stew", author: "jared", img:"feed-food2.jpg"}, 
+    {recipeID: 9197, recipe_name: "Fried Rice", author: "Samantha", img:"feed-food3.jpg"},
+    {recipeID: 1996, recipe_name: "Fries", author: "Jessica",  img:"food1.jpeg"}];
 }
 
 export function getMyRecipes(username) {
     //This will get full list of recipes owned by the user
-    //return [{recipeID: 999, recipe_name: "Pizza", ...}, {recipeID: 1000, recipe_name: "Salad", ...}, {recipeID: 1001, recipe_name: "Soup", ...}];
+    return [{recipeID: 999, recipe_name: "Pasta",likes:5,comments:2, img:"profile-page-food1.jfif"}, 
+            {recipeID: 998, recipe_name: "Chicken",likes:3,comments:1, img:"profile-page-food2.jfif"}, 
+            {recipeID: 997, recipe_name: "Soup",likes:2,comments:0, img:"profile-page-food3.jfif"},
+            {recipeID: 996, recipe_name: "Sandwich",likes:0,comments:6,  img:"profile-page-food4.jfif"},
+            {recipeID: 995, recipe_name: "Rice Bowl",likes:11,comments:3, img:"profile-page-food5.jfif"}];
 }
 
 export function getOtherRecipes(username) {
@@ -57,8 +64,8 @@ export function deleteUserObj(username) {
 export function createRecipeObj(title, author, ingredients, instructions) {
     return {status: 'SUCCESS', recipe_name: 'MyPiza', recipeId: 1987};
 }
-export function existsRecipe(recipeID) {
-    return true;
+export function existsRecipe(title, author) {
+    return false;
 }
 export function getRecipeInfo(recipeID) {
     return JSON.stringify({recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "filename.jpeg",

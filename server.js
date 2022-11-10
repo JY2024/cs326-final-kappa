@@ -88,7 +88,8 @@ app.get('/user/new', [createUserErrorHandler, createUser]);
 app.get('/user/delete', (req, res) => {     res.send(deleteUser(req, res)); });
 
 // [2] Recipe Functions
-app.post('/recipe/new', (req, res) => {     res.send(createRecipe(req, res));   });
+//app.post('/recipe/new', (req, res) => {     res.send(createRecipe(req, res));   });
+app.post('/recipe/new', [createRecipeErrorHandler, createRecipe]);
 app.get('/recipe/delete', (req, res) => {   res.send(deleteRecipe(req, res));   });
 app.get('/recipe/read', [readRecipeErrorHandler, readRecipe]);
 // app.get('/recipe/read', (req, res) => {   res.send(readRecipe(req, res));   });
@@ -159,12 +160,13 @@ function readUserErrorHandler(req, res, next) {
 }
 function readMyRecipes(req, res){
     // ex. /recipe/list/my?username=jay1024
-    return db.getMyRecipeList(req.query.username);
+
+    return db.getMyRecipes(req.query.username);
 }
 
 function readSavedRecipes(req, res){
     // ex. /recipe/list/saved?username=jay1024
-    return db.getSavedRecipeList(req.query.username);
+    return db.getSavedRecipes(req.query.username);
 }
 // update user info
 function updateProfilePicture(req, res) {
@@ -237,7 +239,18 @@ function createRecipe(req, res){
     // ex. /recipe/new
     // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
     // JSON status returned
-    return db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions);
+    res.send(db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions));
+    res.end();
+}
+
+function createRecipeErrorHandler(req, res, next) {
+    // On creation, recipe has title, author, ingredients, instructions, preferences, time
+    const exists = db.existsRecipe(req.body.title,req.body.author);
+    if (exists) {
+        sendError(res, 'exists-recipe');
+    } else {
+        next();
+    }
 }
 
 function readRecipe(req, res) {
