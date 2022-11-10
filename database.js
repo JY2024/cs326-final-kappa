@@ -68,10 +68,10 @@ export function existsRecipe(title, author) {
     return false;
 }
 export function getRecipeInfo(recipeID) {
-    return JSON.stringify({recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "filename.jpeg",
+    return JSON.stringify({recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "pizza.jpg",
     ingredients: [{"Dough": "3 pounds"}, {"Sauce": "2 gallons"}, {"Cheese" : "3 cups"}],
     instructions: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0],
-    time: "approx 90 minutes", likes:2, rating: 3.4, "ingredients_notes":"Feel free to experiment with toppings!",
+    time: "approx 90 minutes", likes:2, rating: 3.5, "ingredients_notes":"Feel free to experiment with toppings!",
     tips_and_notes: "I love pizza, and I bet you do too! Come check out my profile for more pizza recipes! I'd love to hear about your spin on my recipe!"});
 }
 export function deleteRecipeObj(recipeID, username) {
