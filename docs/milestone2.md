@@ -1,5 +1,7 @@
 # Come Look at My Food API
 
+Note: Final source files for milestone2 are in branch milestone2, not main.
+
 ## Link
 
 Link to the website on Heroku: https://test-326.herokuapp.com
