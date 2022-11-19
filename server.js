@@ -273,7 +273,7 @@ function updatePreferencesErrorHandler(req, res, next) {
 function updateDescription(req, res) {
     // ex. /user/update?username=Jay1024
     // req.body contains {description: string}
-    updateDescriptionObj(req.body.description);
+    updateDescriptionObj(req.query.description);
     res.end();
 }
 function updateDescriptionErrorHandler(req, res, next) {
