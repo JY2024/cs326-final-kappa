@@ -62,4 +62,6 @@ feed.addEventListener('click', () =>{
     window.location = "/main-feed.html";
 });
 
+saveBtn.addEventListener('click', saveChanges);
+
 window.onload = loadData;
