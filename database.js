@@ -91,6 +91,27 @@ export async function getOtherRecipes(username) {
     }));
 }
 
+export async function updateName(name, username) {
+    const res = await client.query(
+        "UPDATE users SET display_name=$1 WHERE username=$2", [name, username]
+    );
+    return JSON.stringify({status: "SUCCESS", username: username});
+}
+
+export async function updateLocation(location, username) {
+    const res = await client.query(
+        "UPDATE users SET location=$1 WHERE username=$2", [location, username]
+    );
+    return JSON.stringify({status: "SUCCESS", username: username});
+}
+
+export async function updatePreferences(prefArr, username) {
+    const res = await client.query(
+        "UPDATE users SET preferences=$1 WHERE username=$2", [prefArr, username]
+    );
+    return JSON.stringify({status: "SUCCESS", username: username});
+}
+
 export async function updateDescription(username, desc) {
     const res = await client.query(
         "UPDATE users SET description=$1 WHERE users.username=$2", [desc, username]

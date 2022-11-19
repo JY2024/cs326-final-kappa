@@ -1,9 +1,7 @@
+import { fixURL } from "./utility";
 const USERNAME = 'Jay'; // DO LATER
 let curRecipe = null; // the id of the current recipe
 
-function fixURL(url) {
-    return url.substring(0, url.lastIndexOf('/'));
-}
 async function renderRecipe() {    
     const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, {method: 'GET'});
     const response = await fetch(request);

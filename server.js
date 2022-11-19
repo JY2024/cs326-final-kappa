@@ -101,7 +101,9 @@ app.get('/profile-settings-security.html', (req, res) => {
 // [1] User Functions
 app.get('/user/new', [createUserErrorHandler, createUser]);
 app.get('/user/read', [readUserErrorHandler, readUser]);
-
+app.post('/user/update/:name', [updateNameErrorHandler, updateName]);
+app.post('/user/update/:location', updateLocation);
+app.post('/user/update/:preferences', updatePreferences);
 // app.get('/user/new', (req, res) => {        res.send(createUser(req, res)); });
 app.get('/user/delete', (req, res) => {     res.send(deleteUser(req, res)); });
 
@@ -181,7 +183,7 @@ function createUserErrorHandler(req, res, next) {
 // read user info, NOTE: TEST AND THEN FIX THE ROUTES AT THE TOP TO INCLUDE ERROR HANDLERS
 function readUser(req, res) {
     // ex. /user/read?username=Jay1024
-    res.send(getUserInfo(req.query.username));
+    res.send(db.getUserInfo(req.query.username));
     res.end();
 }
 function readUserErrorHandler(req, res, next) {
@@ -204,6 +206,25 @@ function readSavedRecipes(req, res){
     return db.getSavedRecipes(req.query.username);
 }
 // update user info
+function updateName(req, res) {
+    db.updateName(req.body.name, req.body.username);
+    res.end();
+}
+function updateNameErrorHandler(req, res) {
+    if (req.body.name.length === 0) {
+        sendError(res, 'name-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
+    } else {
+        next();
+    }
+}
+function updateLocation(req, res) {
+    db.updateLocation(req.query.location, req.query.username);
+    res.end();
+}
+function updatePreferences(req, res) {
+    db.updatePreferences(req.body, req.query.username);
+    res.end();
+}
 function updateProfilePicture(req, res) {
     // ex. /user/update?username=Jay1024
     // req.body contains {img: some image information}
