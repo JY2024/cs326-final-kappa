@@ -287,10 +287,11 @@ function createRecipeErrorHandler(req, res, next) {
 }
 
 function readRecipe(req, res) {
-    console.log('entered readRecipe');
-    // ex. /recipe/read?recipeID=1234
-    console.log('req query recipe id is ' + req.query.recipeID);
-    res.send(db.getRecipeInfo(req.query.recipeID));
+    if (req.query.recipeID === 0) {
+        res.send(db.getRandomRecipe());
+    } else {
+        res.send(db.getRecipeInfo(req.query.recipeID));
+    }
     res.end();
 }
 

@@ -142,6 +142,12 @@ export async function deleteUserObj(username) {
 }
 
 // [2] Recipe Functions
+export async function getRandomRecipe() {
+    const res = await client.query(
+        "SELECT * FROM recipes"
+    );
+    return res[Math.floor(Math.random() * res.length)];
+}
 export function createRecipeObj(title, author, ingredients, instructions) {
     return {status: 'SUCCESS', recipe_name: 'MyPiza', recipeId: 1987};
 }

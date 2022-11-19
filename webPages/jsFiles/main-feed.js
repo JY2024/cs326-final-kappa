@@ -6,14 +6,22 @@ async function renderRecipe() {
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();
+        // RENDER PICTURE (DO LATER)
         // HEADER INFO
         document.getElementById('recipe_name').innerHTML = json.recipe_name;
-        document.getElementById('creator').innerHTML = json.recipe_author;
-        document.getElementById('creator_bottom').innerHTML = json.recipe_author;
+        document.getElementById('creator').innerHTML = json.author;
+        document.getElementById('creator_bottom').innerHTML = json.author;
         const prefList = document.getElementById('preferences');
         renderPreferences(prefList, json.preferences);
         document.getElementById('time').innerHTML = ' ' + json.time;
-        renderRatings(document.getElementById('ratings'), json.rating);
+        // RATINGS
+        const heart = document.createElement('i');
+        heart.classList.add('bi');
+        heart.classList.add('bi-heart-fill');
+        element.appendChild(heart);
+        const num = document.createTextNode(json.num_likes);
+        document.getElementById('ratings').appendChild(heart);
+        document.getElementById('ratings').appendChild(num);
 
         // INGREDIENTS
         const ingredList = document.getElementById('ingredients');
@@ -29,8 +37,6 @@ async function renderRecipe() {
             listHolder.appendChild(listElement);
         }
         ingredList.appendChild(listHolder);
-            // INGREDIENTS NOTES
-        document.getElementById('ingredients_notes').innerHTML = json.ingredients_notes;
         
         // INSTRUCTIONS
         const instructionsHolder = document.getElementById('instructions');
@@ -45,29 +51,18 @@ async function renderRecipe() {
     }
 }
 function renderPreferences(element, prefArr) {
-    const preferencesNames = ['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free', 'Pescetarian', 'Keto', 'Low Carb', 'High Protein', 'Contains Shellfish', 'Contains Nuts', 'Contains Soy', 'Sugar Free'];
+    const preferencesNames = ['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free', 'Pescetarian', 'Keto', 'Low Carb', 'High Protein', 'No Shellfish', 'No Nuts', 'No Soy', 'Sugar Free'];
     // <span class="badge rounded-pill text-bg-primary">Dairy Free</span> <span class="badge rounded-pill text-bg-danger">Spice</span> <span class="badge rounded-pill text-bg-success">Vegan</span>
-    for (let i = 0; i < 7; i++) {
-        const span = document.createElement('span');
-        span.classList.add('badge');
-        span.classList.add('rounded-pill');
-        span.classList.add('text-bg-primary');
-        span.innerText = preferencesNames[i];
-        element.appendChild(span);
+    for (let i = 0; i < 12; i++) {
+        if (prefArr[i]) {
+            const span = document.createElement('span');
+            span.classList.add('badge');
+            span.classList.add('rounded-pill');
+            span.classList.add('text-bg-primary');
+            span.innerText = preferencesNames[i];
+            element.appendChild(span); 
+        }
     }
-}
-function renderRatings(element, rating) {
-    //<i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i
-    //class="bi bi-heart-fill"></i><i class="bi bi-heart-half"></i><br>
-    const fullHearts = Math.floor(rating);
-    for (let i = 0; i < fullHearts; i++) {
-        const heart = document.createElement('i');
-        heart.classList.add('bi');
-        heart.classList.add('bi-heart-fill');
-        element.appendChild(heart);
-    }
-    // const halfHearts = (rating - fullHearts) / 0.5;
-    // console.log('half hearts is ' + halfHearts);
 }
 
 // NAVIGATION
@@ -89,4 +84,5 @@ choice.addEventListener('click', async () => {
     }
     console.log('Completed!', response);
 });
+
 window.onload = renderRecipe;
