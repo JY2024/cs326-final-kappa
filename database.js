@@ -29,55 +29,116 @@ export function authUserObj(req) {
 }
 
 // [1] User Functions
-export function createUserObj(username, password, displayName) {
-    return {status: 'SUCCESS', username: username, password: password, displayName: displayName};
+export async function createUserObj(username, password, displayName) {
+    const res = await client.query(
+        "INSERT INTO users (username, profile_pic, display_name, location, preferences, description) VALUES ($1, $2, $3, $4, $5, $6)", [username, 'default profile pic', displayName, '', new Array(12).fill(0), '']
+    );
+    return JSON.stringify({status: 'SUCCESS', username: username, password: password, displayName: displayName});
 }
 
-export function getUserInfo(username) {
-    return JSON.stringify({username: "Jay1024", display_name: "Jay", profile_picture: "filename.jpeg", location: "Amherst", preferences: [1,0,0,0,0,0,0], description: "I like to eat food"});
+export async function getUserInfo(username) {
+    const res = await client.query(
+        "SELECT * FROM users WHERE username=$1", [username]
+    );
+    return JSON.stringify(res.rows[0]);
 }
 
-export function getSavedRecipes(username) {
-    //This will get full list of recipes liked by the user
-    return [{recipeID: 1999, recipe_name: "Fries", author: "Arnold123", img:"feed-food1.jpg"}, 
-    {recipeID: 1998, recipe_name: "Stew", author: "jared", img:"feed-food2.jpg"}, 
-    {recipeID: 9197, recipe_name: "Fried Rice", author: "Samantha", img:"feed-food3.jpg"},
-    {recipeID: 1996, recipe_name: "Fries", author: "Jessica",  img:"food1.jpeg"}];
+//Turns an array of objects into just an array of values of a specified key
+//arrayOfObjectsToArray(arrOfObj: Array<Object>, key: string)
+function arrayOfObjectsToArray(arrOfObj, key) {
+    let arr = [];
+    for (const obj of arrOfObj) {
+        arr.push(obj[key]);
+    }
+    return arr;
 }
 
-export function getMyRecipes(username) {
-    //This will get full list of recipes owned by the user
-    return [{recipeID: 999, recipe_name: "Pasta",likes:5,comments:2, img:"profile-page-food1.jfif"}, 
-            {recipeID: 998, recipe_name: "Chicken",likes:3,comments:1, img:"profile-page-food2.jfif"}, 
-            {recipeID: 997, recipe_name: "Soup",likes:2,comments:0, img:"profile-page-food3.jfif"},
-            {recipeID: 996, recipe_name: "Sandwich",likes:0,comments:6,  img:"profile-page-food4.jfif"},
-            {recipeID: 995, recipe_name: "Rice Bowl",likes:11,comments:3, img:"profile-page-food5.jfif"}];
+export async function getSavedRecipes(username) {
+    const res1 = await client.query(
+        "SELECT recipe_id FROM likes WHERE sender=$1", [username]
+    );
+    let recipe_ids = arrayOfObjectsToArray(res1, 'recipe_id');
+    const res2 = await client.query(
+        "SELECT * FROM recipes LEFT JOIN likes ON (recipes.recipe_id = any($1))", [recipe_ids]
+    );
+    return JSON.stringify(res2);
 }
 
-export function getOtherRecipes(username) {
+export async function getMyRecipes(username) {
+    const res = await client.query(
+        "SELECT * FROM recipes WHERE username=$1", [username]
+    );
+    return JSON.stringify(res);
+}
+
+export async function getOtherRecipes(username) {
     //This will get full list of recipes that are not owned by or liked by the user AND match the preference of the user
     //Preferences can be gotten from user table, likes from the likes table.
-    //return [{recipeID: 999, recipe_name: "Pizza", ...}, {recipeID: 1000, recipe_name: "Salad", ...}, {recipeID: 1001, recipe_name: "Soup", ...}];
+    const userPreferences = JSON.parse(getUserInfo(username)).preferences;
+    const res1 = await client.query(
+        "SELECT recipe_id FROM likes WHERE sender=$1", [username]
+    );
+    const liked = arrayOfObjectsToArray(res1, 'recipe_id');
+    const res2 = await client.query(
+        "SELECT recipe_id FROM recipes WHERE author=$1", [username]
+    );
+    const owned = arrayOfObjectsToArray(res2, 'recipe_id');
+    const res3 = await client.query(
+        "SELECT * FROM recipes WHERE NOT recipes.recipe_id = any($1) AND NOT recipes.recipe_id = any($2)", [liked, owned]
+    );
+    return JSON.stringify(res3.filter(recipe => {
+        return recipe.preferences.every((element, index) => element === userPreferences[index]);
+    }));
 }
 
-export function updateDescriptionObj(username, desc) {
-    return {status: "SUCCESS", username: username};
+export async function updateDescription(username, desc) {
+    const res = await client.query(
+        "UPDATE users SET description=$1 WHERE users.username=$2", [desc, username]
+    );
+    return JSON.stringify({status: "SUCCESS", username: username});
 }
 
-export function updateLocationObj(username, loc) {
-    return {status: "SUCCESS", username: username};
+export async function updateLocation(username, loc) {
+    const res = await client.query(
+        "UPDATE users SET location=$1 WHERE users.username=$2", [loc, username]
+    );
+    return JSON.stringify({status: "SUCCESS", username: username});
 }
 
-export function updateProfilePictureObj(username, path, blob) {
-    return {status: "SUCCESS", username: username};
+export async function updateProfilePicture(username, blob) {
+    const res = await client.query(
+        "UPDATE users SET profile_pic=$1 WHERE users.username=$2", [blob, username]
+    );
+    return JSON.stringify({status: "SUCCESS", username: username});
 }
 
-export function existsUser(username) {
-    return true;
+export async function existsUser(username) {
+    const res = await client.query(
+        "SELECT * FROM users WHERE username=$1", [username]
+    );
+    return res.length === 1;
 }
 
-export function deleteUserObj(username) {
-    return {Status: "SUCCESS", username: username};
+export async function deleteUserObj(username) {
+    // delete a user's likes
+    const res1 = await client.query(
+        "DELETE FROM likes WHERE sender=$1", [username]
+    );
+    // delete a user's comments
+    const res2 = await client.query(
+        "DELETE FROM comments WHERE sender=$1", [username]
+    );
+    // delete user's recipes
+    const res3 = await client.query(
+        "DELETE FROM recipes WHERE author=$1", [username]
+    );
+    // delete user's chats DO LATER
+    // delete user's messages DO LATER
+    // delete user
+    const res6 = await client.query(
+        "DELETE FROM users WHERE username=$1", [username]
+    );
+    return JSON.stringify({Status: "SUCCESS", username: username});
 }
 
 // [2] Recipe Functions
@@ -113,23 +174,49 @@ export function deleteLikeObj(sender, recipeID) {
 }
 
 // [4] Comment Functions
-export function createCommentObj(sender, recipeID, text) {
-    return {Status: 'SUCCESS', commentID: 1};
-}
-export function getCommentInfo(commentID) {
-    return JSON.stringify({Status: 'SUCCESS', sender: 'Jay', recipeID: 1987, text: 'this recipe gave me heartburn'});
-}
-export function updateCommentObj(comment_id, text) {
-    return {Status: 'SUCCESS', commentID: 1};
-}
-export function existsComment(commentID) {
-    if(commentID == 99999999) {
-        return false;
+function makeID() {
+    let id = Math.floor(Math.random() * 500);
+    while (existsID(id)) {
+        id = Math.floor(Math.random() * 500);
     }
-    return true;
+    return id;
 }
-export function deleteCommentObj(commentID, username) {
-    return {Status: "SUCCESS", commentID: commentID};
+async function existsID(id) {
+    const res = await client.query(
+        "SELECT * FROM recipes WHERE recipe_id=$1", [id]
+    );
+    return res.length > 0;
+}
+export async function createCommentObj(sender, recipeID, text) {
+    const id = makeID();
+    const res = await client.query(
+        "INSERT INTO comments (sender, recipe_id, content, comment_id) VALUES ($1, $2, $3)", [sender, recipeID, text, id]
+    );
+    return JSON.stringify({Status: 'SUCCESS', comment_id: id});
+}
+export async function getCommentInfo(commentID) {
+    const res = await client.query(
+        "SELECT * FROM comments WHERE comment_id=$1", [commentID]
+    );
+    return JSON.stringify(res.rows[0]);
+}
+export async function updateCommentObj(commentID, text) {
+    const res = await client.query(
+        "UPDATE comments SET text=$1 WHERE comments.comment_id=$2", [text, commentID]
+    );
+    return JSON.stringify({status: "SUCCESS", comment_id: commentID});
+}
+export async function existsComment(commentID) {
+    const res = await client.query(
+        "SELECT * FROM comments WHERE comment_id=$1", [commentID]
+    );
+    return res.length === 1;
+}
+export async function deleteCommentObj(commentID) {
+    const res = await client.query(
+        "DELETE FROM comments WHERE comment_id=$1", [commentID]
+    );
+    return JSON.stringify({Status: "SUCCESS", comment_id: commentID});
 }
 
 // [5] Chat Functions
