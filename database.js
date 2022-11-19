@@ -31,7 +31,7 @@ export function authUserObj(req) {
 // [1] User Functions
 export async function createUserObj(username, password, displayName) {
     const res = await client.query(
-        "INSERT INTO users (username, profile_pic, display_name, location, preferences, description) VALUES ($1, $2, $3, $4, $5, $6)", [username, 'default profile pic', displayName, '', new Array(12).fill(0), '']
+        "INSERT INTO users (username, profile_pic, display_name, location, preferences, description, hide_user) VALUES ($1, $2, $3, $4, $5, $6, $7)", [username, 'default profile pic', displayName, '', new Array(12).fill(0), '', false]
     );
     return JSON.stringify({status: 'SUCCESS', username: username, password: password, displayName: displayName});
 }
@@ -129,6 +129,13 @@ export async function updateLocation(username, loc) {
 export async function updateProfilePicture(username, blob) {
     const res = await client.query(
         "UPDATE users SET profile_pic=$1 WHERE users.username=$2", [blob, username]
+    );
+    return JSON.stringify({status: "SUCCESS", username: username});
+}
+
+export async function updateHideRecipe(hidden, username) {
+    const res = await client.query(
+        "UPDATE users SET hide_recipes=$1 WHERE users.username=$2", [hidden, username]
     );
     return JSON.stringify({status: "SUCCESS", username: username});
 }

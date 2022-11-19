@@ -51,7 +51,6 @@ function saveChanges() {
     (async () => {
         return await fetch(req3);
     })();
-
 }
 
 // NAVIGATION

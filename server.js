@@ -104,6 +104,8 @@ app.get('/user/read', [readUserErrorHandler, readUser]);
 app.post('/user/update/:name', [updateNameErrorHandler, updateName]);
 app.post('/user/update/:location', updateLocation);
 app.post('/user/update/:preferences', updatePreferences);
+app.post('/user/update/:description', updateDescription);
+app.post('/user/update/:recipe_hide', updateHideRecipe);
 // app.get('/user/new', (req, res) => {        res.send(createUser(req, res)); });
 app.get('/user/delete', (req, res) => {     res.send(deleteUser(req, res)); });
 
@@ -283,6 +285,10 @@ function updateDescriptionErrorHandler(req, res, next) {
     } else {
         next();
     }
+}
+function updateHideRecipe(req, res) {
+    db.updateHideRecipe(req.query.recipe_hide, req.query.username);
+    res.end();
 }
 // delete user object
 function deleteUser(req, res){
