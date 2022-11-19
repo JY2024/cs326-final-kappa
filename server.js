@@ -100,6 +100,8 @@ app.get('/profile-settings-security.html', (req, res) => {
 });
 // [1] User Functions
 app.get('/user/new', [createUserErrorHandler, createUser]);
+app.get('/user/read', [readUserErrorHandler, readUser]);
+
 // app.get('/user/new', (req, res) => {        res.send(createUser(req, res)); });
 app.get('/user/delete', (req, res) => {     res.send(deleteUser(req, res)); });
 

@@ -57,18 +57,18 @@ export async function getSavedRecipes(username) {
     const res1 = await client.query(
         "SELECT recipe_id FROM likes WHERE sender=$1", [username]
     );
-    let recipe_ids = arrayOfObjectsToArray(res1, 'recipe_id');
+    let recipe_ids = arrayOfObjectsToArray(res1.rows, 'recipe_id');
     const res2 = await client.query(
         "SELECT * FROM recipes LEFT JOIN likes ON (recipes.recipe_id = any($1))", [recipe_ids]
     );
-    return JSON.stringify(res2);
+    return JSON.stringify(res2.rows);
 }
 
 export async function getMyRecipes(username) {
     const res = await client.query(
         "SELECT * FROM recipes WHERE username=$1", [username]
     );
-    return JSON.stringify(res);
+    return JSON.stringify(res.rows);
 }
 
 export async function getOtherRecipes(username) {
@@ -78,15 +78,15 @@ export async function getOtherRecipes(username) {
     const res1 = await client.query(
         "SELECT recipe_id FROM likes WHERE sender=$1", [username]
     );
-    const liked = arrayOfObjectsToArray(res1, 'recipe_id');
+    const liked = arrayOfObjectsToArray(res1.rows, 'recipe_id');
     const res2 = await client.query(
         "SELECT recipe_id FROM recipes WHERE author=$1", [username]
     );
-    const owned = arrayOfObjectsToArray(res2, 'recipe_id');
+    const owned = arrayOfObjectsToArray(res2.rows, 'recipe_id');
     const res3 = await client.query(
         "SELECT * FROM recipes WHERE NOT recipes.recipe_id = any($1) AND NOT recipes.recipe_id = any($2)", [liked, owned]
     );
-    return JSON.stringify(res3.filter(recipe => {
+    return JSON.stringify(res3.rows.filter(recipe => {
         return recipe.preferences.every((element, index) => element === userPreferences[index]);
     }));
 }
@@ -116,7 +116,7 @@ export async function existsUser(username) {
     const res = await client.query(
         "SELECT * FROM users WHERE username=$1", [username]
     );
-    return res.length === 1;
+    return res.rows.length === 1;
 }
 
 export async function deleteUserObj(username) {
@@ -189,7 +189,7 @@ async function existsID(id) {
     const res = await client.query(
         "SELECT * FROM recipes WHERE recipe_id=$1", [id]
     );
-    return res.length > 0;
+    return res.rows.length > 0;
 }
 export async function createCommentObj(sender, recipeID, text) {
     const id = makeID();
@@ -214,7 +214,7 @@ export async function existsComment(commentID) {
     const res = await client.query(
         "SELECT * FROM comments WHERE comment_id=$1", [commentID]
     );
-    return res.length === 1;
+    return res.rows.length === 1;
 }
 export async function deleteCommentObj(commentID) {
     const res = await client.query(
