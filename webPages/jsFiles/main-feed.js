@@ -1,14 +1,11 @@
 function fixURL(url) {
     return url.substring(0, url.lastIndexOf('/'));
 }
-async function renderRecipe() {
-    // return {recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "filename.jpeg", ingredients: [{"dough": "3 pounds"}, {"sauce": "2 gallons"}, {"cheese" : "3 cups"}], instruction: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0], time: "approx 90 minutes", likes:2, rating: 3.4, "ingredients_notes":"Feel free to experiment with toppings!"};
-    
-    const request = new Request(fixURL(window.location.href) + '/recipe/read', {method: 'GET'});
+async function renderRecipe() {    
+    const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0', {method: 'GET'});
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();
-        console.log('json is ' + json);
         // HEADER INFO
         document.getElementById('recipe_name').innerHTML = json.recipe_name;
         document.getElementById('creator').innerHTML = json.recipe_author;
