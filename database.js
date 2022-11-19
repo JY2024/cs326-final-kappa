@@ -142,11 +142,9 @@ export async function deleteUserObj(username) {
 }
 
 // [2] Recipe Functions
-export async function getRandomRecipe() {
-    const res = await client.query(
-        "SELECT * FROM recipes"
-    );
-    return res[Math.floor(Math.random() * res.length)];
+export async function getRandomRecipe(username) {
+    const recipes = JSON.parse(getOtherRecipes(username));
+    return JSON.stringify(recipes[Math.floor(Math.random() * recipes.length)]);
 }
 export function createRecipeObj(title, author, ingredients, instructions) {
     return {status: 'SUCCESS', recipe_name: 'MyPiza', recipeId: 1987};

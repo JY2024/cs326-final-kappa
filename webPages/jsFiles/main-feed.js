@@ -1,11 +1,15 @@
+const USERNAME = 'Jay'; // DO LATER
+let curRecipe = null; // the id of the current recipe
+
 function fixURL(url) {
     return url.substring(0, url.lastIndexOf('/'));
 }
 async function renderRecipe() {    
-    const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0', {method: 'GET'});
+    const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, {method: 'GET'});
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();
+        curRecipe = json.recipe_id;
         // RENDER PICTURE (DO LATER)
         // HEADER INFO
         document.getElementById('recipe_name').innerHTML = json.recipe_name;
@@ -83,6 +87,20 @@ choice.addEventListener('click', async () => {
         window.location = "/recipe.html";
     }
     console.log('Completed!', response);
+});
+
+// EVENT LISTENERS
+const nextBtn = document.getElementById('next');
+const noBtn = document.getElementById('no');
+const yesBtn = document.getElementById('yes');
+nextBtn.addEventListener('click', renderRecipe);
+noBtn.addEventListener('click', renderRecipe);
+yesBtn.addEventListener('click', () => {
+    // DO LATER get curRecipe somehow
+    const request = new Request(fixURL(window.location.href) + '/recipe/like/new/sender=' + USERNAME + '&recipeID=' + curRecipe, {method: 'POST'});
+    const response = (async () => {
+        return await fetch(request);
+    })();
 });
 
 window.onload = renderRecipe;

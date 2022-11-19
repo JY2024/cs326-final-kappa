@@ -288,7 +288,7 @@ function createRecipeErrorHandler(req, res, next) {
 
 function readRecipe(req, res) {
     if (req.query.recipeID === 0) {
-        res.send(db.getRandomRecipe());
+        res.send(db.getRandomRecipe(req.query.username));
     } else {
         res.send(db.getRecipeInfo(req.query.recipeID));
     }
