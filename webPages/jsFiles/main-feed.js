@@ -1,46 +1,29 @@
-function fixURL(url) {
-    return url.substring(0, url.lastIndexOf('/'));
-}
+import { fixURL } from "./utility.js";
+const USERNAME = 'Jay'; // DO LATER
+let curRecipe = null; // the id of the current recipe
+
 async function renderRecipe() {
-    // return {recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "filename.jpeg", ingredients: [{"dough": "3 pounds"}, {"sauce": "2 gallons"}, {"cheese" : "3 cups"}], instruction: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0], time: "approx 90 minutes", likes:2, rating: 3.4, "ingredients_notes":"Feel free to experiment with toppings!"};
-    
-    const request = new Request(fixURL(window.location.href) + '/recipe/read', {method: 'GET'});
+    const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=1&username=' + USERNAME, {method: 'GET'});
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();
-        console.log('json is ' + json);
+        curRecipe = json.recipe_id;
+        // RENDER PICTURE (DO LATER)
         // HEADER INFO
         document.getElementById('recipe_name').innerHTML = json.recipe_name;
-        document.getElementById('creator').innerHTML = json.recipe_author;
-        document.getElementById('creator_bottom').innerHTML = json.recipe_author;
+        document.getElementById('creator').innerHTML = json.author;
+        document.getElementById('creator_bottom').innerHTML = json.author;
         const prefList = document.getElementById('preferences');
         renderPreferences(prefList, json.preferences);
-        document.getElementById('time').innerHTML = ' ' + json.time;
-        renderRatings(document.getElementById('ratings'), json.rating);
+        document.getElementById('time').innerHTML = ' ' + json.prep_time;
 
         // INGREDIENTS
         const ingredList = document.getElementById('ingredients');
-        const listHolder = document.createElement('div');
-        for (const ingred of json.ingredients) {
-            const ingredName = Object.keys(ingred)[0];
-            const amount = ingred[ingredName];
-            const listElement = document.createElement('li');
-            const smallElement = document.createElement('small');
-            smallElement.appendChild(document.createTextNode(amount));
-            listElement.appendChild(document.createTextNode(ingredName + ' '));
-            listElement.appendChild(smallElement);
-            listHolder.appendChild(listElement);
-        }
-        ingredList.appendChild(listHolder);
-            // INGREDIENTS NOTES
-        document.getElementById('ingredients_notes').innerHTML = json.ingredients_notes;
+        ingredList.appendChild(document.createTextNode(json.ingredients));
         
         // INSTRUCTIONS
         const instructionsHolder = document.getElementById('instructions');
-        for (let i = 1; i <= json.instructions.length; i++) {
-            instructionsHolder.appendChild(document.createTextNode(i + '. ' + json.instructions[i - 1]));
-            instructionsHolder.appendChild(document.createElement('br'));
-        }
+        instructionsHolder.appendChild(document.createTextNode(json.instructions));
 
         // TIPS AND NOTES
         const tipsSection = document.getElementById('tips_and_notes');
@@ -48,29 +31,19 @@ async function renderRecipe() {
     }
 }
 function renderPreferences(element, prefArr) {
-    const preferencesNames = ['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free', 'Pescetarian', 'Keto', 'Low Carb', 'High Protein', 'Contains Shellfish', 'Contains Nuts', 'Contains Soy', 'Sugar Free'];
+    console.log('your prefString is ' + prefArr);
+    const preferencesNames = ['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free', 'Pescetarian', 'Keto', 'Low Carb', 'High Protein', 'No Shellfish', 'No Nuts', 'No Soy', 'Sugar Free'];
     // <span class="badge rounded-pill text-bg-primary">Dairy Free</span> <span class="badge rounded-pill text-bg-danger">Spice</span> <span class="badge rounded-pill text-bg-success">Vegan</span>
-    for (let i = 0; i < 7; i++) {
-        const span = document.createElement('span');
-        span.classList.add('badge');
-        span.classList.add('rounded-pill');
-        span.classList.add('text-bg-primary');
-        span.innerText = preferencesNames[i];
-        element.appendChild(span);
+    for (let i = 0; i < 12; i++) {
+        if (parseInt(prefArr[i])) {
+            const span = document.createElement('span');
+            span.classList.add('badge');
+            span.classList.add('rounded-pill');
+            span.classList.add('text-bg-primary');
+            span.innerText = preferencesNames[i];
+            element.appendChild(span); 
+        }
     }
-}
-function renderRatings(element, rating) {
-    //<i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i
-    //class="bi bi-heart-fill"></i><i class="bi bi-heart-half"></i><br>
-    const fullHearts = Math.floor(rating);
-    for (let i = 0; i < fullHearts; i++) {
-        const heart = document.createElement('i');
-        heart.classList.add('bi');
-        heart.classList.add('bi-heart-fill');
-        element.appendChild(heart);
-    }
-    // const halfHearts = (rating - fullHearts) / 0.5;
-    // console.log('half hearts is ' + halfHearts);
 }
 
 // NAVIGATION
@@ -92,4 +65,19 @@ choice.addEventListener('click', async () => {
     }
     console.log('Completed!', response);
 });
+
+// EVENT LISTENERS
+const nextBtn = document.getElementById('next');
+const noBtn = document.getElementById('no');
+const yesBtn = document.getElementById('yes');
+nextBtn.addEventListener('click', renderRecipe);
+noBtn.addEventListener('click', renderRecipe);
+yesBtn.addEventListener('click', () => {
+    // DO LATER get curRecipe somehow
+    const request = new Request(fixURL(window.location.href) + '/recipe/like/new/sender=' + USERNAME + '&recipeID=' + curRecipe, {method: 'POST'});
+    const response = (async () => {
+        return await fetch(request);
+    })();
+});
+
 window.onload = renderRecipe;

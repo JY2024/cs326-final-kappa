@@ -100,6 +100,12 @@ app.get('/profile-settings-security.html', (req, res) => {
 });
 // [1] User Functions
 app.get('/user/new', [createUserErrorHandler, createUser]);
+app.get('/user/read', [readUserErrorHandler, readUser]);
+app.post('/user/update/:name', [updateNameErrorHandler, updateName]);
+app.post('/user/update/:location', updateLocation);
+app.post('/user/update/:preferences', updatePreferences);
+app.post('/user/update/:description', updateDescription);
+app.post('/user/update/:recipe_hide', updateHideRecipe);
 // app.get('/user/new', (req, res) => {        res.send(createUser(req, res)); });
 app.get('/user/delete', (req, res) => {     res.send(deleteUser(req, res)); });
 
@@ -179,7 +185,7 @@ function createUserErrorHandler(req, res, next) {
 // read user info, NOTE: TEST AND THEN FIX THE ROUTES AT THE TOP TO INCLUDE ERROR HANDLERS
 function readUser(req, res) {
     // ex. /user/read?username=Jay1024
-    res.send(getUserInfo(req.query.username));
+    res.send(db.getUserInfo(req.query.username));
     res.end();
 }
 function readUserErrorHandler(req, res, next) {
@@ -202,6 +208,25 @@ function readSavedRecipes(req, res){
     return db.getSavedRecipes(req.query.username);
 }
 // update user info
+function updateName(req, res) {
+    db.updateName(req.body.name, req.body.username);
+    res.end();
+}
+function updateNameErrorHandler(req, res) {
+    if (req.body.name.length === 0) {
+        sendError(res, 'name-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
+    } else {
+        next();
+    }
+}
+function updateLocation(req, res) {
+    db.updateLocation(req.query.location, req.query.username);
+    res.end();
+}
+function updatePreferences(req, res) {
+    db.updatePreferences(req.body, req.query.username);
+    res.end();
+}
 function updateProfilePicture(req, res) {
     // ex. /user/update?username=Jay1024
     // req.body contains {img: some image information}
@@ -214,12 +239,6 @@ function updateProfilePictureErrorHandler(req, res, next) {
     // ADD: error handling for images (size constraints?)
     next();
 }
-function updateLocation(req, res) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {location: string}
-    updateLocationObj(req.body.location);
-    res.end();
-}
 function updateLocationErrorHandler(req, res, next) {
     // ex. /user/update?username=Jay1024
     // req.body contains {location: string}
@@ -228,12 +247,6 @@ function updateLocationErrorHandler(req, res, next) {
     } else {
         next();
     }
-}
-function updatePreferences(req, res) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {preference1: something, preference2: something}
-    updatePreferencesObj(req.body);
-    res.end();
 }
 function updatePreferencesErrorHandler(req, res, next) {
     // ex. /user/update?username=Jay1024
@@ -248,7 +261,7 @@ function updatePreferencesErrorHandler(req, res, next) {
 function updateDescription(req, res) {
     // ex. /user/update?username=Jay1024
     // req.body contains {description: string}
-    updateDescriptionObj(req.body.description);
+    updateDescriptionObj(req.query.description);
     res.end();
 }
 function updateDescriptionErrorHandler(req, res, next) {
@@ -260,6 +273,10 @@ function updateDescriptionErrorHandler(req, res, next) {
     } else {
         next();
     }
+}
+function updateHideRecipe(req, res) {
+    db.updateHideRecipe(req.query.recipe_hide, req.query.username);
+    res.end();
 }
 // delete user object
 function deleteUser(req, res){
@@ -286,11 +303,14 @@ function createRecipeErrorHandler(req, res, next) {
     }
 }
 
-function readRecipe(req, res) {
-    console.log('entered readRecipe');
-    // ex. /recipe/read?recipeID=1234
-    console.log('req query recipe id is ' + req.query.recipeID);
-    res.send(db.getRecipeInfo(req.query.recipeID));
+async function readRecipe(req, res) {
+    if (parseInt(req.query.recipeID) === 0) {
+        res.send(db.getRandomRecipe(req.query.username));
+    } else {
+        const result = await db.getRecipeInfo(req.query.recipeID);
+        res.send(result);
+    }
+    console.log('you made it to res.end');
     res.end();
 }
 
@@ -390,3 +410,10 @@ function deleteCommentErrorHandling(req, res, next) {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`); // for debugging
 });
+
+// THIS IS JUST JAY'S TESTING STUFF
+app.get('/test', getTestData);
+function getTestData(req, res) {
+    console.log('you made it to server.js getTestData');
+    res.send(db.getTestData());
+}
