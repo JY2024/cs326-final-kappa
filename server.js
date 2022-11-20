@@ -239,12 +239,6 @@ function updateProfilePictureErrorHandler(req, res, next) {
     // ADD: error handling for images (size constraints?)
     next();
 }
-function updateLocation(req, res) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {location: string}
-    updateLocationObj(req.body.location);
-    res.end();
-}
 function updateLocationErrorHandler(req, res, next) {
     // ex. /user/update?username=Jay1024
     // req.body contains {location: string}
@@ -253,12 +247,6 @@ function updateLocationErrorHandler(req, res, next) {
     } else {
         next();
     }
-}
-function updatePreferences(req, res) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {preference1: something, preference2: something}
-    updatePreferencesObj(req.body);
-    res.end();
 }
 function updatePreferencesErrorHandler(req, res, next) {
     // ex. /user/update?username=Jay1024
@@ -315,12 +303,14 @@ function createRecipeErrorHandler(req, res, next) {
     }
 }
 
-function readRecipe(req, res) {
-    if (req.query.recipeID === 0) {
+async function readRecipe(req, res) {
+    if (parseInt(req.query.recipeID) === 0) {
         res.send(db.getRandomRecipe(req.query.username));
     } else {
-        res.send(db.getRecipeInfo(req.query.recipeID));
+        const result = await db.getRecipeInfo(req.query.recipeID);
+        res.send(result);
     }
+    console.log('you made it to res.end');
     res.end();
 }
 
@@ -420,3 +410,10 @@ function deleteCommentErrorHandling(req, res, next) {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`); // for debugging
 });
+
+// THIS IS JUST JAY'S TESTING STUFF
+app.get('/test', getTestData);
+function getTestData(req, res) {
+    console.log('you made it to server.js getTestData');
+    res.send(db.getTestData());
+}

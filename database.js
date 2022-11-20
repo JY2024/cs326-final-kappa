@@ -1,3 +1,4 @@
+/*
 const { Client } = require('pg');
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
@@ -5,8 +6,22 @@ const client = new Client({
       rejectUnauthorized: false
     }
   });
-  
-  client.connect();
+client.connect();*/
+
+import pg from 'pg';
+const {Client} = pg;
+
+const client = new Client({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'postgres',
+  password: '',
+  port: 5432,
+})
+client.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 
 //EXAMPLE QUERY SHOWN BELOW:
 
@@ -119,13 +134,6 @@ export async function updateDescription(username, desc) {
     return JSON.stringify({status: "SUCCESS", username: username});
 }
 
-export async function updateLocation(username, loc) {
-    const res = await client.query(
-        "UPDATE users SET location=$1 WHERE users.username=$2", [loc, username]
-    );
-    return JSON.stringify({status: "SUCCESS", username: username});
-}
-
 export async function updateProfilePicture(username, blob) {
     const res = await client.query(
         "UPDATE users SET profile_pic=$1 WHERE users.username=$2", [blob, username]
@@ -171,6 +179,7 @@ export async function deleteUserObj(username) {
 
 // [2] Recipe Functions
 export async function getRandomRecipe(username) {
+    console.log('you are in getRandomRecipe');
     const recipes = JSON.parse(getOtherRecipes(username));
     return JSON.stringify(recipes[Math.floor(Math.random() * recipes.length)]);
 }
@@ -180,12 +189,29 @@ export function createRecipeObj(title, author, ingredients, instructions) {
 export function existsRecipe(title, author) {
     return false;
 }
-export function getRecipeInfo(recipeID) {
-    return JSON.stringify({recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "pizza.jpg",
-    ingredients: [{"Dough": "3 pounds"}, {"Sauce": "2 gallons"}, {"Cheese" : "3 cups"}], recipeID: 197,
-    instructions: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0],
-    time: "approx 90 minutes", likes:2, rating: 3.5, "ingredients_notes":"Feel free to experiment with toppings!",
-    tips_and_notes: "I love pizza, and I bet you do too! Come check out my profile for more pizza recipes! I'd love to hear about your spin on my recipe!"});
+export async function getRecipeInfo(recipeID) {
+    console.log('you reached getRecipeInfo and recipeID is ' + recipeID);
+    // const res = await client.query(
+    //     "CREATE TABLE test_recipes (recipe_id int, recipe_name varchar(50), author varchar(15), recipe_picture varchar(128), instructions varchar(500), ingredients varchar(500), preferences varchar(12), prep_time int, tips_and_notes varchar(500));"
+    // );
+    // console.log('you made ur test table');
+    // const res = await client.query(
+    //     "INSERT INTO test_recipes (recipe_id, recipe_name, author, recipe_picture, instructions, ingredients, preferences, prep_time, tips_and_notes) VALUES (1, 'delicious pizza', 'ilovecs326', 'this is a picture of a pizza', 'go make the pizza', 'dough, sauce', '000010001010', 3, 'save a slice for a friend');"
+    // );
+    // console.log('you inserted into ur test table');
+    const res = await client.query(
+        "SELECT * FROM test_recipes WHERE recipe_id=1;"
+    );
+    // console.log('you selected from the table and rows is ');
+    // for (const row of res.rows) {
+    //     console.log(row);
+    // } 
+    console.log('res.rows[0] is ' + res.rows[0]);
+    return JSON.stringify(res.rows[0]);
+    // ingredients: [{"Dough": "3 pounds"}, {"Sauce": "2 gallons"}, {"Cheese" : "3 cups"}], recipeID: 197,
+    // instructions: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0],
+    // time: "approx 90 minutes", likes:2, rating: 3.5, "ingredients_notes":"Feel free to experiment with toppings!",
+    // tips_and_notes: "I love pizza, and I bet you do too! Come check out my profile for more pizza recipes! I'd love to hear about your spin on my recipe!"});
 }
 export function deleteRecipeObj(recipeID, username) {
     return {Status: "SUCCESS", recipeID: recipeID};
@@ -271,4 +297,13 @@ export function getMessages(sender, reciever){
     return JSON.stringify([{sender: 'test', reciever: "Jay", text: "Hey! I had a couple questions regarding your recipe.", time:"11:01"}, 
     {sender: 'Jay', reciever: "test", text: "I'd be happy to help!", time:"11:02"}, 
     {sender: 'test', reciever: "Jay", text: "Are there any substitues we could use for dairy?", time:"11:05"}]);
+}
+
+// THIS IS JUST JAY'S TESTING STUFF
+export async function getTestData() {
+    console.log('you made it to database.js getTestData');
+    const res = await client.query(
+        "SELECT * FROM test_table"
+    );
+    return JSON.stringify(res.rows);
 }
