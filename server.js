@@ -109,13 +109,13 @@ app.post('/recipe/new', [createRecipeErrorHandler, createRecipe]);
 app.get('/recipe/delete', (req, res) => {   res.send(deleteRecipe(req, res));   });
 app.get('/recipe/read', [readRecipeErrorHandler, readRecipe]);
 // app.get('/recipe/read', (req, res) => {   res.send(readRecipe(req, res));   });
-app.get('/recipe/list/my', (req, res) => {     res.send(readMyRecipes(req, res));     });
-app.get('/recipe/list/saved', (req, res) => {     res.send(readSavedRecipes(req, res));     });
+app.get('/recipe/list/my', async (req, res) => {res.send(await readMyRecipes(req, res));});
+app.get('/recipe/list/saved', async (req, res) => {res.send(await readSavedRecipes(req, res));     });
 app.get('/recipe/detail', (req, res) => {    res.send(readRecipe(req, res));    });
 
 // [3] Like Functions
-app.get('/recipe/like/new', (req, res) =>       {res.send(createLike(req, res));   });
-app.get('/recipe/like/delete', (req, res) =>    {res.send(deleteLike(req, res));    });
+app.post('/recipe/like/new', async (req, res) =>       {res.send(await createLike(req, res));   });
+app.post('/recipe/like/delete', async (req, res) =>    {res.send(await deleteLike(req, res));    });
 
 // [4] Comment Functions
 app.post('/recipe/comment/new', (req, res) =>    {res.send(createComment(req, res));    });
@@ -191,15 +191,16 @@ function readUserErrorHandler(req, res, next) {
         next();
     }
 }
-function readMyRecipes(req, res){
+async function readMyRecipes(req, res){
     // ex. /recipe/list/my?username=jay1024
 
-    return db.getMyRecipes(req.query.username);
+    return await db.getMyRecipes(req.query.username);
 }
 
-function readSavedRecipes(req, res){
+
+async function readSavedRecipes(req, res){
     // ex. /recipe/list/saved?username=jay1024
-    return db.getSavedRecipes(req.query.username);
+    return await db.getSavedRecipes(req.query.username);
 }
 // update user info
 function updateProfilePicture(req, res) {
@@ -268,11 +269,11 @@ function deleteUser(req, res){
 }
 
     // RECIPE, NOTE: NEED ERROR HANDLERS, MAYBE UPDATE FUNCTIONALITY
-function createRecipe(req, res){
+async function createRecipe(req, res){
     // ex. /recipe/new
     // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
     // JSON status returned
-    res.send(db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions));
+    res.send(await db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions, req.body.preferences, req.body.time));
     res.end();
 }
 
@@ -311,14 +312,16 @@ function deleteRecipe(req, res){
 }
 
     // LIKE
-function createLike(req, res){
+async function createLike(req, res){
     // ex. /recipe/like/new?sender=jay1024&recipeID=1234
-    return db.createLikeObj(req.query.sender, req.query.recipeID);
+    res.send(await db.createLikeObj(req.body.username, req.body.recipe_id));
+    res.end();
 }
 
-function deleteLike(req, res){
+async function deleteLike(req, res){
     // ex. /recipe/like/delete?sender=jay1024&recipeID=1234
-    return db.deleteLikeObj(req.query.sender, req.query.recipeID);
+    res.send(await db.deleteLikeObj(req.body.username, req.body.recipe_id));
+    res.end();
 }
 
     // COMMENTS

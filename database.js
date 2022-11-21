@@ -1,3 +1,4 @@
+/*Lines 1-9 were from Daksh for Heroku
 const { Client } = require('pg');
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
@@ -5,8 +6,26 @@ const client = new Client({
       rejectUnauthorized: false
     }
   });
-  
-  client.connect();
+client.connect();*/
+
+
+//Lines 13-26 are from Bella for local postgres
+import pg from 'pg';
+const {Client} = pg;
+
+const client = new Client({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'postgres',
+  password: 'Nintendo64!',
+  port: 5432,
+})
+client.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+
+import * as SQL from './querybuilder.js';
 
 //EXAMPLE QUERY SHOWN BELOW:
 
@@ -18,14 +37,19 @@ const client = new Client({
 //   client.end();
 // });
 
+//JAY EXAMPLE:
+//const res = await client.query(
+//    "INSERT INTO users (username, profile_pic, display_name, location, preferences, description) VALUES ($1, $2, $3, $4, $5, $6)", [username, 'default profile pic', displayName, '', new Array(12).fill(0), '']
+//    );
+
 // DataBase Functions, NOTE: Still returns dummy data
 // Authorization
 export function authUserObj(req) {
-    if (req.query.email !== 'test' || req.query.password !== "test") {
-        console.log("in here");
-        return {Status: 'ERROR'}
+    if (req.query.email === req.query.password) {
+        
+        return {Status: 'SUCCESS'}
     }
-    return {Status: 'SUCCESS'}
+    return {Status: 'ERROR'}
 }
 
 // [1] User Functions
@@ -37,21 +61,14 @@ export function getUserInfo(username) {
     return JSON.stringify({username: "Jay1024", display_name: "Jay", profile_picture: "filename.jpeg", location: "Amherst", preferences: [1,0,0,0,0,0,0], description: "I like to eat food"});
 }
 
-export function getSavedRecipes(username) {
-    //This will get full list of recipes liked by the user
-    return [{recipeID: 1999, recipe_name: "Fries", author: "Arnold123", img:"feed-food1.jpg"}, 
-    {recipeID: 1998, recipe_name: "Stew", author: "jared", img:"feed-food2.jpg"}, 
-    {recipeID: 9197, recipe_name: "Fried Rice", author: "Samantha", img:"feed-food3.jpg"},
-    {recipeID: 1996, recipe_name: "Fries", author: "Jessica",  img:"food1.jpeg"}];
+export async function getSavedRecipes(username) {
+    let res = await client.query(SQL.sqlSavedRecipes(), [username]);
+    return JSON.stringify(res.rows);
 }
 
-export function getMyRecipes(username) {
-    //This will get full list of recipes owned by the user
-    return [{recipeID: 999, recipe_name: "Pasta",likes:5,comments:2, img:"profile-page-food1.jfif"}, 
-            {recipeID: 998, recipe_name: "Chicken",likes:3,comments:1, img:"profile-page-food2.jfif"}, 
-            {recipeID: 997, recipe_name: "Soup",likes:2,comments:0, img:"profile-page-food3.jfif"},
-            {recipeID: 996, recipe_name: "Sandwich",likes:0,comments:6,  img:"profile-page-food4.jfif"},
-            {recipeID: 995, recipe_name: "Rice Bowl",likes:11,comments:3, img:"profile-page-food5.jfif"}];
+export async function getMyRecipes(username) {
+    let res = await client.query(SQL.sqlMyRecipes(), [username]);
+    return JSON.stringify(res.rows);
 }
 
 export function getOtherRecipes(username) {
@@ -81,15 +98,28 @@ export function deleteUserObj(username) {
 }
 
 // [2] Recipe Functions
-export function createRecipeObj(title, author, ingredients, instructions) {
-    return {status: 'SUCCESS', recipe_name: 'MyPiza', recipeId: 1987};
+export async function createRecipeObj(title, author, ingredients, instructions, preferences, time) {
+    try{
+        await client.query(SQL.sqlCreateRecipe(),[title,author,ingredients,instructions,preferences,time]);
+    }
+    catch(err){
+        console.log(err.stack);
+        return {status: "ERROR"};
+    }
+    return {status: 'SUCCESS'};
 }
+
+/*export async function getMyRecipes(username) {
+    let res = await client.query(SQL.sqlMyRecipes(), [username]);
+    return JSON.stringify(res.rows);
+}*/
+
 export function existsRecipe(title, author) {
     return false;
 }
 export function getRecipeInfo(recipeID) {
     return JSON.stringify({recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "pizza.jpg",
-    ingredients: [{"Dough": "3 pounds"}, {"Sauce": "2 gallons"}, {"Cheese" : "3 cups"}], recipeID: 197,
+    ingredients: '{"Dough": "3 pounds"}, {"Sauce": "2 gallons"}, {"Cheese" : "3 cups"}', recipeID: 197,
     instructions: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0],
     time: "approx 90 minutes", likes:2, rating: 3.5, "ingredients_notes":"Feel free to experiment with toppings!",
     tips_and_notes: "I love pizza, and I bet you do too! Come check out my profile for more pizza recipes! I'd love to hear about your spin on my recipe!"});
@@ -104,12 +134,27 @@ export function updateCurrentRecipe(recipeID){
 
 
 // [3] Like Functions
-export function createLikeObj(sender, recipeID) {
+export async function createLikeObj(sender, recipe_id) {
     //if user has already liked this recipe, they cannot like it again, return error.
-    return {Status: 'SUCCESS', recipeID: recipeID, likeCount:1}
+    try{
+        await client.query(SQL.sqlCreateLike(),[sender,recipe_id]);
+    }
+    catch(err){
+        console.log(err.stack);
+        return {status: "ERROR"};
+    }
+    return {status: 'SUCCESS'};
 }
-export function deleteLikeObj(sender, recipeID) {
-    return {Status: 'SUCCESS', recipeID: recipeID, likeCount:0}
+
+export async function deleteLikeObj(sender, recipe_id) {
+    try{
+        await client.query(SQL.sqlDeleteLike(),[sender,recipe_id]);
+    }
+    catch(err){
+        console.log(err.stack);
+        return {status: "ERROR"};
+    }
+    return {status: 'SUCCESS'};
 }
 
 // [4] Comment Functions

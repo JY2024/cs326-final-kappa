@@ -1,0 +1,68 @@
+<html>
+<head>
+</head>
+<body>
+   <form id="form" method="post">
+       <input type="text", id="recipeName" placeholder="Recipe Name" value="Pizza"/></br>
+       <input type="text", id="author" placeholder="Author" value="Bella"/></br>
+       <textarea type="text", id="ingredients" rows="3" cols="100" placeholder="Ingredients">Dough, Tomato Sauce, Cheese</textarea></br>
+       <textarea type="text", id="instructions" rows="3" cols="100" placeholder="Instructions">Make base, spread sauce, sprinkle cheese</textarea></br>
+       <button type = "button" id = "profile" style="float: center;"> Profile Page!</button>
+       <input type="submit" id="post-json" value="POST JSON"/></br>
+    </form>
+    <div>
+    <h3>The Following data is successfuly posted</h3>
+    <h4 id="recipeName"></h4>
+    <h5 id="author"></h5>
+    <h6 id="ingredients"></h6>
+    <h7 id="instructions"></h7>
+    </div>
+</body>
+<script>
+    const check=document.getElementById('form');
+
+    const temp=document.getElementById('profile');
+    temp.addEventListener('click', () =>{
+        console.log("here");
+
+        window.location = "/profile.html";
+    });
+    
+    check.addEventListener('submit', function(e){
+        console.log("IN HERE");
+        e.preventDefault()
+    
+        console.log(e)
+        var recipeName=document.getElementById('recipeName').value
+        var author=document.getElementById('author').value
+        var ingredients=document.getElementById('ingredients').value
+        var instructions=document.getElementById('instructions').value
+    
+        console.log(JSON.stringify({recipeName:recipeName, author:author, ingredients:ingredients, instructions:instructions}))
+    
+        fetch('https://test-326.herokuapp.com/recipe/new', { 
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                //"Content-type": "application/json; raw"
+            },
+            //body: {
+            //title: recipeName,
+            //author: author,
+            //ingredients: ingredients,
+            //instructions: instructions,
+            //},
+            body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions
+        }).then(function(response){return response.json();}).then(function (data) {
+                console.log('Request succeeded with JSON response', data);
+                title=document.getElementById("recipeName");
+                body.innerHTML = data.body;
+            }).catch((error) => {
+            console.log('Request failed', error);
+        });
+    
+    });
+    
+    </script>
+</html>
