@@ -223,23 +223,23 @@ async function updateName(req, res) {
 //     }
 // }
 async function updateLocation(req, res) {
-    const result = await db.updateLocation(req.query.location, req.query.username);
+    const result = await db.updateLocation(req.body.location, req.body.username);
     res.send(result);
     res.end();
 }
 async function updatePreferences(req, res) {
-    const result = await db.updatePreferences(req.body, req.query.username);
+    const result = await db.updatePreferences(req.body.preferences, req.body.username);
     res.send(result);
     res.end();
 }
-async function updateProfilePicture(req, res) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {img: some image information}
-    // ADD: update image functionality
-    const result = db.updateProfilePictureObj(req.params.username, req.params.path, req.body.blob);
-    res.send(result);
-    res.end();
-}
+// async function updateProfilePicture(req, res) {
+//     // ex. /user/update?username=Jay1024
+//     // req.body contains {img: some image information}
+//     // ADD: update image functionality
+//     const result = db.updateProfilePictureObj(req.params.username, req.params.path, req.body.blob);
+//     res.send(result);
+//     res.end();
+// }
 // async function updateProfilePictureErrorHandler(req, res, next) {
 //     // ex. /user/update?username=Jay1024
 //     // req.body contains {img: some image information}
@@ -268,7 +268,7 @@ async function updateProfilePicture(req, res) {
 async function updateDescription(req, res) {
     // ex. /user/update?username=Jay1024
     // req.body contains {description: string}
-    const result = await db.updateDescription(req.query.description);
+    const result = await db.updateDescription(req.body.description, req.body.username);
     res.send(result);
     res.end();
 }
@@ -283,14 +283,14 @@ async function updateDescription(req, res) {
 //     }
 // }
 async function updateHideRecipe(req, res) {
-    const result = await db.updateHideRecipe(req.query.recipe_hide, req.query.username);
+    const result = await db.updateHideRecipe(req.body.recipe_hide, req.body.username);
     res.send(result);
     res.end();
 }
 // delete user object
 async function deleteUser(req, res){
     // ex. /user/delete?username=jay1024
-    const result = await db.deleteUserObj(req.query.username);
+    const result = await db.deleteUserObj(req.body.username);
     res.send(result);
     res.end();
 }
@@ -355,7 +355,7 @@ function deleteLike(req, res){
     // COMMENTS
 async function createComment(req, res){
     // ex. /comment/new
-    const result = await db.createCommentObj(req.query.sender, req.query.recipeID, req.query.text);
+    const result = await db.createCommentObj(req.body.sender, req.body.recipeID, req.body.text);
     res.send(result);
     res.end();
 }
@@ -391,7 +391,7 @@ async function readComment(req, res) {
 async function updateComment(req, res) {
     // ex. /recipe/id/comment/update?comment_id=03948774
     // req.body contains new text
-    const result = await db.updateCommentObj(req.query.comment_id, req.query.text);
+    const result = await db.updateCommentObj(req.body.comment_id, req.body.text);
     res.send(result);
     res.end();
 }
@@ -409,7 +409,7 @@ async function updateComment(req, res) {
 // }
 async function deleteComment(req, res){
     // ex. /comment/delete?sender=jay1024&recipeID=1234
-    const result = await db.deleteCommentObj(req.query.commentID);
+    const result = await db.deleteCommentObj(req.body.commentID);
     res.send(result);
     res.end();
 }

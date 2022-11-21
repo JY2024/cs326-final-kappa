@@ -1,28 +1,25 @@
-/*
-const { Client } = require('pg');
+import { arrayOfObjectsToArray } from './webPages/jsFiles/utility.js';
+import pg from 'pg';
+const {Client} = pg;
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false
     }
   });
-client.connect();*/
+client.connect();
 
-import { arrayOfObjectsToArray } from './webPages/jsFiles/utility.js';
-import pg from 'pg';
-const {Client} = pg;
-
-const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: '',
-  port: 5432,
-})
-client.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+// const client = new Client({
+//   user: 'postgres',
+//   host: 'localhost',
+//   database: 'postgres',
+//   password: '',
+//   port: 5432,
+// })
+// client.connect(function(err) {
+//   if (err) throw err;
+//   console.log("Connected!");
+// });
 
 //EXAMPLE QUERY SHOWN BELOW:
 
@@ -34,7 +31,6 @@ client.connect(function(err) {
 //   client.end();
 // });
 
-// DataBase Functions, NOTE: Still returns dummy data
 // Authorization
 export function authUserObj(req) {
     if (req.query.email !== 'test' || req.query.password !== "test") {

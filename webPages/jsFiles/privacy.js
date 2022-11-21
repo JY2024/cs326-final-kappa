@@ -22,25 +22,47 @@ async function loadData() {
 }
 
 function saveChanges() {
-    const requests = [];
-    const arr = [display_name, description, recipes];
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i].checked) {
-            let query = '/user/update?';
-            switch(i) {
-                case 0: query += 'name=Anonymous'; break;
-                case 1: query += 'description=This user has chosen to hide their description.'; break;
-                case 3: query += 'recipe_hide=true'; break;
-            }
-            requests.push(new Request(fixURL(window.location.href) + query + '&username=' + USERNAME, {method: 'POST'}));
-        } else {
-            requests.push(-1);
-        }
+    // name
+    if (display_name.checked) {
+        fetch('/user/update', { 
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "name=Anonymous" + "&username=" + USERNAME
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
     }
-    for (const req of requests) {
-        (async () => {
-            return await fetch(req);
-        })();
+    // description
+    if (description.checked) {
+        fetch('/user/update', { 
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "description=This user has chosen to hide their description." + "&username=" + USERNAME
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
+    }
+    // recipe hiding
+    if (recipes.checked) {
+        fetch('/user/update', { 
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "recipe_hide=true" + "&username=" + USERNAME
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
     }
 }
 

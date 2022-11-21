@@ -27,23 +27,31 @@ function renderPic() {
 }
 
 function saveChanges() {
-    const requests = [];
-    const arr = [display_name, pic, desc];
-    for (let i = 0; i < arr.length; i++) {
-            let query = '/user/update?';
-            switch(i) {
-                case 0: query += 'name=' + display_name.value; break;
-                // case 1: query += 'pic='; break; DO LATER
-                case 3: query += 'description=' + desc.value; break;
-            }
-            requests.push(new Request(fixURL(window.location.href) + query + '&username=' + USERNAME, {method: 'POST'}));
-        
-    }
-    for (const req of requests) {
-        (async () => {
-            return await fetch(req);
-        })();
-    }
+    // display name
+    fetch('/user/update', { 
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: "name=" + display_name.value + "&username=" + USERNAME
+    })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
+
+    // description
+    fetch('/user/update', { 
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: "description=" + description.value + "&username=" + USERNAME
+    })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
 }
 
 personal.addEventListener('click', () =>{

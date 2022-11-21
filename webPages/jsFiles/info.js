@@ -31,26 +31,48 @@ function renderPreferences(preferences) {
 }
 
 function saveChanges() {
-    // name and location
-    const requests = [];
-    requests.push(new Request(fixURL(window.location.href) + '/user/update?name=' + display_name.value + '&username=' + USERNAME, {method: 'POST'}));
-    requests.push(new Request(fixURL(window.location.href) + '/user/update?location=' + location.value + '&username=' + USERNAME, {method: 'POST'}));
-    for (const req of requests) {
-        const res1 = (async () => {
-            return await fetch(req);
-        })();
-    }
+    // name
+    fetch('/user/update', { 
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: "name=" + display_name.value + "&username=" + USERNAME
+     })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
+
+    // location
+    fetch('/user/update', { 
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: "location=" + location.value + "&username=" + USERNAME
+     })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
     // preferences
-    const user_pref = [];
+    let user_pref = '';
     const prefs = Array.from(checkBoxes);
     for (const pref of prefs) {
-        user_pref.push(pref.checked ? 1 : 0);
+        user_pref += (pref.checked ? '1' : '0');
     }
-    const req3 = new Request(fixURL(window.location.href) + '/user/update/preferences?username=' + USERNAME, {method: 'POST'});
-    req3.body = user_pref;
-    (async () => {
-        return await fetch(req3);
-    })();
+    fetch('/user/update', { 
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: "preferences=" + user_pref + "&username=" + USERNAME
+     })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
 }
 
 // NAVIGATION

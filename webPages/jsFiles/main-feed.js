@@ -45,6 +45,23 @@ function renderPreferences(element, prefArr) {
     }
 }
 
+function addLikeByUser() {
+    fetch('/recipe/like/new', { 
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: "username=" + USERNAME + "&recipe_id=" + curRecipe
+     })
+    .then(function (data) {
+        alert("Recipe " + recipe_id + " successfully liked\n");
+    })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
+}
+
 // NAVIGATION
 const settings = document.getElementById('settings');
 const profile = document.getElementById('profile');
@@ -54,16 +71,6 @@ profile.addEventListener('click', () =>{
 settings.addEventListener('click', () =>{
     window.location = "/profile-settings-personal-info.html";
 });
-const choice = document.getElementById('yes');
-choice.addEventListener('click', async () => { 
-    console.log(fixURL(window.location.href) + '/recipe/view?recipeID=' + 1987);
-    const request = new Request(fixURL(window.location.href) + '/recipe/view?recipeID=' + 1987 , {method: 'POST'});
-    const response = await fetch(request);
-    if (response.ok){
-        window.location = "/recipe.html";
-    }
-    console.log('Completed!', response);
-});
 
 // EVENT LISTENERS
 const nextBtn = document.getElementById('next');
@@ -72,11 +79,8 @@ const yesBtn = document.getElementById('yes');
 nextBtn.addEventListener('click', renderRecipe);
 noBtn.addEventListener('click', renderRecipe);
 yesBtn.addEventListener('click', () => {
-    // DO LATER get curRecipe somehow
-    const request = new Request(fixURL(window.location.href) + '/recipe/like/new?sender=' + USERNAME + '&recipeID=' + curRecipe, {method: 'POST'});
-    const response = (async () => {
-        return await fetch(request);
-    })();
+    addLikeByUser();
+    window.location = "/recipe.html";
 });
 
 window.onload = renderRecipe;

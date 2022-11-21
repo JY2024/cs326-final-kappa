@@ -9,6 +9,7 @@ const feed = document.getElementById('feed');
 const username = document.getElementById('username');
 const pass = document.getElementById('password');
 const saveBtn = document.getElementById('save');
+const delBtn = document.getElementById('delete_user');
 
 async function loadData() {
     const request = new Request(fixURL(window.location.href) + '/user/read?username=' + USERNAME, {method: 'GET'});
@@ -21,21 +22,18 @@ async function loadData() {
 }
 
 function saveChanges() {
-    const requests = [];
-    const arr = [username, pass];
-    for (let i = 0; i < arr.length; i++) {
-            let query = '/user/update?';
-            switch(i) {
-                case 0: query += 'username=' + username.value; break;
-                case 1: query += 'password=' + pass.value; break;
-            }
-            requests.push(new Request(fixURL(window.location.href) + query + '&username=' + USERNAME, {method: 'POST'}));
-    }
-    for (const req of requests) {
-        (async () => {
-            return await fetch(req);
-        })();
-    }
+    // password
+    // fetch('/user/update', { 
+    //     mode: 'cors',
+    //     method: 'POST',
+    //     headers: {
+    //         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+    //     },
+    //     body: "description=" + description.value + "&username=" + USERNAME
+    // })
+    // .catch(function (error) {
+    //     console.log('Request failed', error);
+    // });
 }
 
 display.addEventListener('click', () =>{
@@ -55,5 +53,18 @@ feed.addEventListener('click', () =>{
 });
 
 saveBtn.addEventListener('click', saveChanges);
+delBtn.addEventListener('click', () => {
+    fetch('/user/delete', { 
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: "username=" + USERNAME
+    })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
+});
 
 window.onload = loadData;
