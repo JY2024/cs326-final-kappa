@@ -1,171 +1,309 @@
-import { createUserObj, createCommentObj, existsUser, existsRecipe, updateCommentObj, updateDescriptionObj, 
-    updateLocationObj, updateProfilePictureObj, existsComment, deleteUserObj, deleteCommentObj, getUserInfo, getCommentInfo} from './database.js';
-// Utility Functions
+//Require and import cannot be used together so esm is used to get database.js
+//npm install esm
+// const esm = require('esm')(module);
+// const db = esm('./database.js');
+// const cors = require('cors');
+import bodyParser from "body-parser";
+import express, { response } from 'express'
+import * as db from './database.js';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-// function parse(url) {
-//     const queryComponents = url.split('/')[2].split('?')[1].split('&');
-//     const queryObj = {};
-//     for (const str of queryComponents) {
-//         queryObj[str.split('=')[0]] = str.split('=')[1];
-//     }
-//     return queryObj;
-// }
-export function containsSpecialChar(str) {
-    return /[`!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?~]/.test();
-}
-export function containsNumber(str) {
-    return /\d/.test();
-}
-//returns error as json to client, ends the response afterwards
-//sendError(res: Response, errorMessage: string)
-export function sendError(res, errorMessage) {
-    res.json({error: errorMessage});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const app = express();
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+const port = process.env.PORT || 3000;
+
+//ROUTES, NOTE: TEST AND THEN ADD MORE ROUTES AS NEEDED
+// Linking pages together
+    // Home Page
+app.get('/', (req, res) => {
+    console.log('At home');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/index.html'));
+});
+    // Login
+app.get('/login?:query', (req, res) => {
+    console.log('user tried to login');
+    const ret = db.authUserObj(req); 
+    console.log("recieved status update ", ret.Status);
+    if(ret.Status === "ERROR"){
+        res.sendFile(path.join(__dirname, '/webPages/htmlFiles/incorrectLogin.html'));
+    }
+    else{
+        res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
+    }
+});
+//Recipe Page
+app.post('/recipe/view?:id', (req, res) => {
+    console.log('user tried to see recipe: ', req.query.recipeID);
+    db.updateCurrentRecipe(req.query.recipeID);
+    res.send(db.tempGetRecipeInfo(req.query.recipeID));
+    res.end();
+});
+app.get('/recipe.html', (req, res) => {
+    console.log('recipe check');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/recipe.html'));
+});
+//Chat Page
+app.get('/chat.html', (req, res) => {
+    console.log('new');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/chat.html'));
+});
+    // To Main Feed
+app.get('/main-feed.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
+});
+    // To Profile Page
+app.get('/profile.html', (req, res) => {
+    console.log('new');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile.html'));
+});
+    // For Images
+app.get('/images/:imageid', (req, res) => {
+    console.log(req.params.imageid);
+    res.sendFile(path.join(__dirname, '/webPages/images/', req.params.imageid));
+});
+    // For CSS
+app.get('/CSSFiles/:cssid', (req, res) => {
+    console.log(req.params.cssid);
+    res.sendFile(path.join(__dirname, '/webPages/CSSFiles/', req.params.cssid));
+});
+    // For JS Files
+app.get('/jsFiles/:jsid', (req, res) => {
+    console.log(req.params.jsid);
+    res.sendFile(path.join(__dirname, '/webPages/jsFiles/', req.params.jsid));
+});
+    // To Settings: Personal Info
+app.get('/profile-settings-personal-info.html', (req, res) => {
+    console.log('profile check');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-personal-info.html'));
+});
+    // To Settings: Profile Display
+app.get('/profile-settings-profile-display.html', (req, res) => {
+    console.log('display check');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-profile-display.html'));
+});
+    // To Settings: Privacy
+app.get('/profile-settings-privacy.html', (req, res) => {
+    console.log('privacy check');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-privacy.html'));
+});
+    // To Settings: Security
+app.get('/profile-settings-security.html', (req, res) => {
+    console.log('security check');
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-security.html'));
+});
+// [1] User Functions
+app.get('/user/new', createUser);
+app.get('/user/read', readUser);
+app.post('/user/update/:name', updateName);
+app.post('/user/update/:location', updateLocation);
+app.post('/user/update/:preferences', updatePreferences);
+app.post('/user/update/:description', updateDescription);
+app.post('/user/update/:recipe_hide', updateHideRecipe);
+app.get('/user/delete', deleteUser);
+
+// [2] Recipe Functions
+//app.post('/recipe/new', (req, res) => {     res.send(createRecipe(req, res));   });
+app.post('/recipe/new', createRecipe);
+app.get('/recipe/delete', (req, res) => {   res.send(deleteRecipe(req, res));   });
+app.get('/recipe/read', readRecipe);
+// app.get('/recipe/read', (req, res) => {   res.send(readRecipe(req, res));   });
+app.get('/recipe/list/my', async (req, res) => {res.send(await readMyRecipes(req, res));});
+app.get('/recipe/list/saved', async (req, res) => {res.send(await readSavedRecipes(req, res));     });
+app.get('/recipe/detail', (req, res) => {    res.send(readRecipe(req, res));    });
+app.get('/recipe/tempread', tempReadRecipe);
+
+// [3] Like Functions
+app.post('/recipe/like/new', async (req, res) =>       {res.send(await createLike(req, res));   });
+app.post('/recipe/like/delete', async (req, res) =>    {res.send(await deleteLike(req, res));    });
+
+
+// [4] Comment Functions
+app.post('/recipe/comment/new', createComment);
+app.get('/recipe/comment/delete', deleteComment);
+app.get('/comment/read?:id', (req,res) =>{
+    console.log("IN HERE FOR COMMENT", req.query.comment_id);
+    res.send(db.getCommentInfo(req.query.comment_id));
+});
+
+// [5] Chat Functions
+app.post('/chat/new?:id', async (req, res) => {
+    console.log('user ', req.query.sender, 'conversing with ', req.query.reciever);
+    const result = db.createChat(req.query.sender, req.query.reciever);
+    res.send(result);
+    res.end();
+});
+app.get('/chat/list?:id', async (req, res) => {
+    console.log('user ', req.query.user);
+    const result = await db.getChat(req.query.user);
+    res.send(result);
+    res.end();
+});
+
+
+// [6] Message Functions
+app.get('/message/view?:id', async (req, res) => {
+    console.log('user ', req.query.user);
+    const result = await db.getMessages('129478129');
+    res.send(result);
+    res.end();
+});
+
+// FUNCTIONS
+
+    // USER FUNCTIONS
+// create new user
+async function createUser(req, res) {
+    // ex. /user/new?username=jay1024&password=123&displayName=Jay
+    // if (req.query.username == undefined ||
+    //     req.query.password == undefined ||
+    //     req.query.displayName == undefined) {
+    //     return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
+    // }
+    const result = await db.createUserObj(req.query.username, req.query.password, req.query.displayName);
+    res.send(result);
     res.end();
 }
 
-// User
-export function createUser(req, res) {
-    // ex. /user/new?username=jay1024&password=123&displayName=Jay
-    createUserObj(req.params.username, req.params.password, req.params.displayName);
-    res.json({displayName: req.params.displayName});
-    res.end();
-}
-export function createUserErrorHandler(req, res, next) {
-    // On creation, user has username, password, and display name
-    // ex. /user/new?username=jay1024&password=123&displayName=Jay
-    const exists = existsUser(req.params.username);
-    if (req.params.username.length < 10 || req.params.username.length > 20) {
-        sendError(res, 'username-length');
-    } else if (req.params.password.length < 10) {
-        sendError(res, 'password-length');
-    } else if (!containsSpecialChar(req.params.password)) {
-        sendError(res ,'password-special-char');
-    } else if (!containsNumber(req.params.password)) {
-        sendError(res, 'password-num');
-    } else if (exists) {
-        sendError(res, 'exists-username');
-    } else {
-        next();
-    }
-}
-export function readUser(req, res) {
+
+// read user info, NOTE: TEST AND THEN FIX THE ROUTES AT THE TOP TO INCLUDE ERROR HANDLERS
+async function readUser(req, res) {
     // ex. /user/read?username=Jay1024
-    const info = getUserInfo(req.query.username);
-    res.json(info); // NOTE: it may not end up being in JSON format already; in that case, it needs to be converted
+    const result = await db.getUserInfo(req.query.username);
+    res.send(result);
     res.end();
 }
-export function readUserErrorHandler(req, res, next) {
-    // ex. /user/read?username=Jay1024
-    const exists = existsUser(req.params.username);
-    if (!exists) {
-        sendError(res, 'user-nonexistent');
-    } else {
-        next();
-    }
+
+
+async function readMyRecipes(req, res){
+    // ex. /recipe/list/my?username=jay1024
+
+    return await db.getMyRecipes(req.query.username);
 }
-// OTHER FUNCTIONS FOR UPDATE USER INFO
-export function updateProfilePicture(req, res) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {img: some image information}
-    // ADD: update image functionality
-    updateProfilePictureObj(req.params.username, req.params.path, req.body.blob);
+
+async function readSavedRecipes(req, res){
+    // ex. /recipe/list/saved?username=jay1024
+    return await db.getSavedRecipes(req.query.username);
 }
-export function updateProfilePictureErrorHandler(req, res, next) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {img: some image information}
-    // ADD: error handling for images (size constraints?)
-    next();
-}
-export function updateLocation(req, res) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {location: string}
-    updateLocationObj(req.body.location);
+// update user info
+async function updateName(req, res) {
+    const result = await db.updateName(req.body.name, req.body.username);
+    res.send(result);
     res.end();
 }
-export function updateLocationErrorHandler(req, res, next) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {location: string}
-    if (req.body.location.length === 0) {
-        sendError(res, 'location-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
-    } else {
-        next();
-    }
-}
-export function updatePreferences(req, res) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {preference1: something, preference2: something}
-    updatePreferencesObj(req.body);
+async function updateLocation(req, res) {
+    const result = await db.updateLocation(req.body.location, req.body.username);
+    res.send(result);
     res.end();
 }
-export function updatePreferencesErrorHandler(req, res, next) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {preference1: something, preference2: something}
-    const exists = existsUser(req.params.username);
-    if (!exists) {
-        sendError(res, 'user-nonexistent');
-    } else {
-        next();
-    }
+async function updatePreferences(req, res) {
+    const result = await db.updatePreferences(req.body.preferences, req.body.username);
+    res.send(result);
+    res.end();
 }
-export function updateDescription(req, res) {
+
+async function updateDescription(req, res) {
     // ex. /user/update?username=Jay1024
     // req.body contains {description: string}
-    updateDescriptionObj(req.body.description);
+    const result = await db.updateDescription(req.body.description, req.body.username);
+    res.send(result);
     res.end();
 }
-export function updateDescriptionErrorHandler(req, res, next) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {description: string}
-    if (req.body.description.length === 0) {
-        sendError(res, 'description-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
+
+async function updateHideRecipe(req, res) {
+    const result = await db.updateHideRecipe(req.body.recipe_hide, req.body.username);
+    res.send(result);
+    res.end();
+}
+
+
+// delete user object
+async function deleteUser(req, res){
+    // ex. /user/delete?username=jay1024
+    const result = await db.deleteUserObj(req.body.username);
+    res.send(result);
+    res.end();
+}
+
+    // RECIPE, NOTE: NEED ERROR HANDLERS, MAYBE UPDATE FUNCTIONALITY
+function createRecipe(req, res){
+    // ex. /recipe/new
+    // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
+    // JSON status returned
+    res.send(db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions));
+    res.end();
+}
+async function readRecipe(req, res) {
+    if (parseInt(req.query.recipeID) === 0) {
+        res.send(db.getRandomRecipe(req.query.username));
     } else {
+        const result = await db.getRecipeInfo(req.query.recipeID);
+        res.send(result);
+    }
+    console.log('you made it to res.end');
+    res.end();
+}
+
+function readRecipeErrorHandler(req, res, next) {
+    if (false) {
+        console.log('entered recipe error handler');
+        // sendError(res, 'description-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
+        res.send(JSON.stringify({ result : 'error'}));
+    } else {
+        console.log('entered other part');
         next();
     }
 }
 
-export function deleteUser(req, res) {
-    // ex. /user/delete?username=Jay1024
-    deleteUserObj(req.params.username);
-    res.redirect('./homepage.html'); // NOTE: or whatever we end up calling it
+function tempReadRecipe(req, res) {
+    console.log('entered readRecipe');
+    // ex. /recipe/read?recipeID=1234
+    console.log('req query recipe id is ' + req.query.recipeID);
+    res.send(db.tempGetRecipeInfo(req.query.recipeID));
     res.end();
-}
-export function deleteUserErrorHandler(req, res, next) {
-    // ex. /user/delete?username=Jay1024
-    const exists = existsUser(req.params.username);
-    if (!exists) {
-        sendError(res, 'user-nonexistent');
-    } else {
-        next();
-    }
 }
 
-// Comments
-export function createComment(req, res) {
-    // ex. /recipe/id/comment/new?sender=Jay1024&recipe=Bella12-38463 ... req.body contains the text
-    createCommentObj(req.params.sender, req.params.recipe.split('-')[0], req.params.recipe.split('-')[1], req.body.text);
+function deleteRecipe(req, res){
+    // ex. /recipe/delete?recipeID=1234&username=jay1024
+    return db.deleteRecipeObj(req.query.recipeID, req.query.username);
+}
+
+    // LIKE
+async function createLike(req, res){
+    // ex. /recipe/like/new?sender=jay1024&recipeID=1234
+    res.send(await db.createLikeObj(req.body.username, req.body.recipe_id));
+    res.end();
+    }
+
+async function deleteLike(req, res){
+    // ex. /recipe/like/delete?sender=jay1024&recipeID=1234
+    res.send(await db.deleteLikeObj(req.body.username, req.body.recipe_id));
     res.end();
 }
-export function createCommentErrorHandler(req, res, next) {
-    // Comment has user who created it, recipe linked to comment, comment text
-    // ex. /recipe/id/comment/new?sender=Jay1024&recipe=Bella12-38463 ... req.body contains the text
-    // This is assuming that the other user allows comments
-    const recipeComponents = req.params.recipe.split('-');
-    const exists = existsRecipe(recipeComponents[0], recipeComponents[1]);
-    if (!exists) {
-        sendError(res, 'recipe-nonexistent');
-    } else if (req.body.text.length === 0) {
-        sendError(res, 'comment-length');
-    } else {
-        next();
-    }
+
+    // COMMENTS
+async function createComment(req, res){
+    // ex. /comment/new
+    const result = await db.createCommentObj(req.body.sender, req.body.recipeID, req.body.text);
+    res.send(result);
+    res.end();
 }
-export function readComment(req, res) {
+
+
+async function readComment(req, res) {
     // ex. /recipe/id/comment/read?comment_id=03948774
-    const info = getCommentInfo(req.query.comment_id);
-    res.json(info); // NOTE: Might not end up being JSON
+    const result = await db.getCommentInfo(req.query.comment_id);
+    res.send(result);
     res.end();
 }
-export function readCommentErrorHandler(req, res, next) {
+
+function readCommentErrorHandler(req, res, next) {
     // ex. /recipe/id/comment/read?comment_id=03948774
     const exists = existsComment(req.query.comment_id);
     if (!exists) {
@@ -174,13 +312,15 @@ export function readCommentErrorHandler(req, res, next) {
         next();
     }
 }
-export function updateComment(req, res) {
+async function updateComment(req, res) {
     // ex. /recipe/id/comment/update?comment_id=03948774
     // req.body contains new text
-    updateCommentObj(req.params.comment_id, req.body.text);
+    const result = await db.updateCommentObj(req.body.comment_id, req.body.text);
+    res.send(result);
     res.end();
 }
-export function updateCommentErrorHandler(req, res, next) {
+
+function updateCommentErrorHandler(req, res, next) {
     // ex. /recipe/id/comment/update?comment_id=03948774
     // req.body contains new text
     const exists = existsComment(comment_id);
@@ -192,14 +332,13 @@ export function updateCommentErrorHandler(req, res, next) {
         next();
     }
 }
-export function deleteComment(req, res) {
-    // ex. /recipe/id/comment/delete?comment_id=03948774
-    const recipeInfo = readComment(req.params.comment_id);
-    deleteCommentObj(req.params.comment_id);
-    // ADD: update the page to reflect the changes (the same page but without the deleted comment) -- maybe serve the page again?
+async function deleteComment(req, res){
+    // ex. /comment/delete?sender=jay1024&recipeID=1234
+    const result = await db.deleteCommentObj(req.body.commentID);
+    res.send(result);
     res.end();
 }
-export function deleteCommentErrorHandling(req, res, next) {
+function deleteCommentErrorHandling(req, res, next) {
     // ex. /recipe/id/comment/delete?comment_id=03948774
     const exists = existsComment(req.params.comment_id);
     if (!exists) {
@@ -208,3 +347,7 @@ export function deleteCommentErrorHandling(req, res, next) {
         next();
     }
 }
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`); // for debugging
+});
