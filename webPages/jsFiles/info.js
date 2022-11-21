@@ -1,4 +1,4 @@
-import { fixURL } from "./utility";
+import { fixURL } from "./utility.js";
 const USERNAME = 'Jay'; // DO LATER
 
 const display = document.getElementById('display');
@@ -24,7 +24,7 @@ async function loadData() {
 function renderPreferences(preferences) {
     const prefArr = Array.from(checkBoxes);
     for (let i = 0; i < preferences.length; i++) {
-        if (preferences[i]) {
+        if (parseInt(preferences[i])) {
             prefArr[i].checked = true;
         }
     }

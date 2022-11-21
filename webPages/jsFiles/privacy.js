@@ -1,4 +1,4 @@
-import { fixURL } from "./utility";
+import { fixURL } from "./utility.js";
 
 const display = document.getElementById('display');
 const security = document.getElementById('security');

@@ -1,4 +1,4 @@
-import { fixURL } from "./utility";
+import { fixURL } from "./utility.js";
 const USERNAME = 'Jay'; // DO LATER
 
 const personal = document.getElementById('personal');

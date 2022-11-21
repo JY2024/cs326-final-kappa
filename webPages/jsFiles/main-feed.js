@@ -31,7 +31,6 @@ async function renderRecipe() {
     }
 }
 function renderPreferences(element, prefArr) {
-    console.log('your prefString is ' + prefArr);
     const preferencesNames = ['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free', 'Pescetarian', 'Keto', 'Low Carb', 'High Protein', 'No Shellfish', 'No Nuts', 'No Soy', 'Sugar Free'];
     // <span class="badge rounded-pill text-bg-primary">Dairy Free</span> <span class="badge rounded-pill text-bg-danger">Spice</span> <span class="badge rounded-pill text-bg-success">Vegan</span>
     for (let i = 0; i < 12; i++) {
@@ -74,7 +73,7 @@ nextBtn.addEventListener('click', renderRecipe);
 noBtn.addEventListener('click', renderRecipe);
 yesBtn.addEventListener('click', () => {
     // DO LATER get curRecipe somehow
-    const request = new Request(fixURL(window.location.href) + '/recipe/like/new/sender=' + USERNAME + '&recipeID=' + curRecipe, {method: 'POST'});
+    const request = new Request(fixURL(window.location.href) + '/recipe/like/new?sender=' + USERNAME + '&recipeID=' + curRecipe, {method: 'POST'});
     const response = (async () => {
         return await fetch(request);
     })();

@@ -1,4 +1,4 @@
-import { fixURL } from "./utility";
+import { fixURL } from "./utility.js";
 const USERNAME = 'Jay'; // DO LATER
 
 const display = document.getElementById('display');
@@ -16,7 +16,7 @@ async function loadData() {
     if (response.ok) {
         const json = await response.json();
         username.setAttribute('placeholder', json.username);
-        pass.setAttribute('placeholder', json.password); // BUT THERE IS NO PASSWORD FIELD?
+        pass.setAttribute('placeholder', 'ENTER NEW PASSWORD'); // BUT THERE IS NO PASSWORD FIELD?
     }
 }
 
