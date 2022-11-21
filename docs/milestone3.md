@@ -2,7 +2,7 @@
 
 ## Link
 
-NOTE: When our code was merged we had errors with our website functions. Please note the screenshots folder in milestone 3 branch to see our function before merging files.
+NOTE: When we tried to merge our code and deploy on Heroku, we had errors with our website functions. Please note the screenshots-milestone3 folder within the docs folder in milestone 3 branch to see our functioning pages before trying to deploy.
 
 Link to the website on Heroku: https://test-326.herokuapp.com
 
@@ -10,7 +10,7 @@ The login username is test, the password is test.
 
 Note: When you click the green button, it takes you to the recipe page.
 
-## Breakdon of Labor
+## Breakdown of Labor
 Planning of Database Layout: Everyone
 
 Database Implementation:
