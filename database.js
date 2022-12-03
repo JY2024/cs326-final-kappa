@@ -1,6 +1,9 @@
+
+
 // const { Client } = require('pg');
 import pg from 'pg';
 const {Client} = pg;
+
 /*const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -11,20 +14,24 @@ const client = new Client({
     user: 'postgres',
     host: 'localhost',
     database: 'postgres',
-    password: 'Nintendo64!',
+    password: '',
     port: 5432,
 })
 client.connect();
 
 import * as SQL from './webPages/jsFiles/querybuilder.js';
+import * as auth from './auth.js';
 
 // DataBase Functions, NOTE: Still returns dummy data
 // Authorization
 export async function authUserObj(req) {
-    if (req.query.email === req.query.password && req.query.email !== "") {
-        let res = await client.query(SQL.sqlSelectUser(), [req.query.email]);
+    if (req.body.email !== "") {
+        let res = await client.query(SQL.sqlAuthUser(), [req.body.email]);
         if(res.rowCount !== 0){
-            return {status: 'SUCCESS'};
+            let correct = auth.decrypt(req.body.password, res.rows[0].salt, res.rows[0].pwencrypted);
+            if(correct){
+                return {status: 'SUCCESS'};
+            }
         }
     }
     return {status: 'ERROR'}

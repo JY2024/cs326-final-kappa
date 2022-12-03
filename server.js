@@ -27,7 +27,8 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/index.html'));
 });
     // Login
-app.get('/login?:query', async (req, res) => {
+//app.get('/login?:query', async (req, res) => {
+app.post('/login', async (req, res) => {
     console.log('user tried to login');
     const ret = await db.authUserObj(req); 
     console.log("recieved status update ", ret.status);

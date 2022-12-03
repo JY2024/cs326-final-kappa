@@ -35,3 +35,8 @@ export function sqlDeleteLike(){
 export function sqlSelectUser(){
     return "SELECT username FROM user_T WHERE username=$1;";
 }
+
+//USER AUTH
+export function sqlAuthUser(){
+    return "SELECT salt, pwEncrypted FROM password_T WHERE username=$1;";
+}

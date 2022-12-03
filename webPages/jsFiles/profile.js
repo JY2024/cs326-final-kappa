@@ -9,6 +9,29 @@ document.getElementById('savedBtn').addEventListener('click', fetchSavedRecipes)
 document.getElementById('myBtn').addEventListener('click', fetchMyRecipes);
 //document.getElementById('liked').addEventListener('click',postUnlike);
 
+initializePage();
+
+function initializePage(){
+    console.log("Initializing page...");
+    fetchMyRecipes();
+    console.log("MyRecipes fetched: SUCCESS");
+    fetchUserInfo();
+    console.log("UserInfo fetched: SUCCESS");
+}
+
+function fetchUserInfo(){
+    console.log("User " + localStorage.getItem('username'));
+    fetch( '/user/read?username=' + localStorage.getItem('username') )
+        .then( response => response.json() )
+        .then( response => {
+            console.log(response);
+            displayUserInfoParser(response);
+        });
+}
+
+function displayUserInfoParser(userJSON){
+
+}
 
 function fetchSavedRecipes(){
     console.log("Saved recipes");
@@ -177,14 +200,6 @@ function displayRecipeParser(recipeList, mine){
         }
     }
 }
-/*
-myRecipeCard("Chicken", 5, 3, "recipe1");
-myRecipeCard("Pasta", 3, 2, "recipe2");
-myRecipeCard("Pie", 2, 5, "recipe3");
-myRecipeCard("Pizza", 0, 1, "recipe4");
-myRecipeCard("Rice", 0, 0, "recipe5");
-myRecipeCard("Bread", 5, 1, "recipe6");*/
-fetchMyRecipes();
 
 function postUnlike(){
     console.log(this)
