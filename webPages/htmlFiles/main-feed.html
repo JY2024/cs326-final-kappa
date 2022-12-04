@@ -25,7 +25,8 @@
                 <!-- Left -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <button class="btn" id="profile"><a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a></button>
+                        <button class="btn" id="profile"><a class="nav-link" href="#"><i
+                                    class="bi bi-person-circle"></i></a></button>
                     </li>
                 </ul>
             </div>
@@ -34,7 +35,8 @@
                 <!-- Profile -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <button class="btn" id="settings"><a class="nav-link" href="#"><i class="bi bi-gear-fill"></i></a></button>
+                        <button class="btn" id="settings"><a class="nav-link" href="#"><i
+                                    class="bi bi-gear-fill"></i></a></button>
                     </li>
                 </ul>
             </div>
@@ -45,17 +47,26 @@
         <!-- YES/NO Buttons -->
         <div class="row justify-content-md-center">
             <div class="col-3 btn-group" role="group">
-                <button type="button" class="btn btn-danger" id="no" value="no"><i class="bi bi-emoji-frown-fill"></i></button>
-                <button type="button" class="btn btn-success" id="yes" value="yes"><i class="bi bi-emoji-heart-eyes-fill"></i></button>
+                <button type="button" class="btn btn-danger" id="no" value="no"><i
+                        class="bi bi-emoji-frown-fill"></i></button>
+                <button type="button" class="btn btn-success" id="yes" value="yes"><i
+                        class="bi bi-emoji-heart-eyes-fill"></i></button>
             </div>
         </div>
         <div class="top-buffer"></div>
         <!-- Food Carousel -->
         <div class="row justify-content-md-center">
-            <img id="picture">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <img id="picture">
+            </div>
+            <div class="col-4 justify-content-center">
+                <span id="next_text">Coming Up Next &#128523</span><br><br>
+                <img id="next_pic">
+            </div>
         </div>
         <div class="top-buffer"></div>
-        <!-- Recipe Collapse Box -->
+        <!-- Recipe Box -->
         <div class="row justify-content-md-center">
             <div class="col-6">
                 <div class="container border border-dark" id="recipe-box">
@@ -63,7 +74,7 @@
                     <h3 id="recipe_name"></h3>
                     <h5 id="creator"></h5>
                     <!-- Icons for quick information about the recipe-->
-                    <span id="preferences"></span><br> 
+                    <span id="preferences"></span><br>
                     <i class="bi bi-alarm-fill"></i><span id="time"></span><br>
                     <!-- Rating -->
                     <span id="ratings"></span><br>
@@ -98,6 +109,7 @@
                     </div>
                     <a role="button" class="collapsed" data-toggle="collapse" href="#collapseBox"
                         aria-expanded="false"></a>
+                    <br><br>
                 </div>
             </div>
         </div>
@@ -114,4 +126,5 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

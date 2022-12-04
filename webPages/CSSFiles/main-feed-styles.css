@@ -16,6 +16,16 @@ body {
     height: 500px;
     border: 5px solid rgb(136, 109, 19);
 }
+#next_pic {
+    width: 200px;
+    height: 200px;
+    border: 5px solid rgb(247, 206, 72);
+}
 #recipe_name, #creator {
     text-align: center;
+}
+#next_text {
+    font-weight: bolder;
+    text-align: center;
+    font-size: larger;
 }
