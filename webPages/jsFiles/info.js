@@ -1,5 +1,5 @@
 import { fixURL } from "./utility.js";
-const USERNAME = 'Jay'; // DO LATER
+const USERNAME = window.localStorage.getItem('username');
 
 const display = document.getElementById('display');
 const security = document.getElementById('security');
