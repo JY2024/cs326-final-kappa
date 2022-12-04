@@ -17,7 +17,7 @@ const client = new Client({
 client.connect();
 
 import * as SQL from './webPages/jsFiles/querybuilder.js';
-import { arrayOfObjectsToArray } from './webPages/jsFiles/utility.js';
+import { arrayOfObjectsToArray, atLeastFiveMatch } from './webPages/jsFiles/utility.js';
 
 // DataBase Functions, NOTE: Still returns dummy data
 // Authorization
@@ -93,8 +93,9 @@ export async function getOtherRecipes(username) {
         "SELECT * FROM recipe_T WHERE NOT recipe_T.recipe_id = any($1) AND NOT recipe_T.recipe_id = any($2)", [liked, owned]
     );
     console.log('there are ' + res3.rows.length + ' other recipes');
+    // return things that match at least 5 preferences
     return JSON.stringify(res3.rows.filter(recipe => {
-        return recipe.preferences.split('').every((element, index) => element === userPreferences[index]);
+        return atLeastFiveMatch(recipe.preferences.split(''), userPreferences);
     }));
 }
 
