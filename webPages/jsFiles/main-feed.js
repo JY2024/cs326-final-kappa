@@ -8,13 +8,13 @@ async function renderRecipe() {
     if (response.ok) {
         const json = await response.json();
         curRecipe = json.recipe_id;
-        // RENDER PICTURE (DO LATER)
+        // PICTURE
+        // document.getElementById('picture').setAttribute('src', json.recipe_picture);
         // HEADER INFO
         document.getElementById('recipe_name').innerHTML = json.recipe_name;
         document.getElementById('creator').innerHTML = json.author;
         document.getElementById('creator_bottom').innerHTML = json.author;
-        const prefList = document.getElementById('preferences');
-        renderPreferences(prefList, json.preferences);
+        renderPreferences(document.getElementById('preferences'), json.preferences);
         renderTime(document.getElementById('time'), json.prep_time)
 
         // INGREDIENTS
@@ -26,8 +26,14 @@ async function renderRecipe() {
         renderInstructions(instructionsHolder, json.instructions);
 
         // TIPS AND NOTES
-        const tipsSection = document.getElementById('tips_and_notes');
-        tipsSection.innerHTML = json.tips_and_notes;
+        renderTips(document.getElementById('tips_and_notes'), json.tips_and_notes);
+    }
+}
+function renderTips(tipsElement, tips) {
+    tips = tips.split('\\n');
+    for (let i = 0; i < tips.length; i++) {
+        tipsElement.appendChild(document.createTextNode(tips[i]));
+        tipsElement.appendChild(document.createElement('br'));
     }
 }
 function renderTime(timeElement, prepTime) {
@@ -41,7 +47,6 @@ function renderInstructions(instructList, instructions) {
         listItem.appendChild(document.createTextNode(instructions[i]));
         instructList.appendChild(listItem);
     }
-    
 }
 function renderIngredients(ingredList, ingredients) {
     ingredients = JSON.parse(ingredients);
@@ -97,11 +102,17 @@ settings.addEventListener('click', () =>{
 });
 
 // EVENT LISTENERS
-const nextBtn = document.getElementById('next');
 const noBtn = document.getElementById('no');
 const yesBtn = document.getElementById('yes');
-// nextBtn.addEventListener('click', renderRecipe);
-noBtn.addEventListener('click', renderRecipe);
+noBtn.addEventListener('click', () => {
+    // clear everything
+    document.getElementById('time').innerHTML = '';
+    document.getElementById('ingredients').innerHTML = '';
+    document.getElementById('instructions').innerHTML = '';
+    document.getElementById('tips_and_notes').innerHTML = '';
+    document.getElementById('preferences').innerHTML = '';
+    renderRecipe();
+});
 yesBtn.addEventListener('click', () => {
     addLikeByUser();
     window.location = "/recipe.html";
