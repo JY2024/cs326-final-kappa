@@ -170,9 +170,8 @@ export function existsRecipe(title, author) {
 }
 export async function getRecipeInfo(recipeID) {
     const res = await client.query(
-        "SELECT * FROM test_recipes WHERE recipe_id=1;"
+        "SELECT * FROM recipe_t WHERE recipe_id=$1", [recipeID]
     );
-    console.log('res.rows[0] is ' + res.rows[0]);
     return JSON.stringify(res.rows[0]);
 }
 export function deleteRecipeObj(recipeID, username) {

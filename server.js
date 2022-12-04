@@ -240,7 +240,6 @@ async function readRecipe(req, res) {
         const result = await db.getRecipeInfo(req.query.recipeID);
         res.send(result);
     }
-    console.log('you made it to res.end');
     res.end();
 }
 
