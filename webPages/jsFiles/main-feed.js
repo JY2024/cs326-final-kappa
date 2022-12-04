@@ -1,33 +1,61 @@
 import { fixURL } from "./utility.js";
 const USERNAME = window.localStorage.username;
-let curRecipe = null; // the id of the current recipe
+let curRecipe = null, nextRecipe = null; // the id of the current recipe
+
+async function init() {
+    const req = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, { method: 'GET' });
+    const res = await fetch(req);
+    if (res.ok) {
+        const json2 = await res.json();
+        nextRecipe = json2.recipe_id;
+        await renderRecipe();
+    }
+}
 
 async function renderRecipe() {
-    const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, {method: 'GET'});
-    const response = await fetch(request);
-    if (response.ok) {
-        const json = await response.json();
-        curRecipe = json.recipe_id;
-        // PICTURE
-        document.getElementById('picture').setAttribute('src', json.recipe_picture);
+    // load next recipe
+    const request1 = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=' + nextRecipe + '&username=' + USERNAME, { method: 'GET' });
+    const response1 = await fetch(request1);
+    if (response1.ok) {
+        const json1 = await response1.json();
+        curRecipe = json1.recipe_id;
+        // PICTURES
+        document.getElementById('picture').setAttribute('src', json1.recipe_picture);
         // HEADER INFO
-        document.getElementById('recipe_name').innerHTML = json.recipe_name;
-        document.getElementById('creator').innerHTML = json.author;
-        document.getElementById('creator_bottom').innerHTML = json.author;
-        renderPreferences(document.getElementById('preferences'), json.preferences);
-        renderTime(document.getElementById('time'), json.prep_time)
+        document.getElementById('recipe_name').innerHTML = json1.recipe_name;
+        document.getElementById('creator').innerHTML = json1.author;
+        document.getElementById('creator_bottom').innerHTML = json1.author;
+        renderPreferences(document.getElementById('preferences'), json1.preferences);
+        renderTime(document.getElementById('time'), json1.prep_time)
 
         // INGREDIENTS
         const ingredList = document.getElementById('ingredients');
-        renderIngredients(ingredList, json.ingredients);
-        
+        renderIngredients(ingredList, json1.ingredients);
+
         // INSTRUCTIONS
         const instructionsHolder = document.getElementById('instructions');
-        renderInstructions(instructionsHolder, json.instructions);
+        renderInstructions(instructionsHolder, json1.instructions);
 
         // TIPS AND NOTES
-        renderTips(document.getElementById('tips_and_notes'), json.tips_and_notes);
+        renderTips(document.getElementById('tips_and_notes'), json1.tips_and_notes);
     }
+
+    // load new next recipe
+    const request2 = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, { method: 'GET' });
+    const response2 = await fetch(request2);
+    if (response2.ok) {
+        let json2 = await response2.json();
+        while (json2.recipe_id === curRecipe) {
+            const req = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, { method: 'GET' });
+            const res = await fetch(req);
+            if (res.ok) {
+                json2 = await res.json();
+            }
+        }
+        nextRecipe = json2.recipe_id;
+        document.getElementById('next_pic').setAttribute('src', json2.recipe_picture);
+    }
+
 }
 function renderTips(tipsElement, tips) {
     tips = tips.split('\\n');
@@ -69,35 +97,35 @@ function renderPreferences(element, prefArr) {
             span.classList.add('rounded-pill');
             span.classList.add('text-bg-primary');
             span.innerText = preferencesNames[i];
-            element.appendChild(span); 
+            element.appendChild(span);
         }
     }
 }
 
 function addLikeByUser() {
-    fetch('/recipe/like/new', { 
+    fetch('/recipe/like/new', {
         mode: 'cors',
         method: 'POST',
         headers: {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
         body: "username=" + USERNAME + "&recipe_id=" + curRecipe
-     })
-    .then(function (data) {
-        alert("Recipe " + recipe_id + " successfully liked\n");
     })
-    .catch(function (error) {
-        console.log('Request failed', error);
-    });
+        .then(function (data) {
+            alert("Recipe " + recipe_id + " successfully liked\n");
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
 }
 
 // NAVIGATION
 const settings = document.getElementById('settings');
 const profile = document.getElementById('profile');
-profile.addEventListener('click', () =>{
+profile.addEventListener('click', () => {
     window.location = "/profile.html";
 });
-settings.addEventListener('click', () =>{
+settings.addEventListener('click', () => {
     window.location = "/profile-settings-personal-info.html";
 });
 
@@ -119,4 +147,5 @@ yesBtn.addEventListener('click', () => {
     window.location = "/recipe.html";
 });
 
-window.onload = renderRecipe;
+
+window.onload = init;
