@@ -115,6 +115,7 @@ noBtn.addEventListener('click', () => {
 });
 yesBtn.addEventListener('click', () => {
     addLikeByUser();
+    window.localStorage.setItem('cur_recipe_id', JSON.stringify(curRecipe));
     window.location = "/recipe.html";
 });
 
