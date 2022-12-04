@@ -118,7 +118,7 @@ export async function updateUser(username, profile_pic, location, pref, desc, hi
         str += ' display_name = \'' + display_name + '\',';
     }
     console.log('your query string is: ' + str.substring(0, str.length - 1) + ' where username = $1');
-    await client.query(str + 'hide_recipes=$1 WHERE username = $2', [parseInt(hide_recipes) === -1 ? user_hide_recipes : parseInt(hide_recipes), username]);
+    await client.query(str + 'hide_recipes=$1 WHERE username = $2', [hide_recipes === 'same' ? user_hide_recipes : parseInt(hide_recipes), username]);
 }
 
 export async function existsUser(username) {
