@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="main-feed-styles.css">
+    <link rel="stylesheet" href="./CSSFiles/main-feed-styles.css">
+    <script type="module" src="./jsFiles/main-feed.js"></script>
     <title>Discover</title>
 </head>
 
@@ -24,7 +25,8 @@
                 <!-- Left -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                        <button class="btn" id="profile"><a class="nav-link" href="#"><i
+                                    class="bi bi-person-circle"></i></a></button>
                     </li>
                 </ul>
             </div>
@@ -33,7 +35,8 @@
                 <!-- Profile -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-gear-fill"></i></a>
+                        <button class="btn" id="settings"><a class="nav-link" href="#"><i
+                                    class="bi bi-gear-fill"></i></a></button>
                     </li>
                 </ul>
             </div>
@@ -44,13 +47,15 @@
         <!-- YES/NO Buttons -->
         <div class="row justify-content-md-center">
             <div class="col-3 btn-group" role="group">
-                <button type="button" class="btn btn-danger"><i class="bi bi-emoji-frown-fill"></i></button>
-                <button type="button" class="btn btn-success"><i class="bi bi-emoji-heart-eyes-fill"></i></button>
+                <button type="button" class="btn btn-danger" id="no" value="no"><i
+                        class="bi bi-emoji-frown-fill"></i></button>
+                <button type="button" class="btn btn-success" id="yes" value="yes"><i
+                        class="bi bi-emoji-heart-eyes-fill"></i></button>
             </div>
         </div>
         <div class="top-buffer"></div>
-        <!-- Food Carousel -->
         <div class="row justify-content-md-center">
+            <!-- Current Recipe -->
             <div id="foodCarousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -63,15 +68,16 @@
                         <img src="./images/feed-food3.jpg" class="d-block w-100" alt="Fried rice">
                     </div>
                 </div>
-                <a class="carousel-control-prev" role="button" href="#foodCarousel" data-slide="prev">
+                <!-- <a class="carousel-control-prev" role="button" href="#foodCarousel" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </a>
                 <a class="carousel-control-next" role="button" href="#foodCarousel" data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
-                </a>
+                </a> -->
             </div>
+
         </div>
         <div class="top-buffer"></div>
         <!-- Recipe Collapse Box -->
@@ -79,14 +85,13 @@
             <div class="col-6">
                 <div class="container border border-dark" id="recipe-box">
                     <br>
-                    <h3>Fries and Sauce</h3>
-                    <h5>JayLikesCooking</h5>
+                    <h3 id="recipe_name">Fries and Sauce</h3>
+                    <h5 id="creator">JayLikesCooking</h5>
                     <!-- Icons for quick information about the recipe-->
-                    <i class="bi bi-cup-hot-fill"></i><i class="bi bi-droplet-half"></i><br>
-                    <i class="bi bi-alarm-fill"></i> 30 Minutes<br>
+                    <span id="preferences"></span><br>
+                    <i class="bi bi-alarm-fill"></i><span id="time"></span><br>
                     <!-- Rating -->
-                    <i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i class="bi bi-heart-fill"></i><i
-                        class="bi bi-heart-fill"></i><i class="bi bi-heart-half"></i><br>
+                    <span id="ratings"></span><br>
                     <hr>
                     <!-- Recipe-->
                     <div class="list-group">
@@ -95,34 +100,15 @@
                                 <h5 class="mb-1">Ingredients</h5>
                             </div>
                             <p class="mb-1">
-                                <ul>
-                                    <li>Fries <small>40 pieces</small></li>
-                                    <li>Sauce <small>2 Gallons</small></li>
-                                    <li>Vegetables <small>5 Cups</small></li>
-                                    <li>Onions <small>1 Cup</small></li>
-                                </ul>
-                                <small>You can add any types of vegetables that you want.<br>Make sure you get enough
-                                    fries.</small>
+                                <ul id="ingredients"></ul>
+                                <small id="ingredients_notes"></small>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">How to Make</h5>
                             </div>
                             <p class="mb-1">
-                                <br>
-                                1. Etiam tempor orci eu lobortis. Mauris pharetra et ultrices neque ornare aenean
-                                euismod elementum. Sed adipiscing diam donec adipiscing tristique risus nec
-                                feugiat.<br><br>
-                                2. Pharetra magna ac placerat vestibulum lectus mauris. Faucibus scelerisque
-                                eleifend donec pretium. Ornare aenean euismod elementum nisi. At tempor commodo
-                                ullamcorper a lacus. Aliquet nec ullamcorper sit amet risus nullam. Neque vitae
-                                tempus quam pellentesque nec. Egestas purus viverra accumsan in nisl nisi.<br><br>
-                                3. Scelerisque eu ultrices. Leo vel orci porta non pulvinar. Pellentesque habitant
-                                morbi tristique senectus et. Cras tincidunt lobortis feugiat vivamus at augue
-                                eget arcu. Tempor commodo ullamcorper a lacus vestibulum sed. Urna nec tincidunt
-                                praesent semper. Vestibulum rhoncus est pellentesque elit ullamcorper
-                                dignissim.<br><br>
-                                4. Cras tincidunt. In arcu cursus euismod quis viverra.
+                                <ul id="instructions"></ul>
                             </p>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
@@ -131,14 +117,8 @@
                             </div>
                             <p class="mb-1">
                                 <br>
-                                <small>
-                                    Fames ac turpis egestas maecenas pharetra convallis posuere<br>
-                                    Nullam vehicula ipsum a arcu cursus vitae. Nam aliquam sem et tortor consequat
-                                    id porta nibh venenatis.<br>
-                                    Sed blandit libero volutpat sed cras ornare arcu dui. Auctor augue mauris augue
-                                    neque gravida in.<br><br><br>
-                                </small>
-                                <small class="text-muted">JayLikesCooking</small>
+                                <small id="tips_and_notes"></small><br><br>
+                                <small class="text-muted" id="creator_bottom"></small>
                             </p>
                         </a>
                     </div>

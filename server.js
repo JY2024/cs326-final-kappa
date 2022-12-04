@@ -242,7 +242,7 @@ async function createRecipe(req, res){
 
 async function readRecipe(req, res) {
     if (parseInt(req.query.recipeID) === 0) {
-        res.send(db.getRandomRecipe(req.query.username));
+        res.send(await db.getRandomRecipe(req.query.username));
     } else {
         const result = await db.getRecipeInfo(req.query.recipeID);
         res.send(result);

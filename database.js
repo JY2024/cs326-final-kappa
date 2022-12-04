@@ -11,12 +11,13 @@ const client = new Client({
     user: 'postgres',
     host: 'localhost',
     database: 'postgres',
-    password: 'Nintendo64!',
+    password: '',
     port: 5432,
 })
 client.connect();
 
 import * as SQL from './webPages/jsFiles/querybuilder.js';
+import { arrayOfObjectsToArray } from './webPages/jsFiles/utility.js';
 
 // DataBase Functions, NOTE: Still returns dummy data
 // Authorization
@@ -75,9 +76,10 @@ export async function getMyRecipes(username) {
 
 
 export async function getOtherRecipes(username) {
+    console.log('you are in get other recipes');
     //This will get full list of recipes that are not owned by or liked by the user AND match the preference of the user
     //Preferences can be gotten from user table, likes from the likes table.
-    const userPreferences = JSON.parse(getUserInfo(username)).preferences;
+    const userPreferences = JSON.parse(await getUserInfo(username)).preferences;
     const res1 = await client.query(
         "SELECT recipe_id FROM like_T WHERE username=$1", [username]
     );
@@ -89,8 +91,10 @@ export async function getOtherRecipes(username) {
     const res3 = await client.query(
         "SELECT * FROM recipe_T WHERE NOT recipe_T.recipe_id = any($1) AND NOT recipe_T.recipe_id = any($2)", [liked, owned]
     );
+    console.log('you are at the end of getOtherRecipes');
+    console.log('this is a recipe preference: ' + res3.rows[0].preferences);
     return JSON.stringify(res3.rows.filter(recipe => {
-        return recipe.preferences.every((element, index) => element === userPreferences[index]);
+        return recipe.preferences.split('').every((element, index) => element === userPreferences[index]);
     }));
 }
 
@@ -168,7 +172,7 @@ export async function deleteUserObj(username) {
 // [2] Recipe Functions
 export async function getRandomRecipe(username) {
     console.log('you are in getRandomRecipe');
-    const recipes = JSON.parse(getOtherRecipes(username));
+    const recipes = JSON.parse(await getOtherRecipes(username));
     return JSON.stringify(recipes[Math.floor(Math.random() * recipes.length)]);
 }
 export async function createRecipeObj(title, author, ingredients, instructions, preferences, time) {

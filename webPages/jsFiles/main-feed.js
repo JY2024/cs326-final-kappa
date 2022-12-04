@@ -1,9 +1,9 @@
 import { fixURL } from "./utility.js";
-const USERNAME = 'Jay'; // DO LATER
+const USERNAME = window.localStorage.username;
 let curRecipe = null; // the id of the current recipe
 
 async function renderRecipe() {
-    const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=1&username=' + USERNAME, {method: 'GET'});
+    const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, {method: 'GET'});
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();
@@ -15,19 +15,43 @@ async function renderRecipe() {
         document.getElementById('creator_bottom').innerHTML = json.author;
         const prefList = document.getElementById('preferences');
         renderPreferences(prefList, json.preferences);
-        document.getElementById('time').innerHTML = ' ' + json.prep_time;
+        renderTime(document.getElementById('time'), json.prep_time)
 
         // INGREDIENTS
         const ingredList = document.getElementById('ingredients');
-        ingredList.appendChild(document.createTextNode(json.ingredients));
+        renderIngredients(ingredList, json.ingredients);
         
         // INSTRUCTIONS
         const instructionsHolder = document.getElementById('instructions');
-        instructionsHolder.appendChild(document.createTextNode(json.instructions));
+        renderInstructions(instructionsHolder, json.instructions);
 
         // TIPS AND NOTES
         const tipsSection = document.getElementById('tips_and_notes');
         tipsSection.innerHTML = json.tips_and_notes;
+    }
+}
+function renderTime(timeElement, prepTime) {
+    const times = ['Less than 30 min', 'Approx 30 min', '30 to 90 min', 'Approx 90 min', '90 to 120 min', 'Approx 120 min', 'More than 120 min'];
+    timeElement.appendChild(document.createTextNode('  ' + times[prepTime]));
+}
+function renderInstructions(instructList, instructions) {
+    instructions = instructions.split('\\n');
+    for (let i = 0; i < instructions.length; i++) {
+        const listItem = document.createElement('li');
+        listItem.appendChild(document.createTextNode(instructions[i]));
+        instructList.appendChild(listItem);
+    }
+    
+}
+function renderIngredients(ingredList, ingredients) {
+    ingredients = JSON.parse(ingredients);
+    for (const ingred of Object.keys(ingredients)) {
+        const listItem = document.createElement('li');
+        const amt = document.createElement('small');
+        amt.appendChild(document.createTextNode(ingredients[ingred]));
+        listItem.appendChild(document.createTextNode(ingred + '  '));
+        listItem.appendChild(amt);
+        ingredList.appendChild(listItem);
     }
 }
 function renderPreferences(element, prefArr) {
@@ -76,7 +100,7 @@ settings.addEventListener('click', () =>{
 const nextBtn = document.getElementById('next');
 const noBtn = document.getElementById('no');
 const yesBtn = document.getElementById('yes');
-nextBtn.addEventListener('click', renderRecipe);
+// nextBtn.addEventListener('click', renderRecipe);
 noBtn.addEventListener('click', renderRecipe);
 yesBtn.addEventListener('click', () => {
     addLikeByUser();
