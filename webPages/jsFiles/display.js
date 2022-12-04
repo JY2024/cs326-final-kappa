@@ -3,7 +3,6 @@ const USERNAME = window.localStorage.getItem('username');
 
 const personal = document.getElementById('personal');
 const security = document.getElementById('security');
-const privacy = document.getElementById('privacy');
 const profile = document.getElementById('profile');
 const feed = document.getElementById('feed');
 const display_name = document.getElementById('name');
@@ -59,9 +58,6 @@ personal.addEventListener('click', () =>{
 });
 security.addEventListener('click', () =>{
     window.location = "/profile-settings-security.html";
-});
-privacy.addEventListener('click', () =>{
-    window.location = "/profile-settings-privacy.html";
 });
 profile.addEventListener('click', () =>{
     window.location = "/profile.html";
