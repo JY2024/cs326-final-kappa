@@ -18,6 +18,8 @@ client.connect();
 
 import * as SQL from './webPages/jsFiles/querybuilder.js';
 import { arrayOfObjectsToArray, atLeastFiveMatch } from './webPages/jsFiles/utility.js';
+import * as miniCrypt from './miniCrypt.js';
+const MC = miniCrypt.MiniCrypt;
 
 // DataBase Functions, NOTE: Still returns dummy data
 // Authorization
@@ -99,7 +101,6 @@ export async function getOtherRecipes(username) {
 }
 
 export async function updateUser(username, profile_pic, location, pref, desc, hide_recipes, display_name) {
-    console.log('type of hide recipes is ' + typeof hide_recipes);
     const user_hide_recipes = JSON.parse(await getUserInfo(username)).hide_recipes;
     let str = 'UPDATE user_T SET';
     if (profile_pic !== 'same') {
@@ -117,8 +118,13 @@ export async function updateUser(username, profile_pic, location, pref, desc, hi
     if (display_name !== 'same') {
         str += ' display_name = \'' + display_name + '\',';
     }
-    console.log('your query string is: ' + str.substring(0, str.length - 1) + ' where username = $1');
     await client.query(str + 'hide_recipes=$1 WHERE username = $2', [hide_recipes === 'same' ? user_hide_recipes : parseInt(hide_recipes), username]);
+}
+
+export async function updateUserPass(username, password) {
+    const mc = new MC();
+    const [salt, hash] = mc.hash(password);
+    await client.query('UPDATE password_t SET salt=$1, pwEncrypted=$2 WHERE username=$3', [salt, hash, username]);
 }
 
 export async function existsUser(username) {

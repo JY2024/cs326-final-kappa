@@ -92,6 +92,7 @@ app.get('/profile-settings-security.html', (req, res) => {
 app.get('/user/new', createUser);
 app.get('/user/read', readUser);
 app.post('/user/update', updateUser);
+app.post('/user/updatePass', updateUserPass);
 app.get('/user/delete', deleteUser);
 
 // [2] Recipe Functions
@@ -183,6 +184,11 @@ async function updateUser(req, res) {
     res.send(result);
     res.end();
 } 
+async function updateUserPass(req, res) {
+    const result = await db.updateUserPass(req.body['username'], req.body['password']);
+    res.send(result);
+    res.end();
+}
 
 // async function updateName(req, res) {
 //     console.log('you are in updateName for some reason');
