@@ -76,14 +76,15 @@ export async function getMyRecipes(username) {
 
 
 export async function getOtherRecipes(username) {
-    console.log('you are in get other recipes');
     //This will get full list of recipes that are not owned by or liked by the user AND match the preference of the user
     //Preferences can be gotten from user table, likes from the likes table.
     const userPreferences = JSON.parse(await getUserInfo(username)).preferences;
+    // get liked recipes
     const res1 = await client.query(
         "SELECT recipe_id FROM like_T WHERE username=$1", [username]
     );
     const liked = arrayOfObjectsToArray(res1.rows, 'recipe_id');
+    // get my own recipes
     const res2 = await client.query(
         "SELECT recipe_id FROM recipe_T WHERE author=$1", [username]
     );
@@ -91,8 +92,7 @@ export async function getOtherRecipes(username) {
     const res3 = await client.query(
         "SELECT * FROM recipe_T WHERE NOT recipe_T.recipe_id = any($1) AND NOT recipe_T.recipe_id = any($2)", [liked, owned]
     );
-    console.log('you are at the end of getOtherRecipes');
-    console.log('this is a recipe preference: ' + res3.rows[0].preferences);
+    console.log('there are ' + res3.rows.length + ' other recipes');
     return JSON.stringify(res3.rows.filter(recipe => {
         return recipe.preferences.split('').every((element, index) => element === userPreferences[index]);
     }));
@@ -171,7 +171,6 @@ export async function deleteUserObj(username) {
 
 // [2] Recipe Functions
 export async function getRandomRecipe(username) {
-    console.log('you are in getRandomRecipe');
     const recipes = JSON.parse(await getOtherRecipes(username));
     return JSON.stringify(recipes[Math.floor(Math.random() * recipes.length)]);
 }
