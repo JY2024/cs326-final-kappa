@@ -24,3 +24,14 @@ export function atLeastFiveMatch(recipePref, userPref) {
     }
     return false;
 }
+
+export function encodeImageAsURL(element) {
+    const file = element.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    return new Promise((resolve, reject) => {
+        reader.onloadend = () => {
+            resolve(reader.result);
+        }
+    });
+}

@@ -15,7 +15,12 @@ const __dirname = dirname(__filename);
 
 const app = express();
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    parameterLimit: 200000,
+    limit: '100mb',
+    extended: true
+  }));
 app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 

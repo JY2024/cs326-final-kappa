@@ -1,4 +1,3 @@
-import { fixURL } from "./utility.js";
 const USERNAME = window.localStorage.getItem('username');
 
 const display = document.getElementById('display');

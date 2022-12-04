@@ -1,12 +1,14 @@
-import { fixURL } from "./utility.js";
+import { encodeImageAsURL, fixURL } from "./utility.js";
 const USERNAME = window.localStorage.getItem('username');
+let CURPIC = '';
 
 const personal = document.getElementById('personal');
 const security = document.getElementById('security');
 const profile = document.getElementById('profile');
 const feed = document.getElementById('feed');
 const display_name = document.getElementById('name');
-const pic = document.getElementById('pic');
+const pic = document.getElementById('picture');
+const pic_selection = document.getElementById('pic');
 const desc = document.getElementById('text-area');
 const saveBtn = document.getElementById('save');
 
@@ -17,12 +19,9 @@ async function loadData() {
         const json = await response.json();
         display_name.value = json.display_name;
         desc.innerText= json.description;
-        renderPic(json.profile_pic);
+        pic.setAttribute('src', json.profile_picture.split(' ').join('+'));
+        CURPIC = json.profile_picture;
     }
-}
-
-function renderPic() {
-    // DO LATER
 }
 
 async function saveChanges() {
@@ -32,7 +31,7 @@ async function saveChanges() {
         headers: {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
-        body: 'username=' + USERNAME + '&profile_picture=' + 'dummy-pic-string' + '&location=same&preferences=same&description=' + desc.value + '&hide_recipes=same&display_name=' + display_name.value
+        body: 'username=' + USERNAME + '&profile_picture=' + CURPIC + '&location=same&preferences=same&description=' + desc.value + '&hide_recipes=same&display_name=' + display_name.value
     }).catch(function (error) {
         console.log('Request failed', error);
     });
@@ -54,6 +53,12 @@ feed.addEventListener('click', () =>{
 saveBtn.addEventListener('click', () => {
     saveChanges();
     window.alert('Changes successfully saved.');
+});
+
+pic_selection.addEventListener('change', async () => {
+    const picString = await encodeImageAsURL(pic_selection);
+    pic.setAttribute('src', picString);
+    CURPIC = picString;
 });
 
 window.onload = loadData;
