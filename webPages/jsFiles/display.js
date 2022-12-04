@@ -15,8 +15,8 @@ async function loadData() {
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();
-        display_name.setAttribute('placeholder', json.display_name);
-        desc.setAttribute('placeholder', json.description);
+        display_name.value = json.display_name;
+        desc.innerText= json.description;
         renderPic(json.profile_pic);
     }
 }
@@ -26,29 +26,14 @@ function renderPic() {
 }
 
 function saveChanges() {
-    // display name
-    fetch('/user/update', { 
+    fetch('/user/update', {
         mode: 'cors',
         method: 'POST',
         headers: {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
-        body: "name=" + display_name.value + "&username=" + USERNAME
-    })
-    .catch(function (error) {
-        console.log('Request failed', error);
-    });
-
-    // description
-    fetch('/user/update', { 
-        mode: 'cors',
-        method: 'POST',
-        headers: {
-            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        body: "description=" + description.value + "&username=" + USERNAME
-    })
-    .catch(function (error) {
+        body: 'username=' + USERNAME + '&profile_picture=' + 'dummy-pic-string' + '&location=same&preferences=same&description=' + desc.value + '&hide_recipes=same&display_name=' + display_name.value
+    }).catch(function (error) {
         console.log('Request failed', error);
     });
 }
@@ -66,6 +51,9 @@ feed.addEventListener('click', () =>{
     window.location = "/main-feed.html";
 });
 
-saveBtn.addEventListener('click', saveChanges);
+saveBtn.addEventListener('click', () => {
+    saveChanges();
+    window.alert('Changes successfully saved.');
+});
 
 window.onload = loadData;

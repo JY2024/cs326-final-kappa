@@ -14,7 +14,7 @@ async function loadData() {
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();
-        location.setAttribute('placeholder', json.location);
+        location.value = json.location;
         renderPreferences(json.preferences);
     }
 }
