@@ -51,7 +51,6 @@ app.get('/recipe.html', (req, res) => {
 });
 //Chat Page
 app.get('/chat.html', (req, res) => {
-    console.log('new');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/chat.html'));
 });
     // To Main Feed
@@ -60,7 +59,6 @@ app.get('/main-feed.html', (req, res) => {
 });
     // To Profile Page
 app.get('/profile.html', (req, res) => {
-    console.log('new');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile.html'));
 });
     // For Images
@@ -70,28 +68,20 @@ app.get('/images/:imageid', (req, res) => {
 });
     // For CSS
 app.get('/CSSFiles/:cssid', (req, res) => {
-    console.log(req.params.cssid);
     res.sendFile(path.join(__dirname, '/webPages/CSSFiles/', req.params.cssid));
 });
     // For JS Files
 app.get('/jsFiles/:jsid', (req, res) => {
-    console.log(req.params.jsid);
     res.sendFile(path.join(__dirname, '/webPages/jsFiles/', req.params.jsid));
 });
     // To Settings: Personal Info
 app.get('/profile-settings-personal-info.html', (req, res) => {
-    console.log('profile check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-personal-info.html'));
 });
     // To Settings: Profile Display
 app.get('/profile-settings-profile-display.html', (req, res) => {
     console.log('display check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-profile-display.html'));
-});
-    // To Settings: Privacy
-app.get('/profile-settings-privacy.html', (req, res) => {
-    console.log('privacy check');
-    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-privacy.html'));
 });
     // To Settings: Security
 app.get('/profile-settings-security.html', (req, res) => {
@@ -101,11 +91,7 @@ app.get('/profile-settings-security.html', (req, res) => {
 // [1] User Functions
 app.get('/user/new', createUser);
 app.get('/user/read', readUser);
-app.post('/user/update/:name', updateName);
-app.post('/user/update/:location', updateLocation);
-app.post('/user/update/:preferences', updatePreferences);
-app.post('/user/update/:description', updateDescription);
-app.post('/user/update/:recipe_hide', updateHideRecipe);
+app.post('/user/update', updateUser);
 app.get('/user/delete', deleteUser);
 
 // [2] Recipe Functions
@@ -117,7 +103,7 @@ app.get('/recipe/read', readRecipe);
 app.get('/recipe/list/my', async (req, res) => {res.send(await readMyRecipes(req, res));});
 app.get('/recipe/list/saved', async (req, res) => {res.send(await readSavedRecipes(req, res));     });
 app.get('/recipe/detail', (req, res) => {    res.send(readRecipe(req, res));    });
-app.get('/recipe/tempread', tempReadRecipe);
+// app.get('/recipe/tempread', tempReadRecipe);
 
 // [3] Like Functions
 app.post('/recipe/like/new', async (req, res) =>       {res.send(await createLike(req, res));   });
@@ -192,35 +178,42 @@ async function readSavedRecipes(req, res){
     return await db.getSavedRecipes(req.query.username);
 }
 // update user info
-async function updateName(req, res) {
-    const result = await db.updateName(req.body.name, req.body.username);
+async function updateUser(req, res) {
+    const result = await db.updateUser(req.body['username'], req.body['profile_picture'], req.body['location'], req.body['preferences'], req.body['description'], req.body['hide_recipes'], req.body['display_name']);
     res.send(result);
     res.end();
-}
-async function updateLocation(req, res) {
-    const result = await db.updateLocation(req.body.location, req.body.username);
-    res.send(result);
-    res.end();
-}
-async function updatePreferences(req, res) {
-    const result = await db.updatePreferences(req.body.preferences, req.body.username);
-    res.send(result);
-    res.end();
-}
+} 
 
-async function updateDescription(req, res) {
-    // ex. /user/update?username=Jay1024
-    // req.body contains {description: string}
-    const result = await db.updateDescription(req.body.description, req.body.username);
-    res.send(result);
-    res.end();
-}
+// async function updateName(req, res) {
+//     console.log('you are in updateName for some reason');
+//     const result = await db.updateName(req.body.name, req.body.username);
+//     res.send(result);
+//     res.end();
+// }
+// async function updateLocation(req, res) {
+//     const result = await db.updateLocation(req.body.location, req.body.username);
+//     res.send(result);
+//     res.end();
+// }
+// async function updatePreferences(req, res) {
+//     const result = await db.updatePreferences(req.body.preferences, req.body.username);
+//     res.send(result);
+//     res.end();
+// }
 
-async function updateHideRecipe(req, res) {
-    const result = await db.updateHideRecipe(req.body.recipe_hide, req.body.username);
-    res.send(result);
-    res.end();
-}
+// async function updateDescription(req, res) {
+//     // ex. /user/update?username=Jay1024
+//     // req.body contains {description: string}
+//     const result = await db.updateDescription(req.body.description, req.body.username);
+//     res.send(result);
+//     res.end();
+// }
+
+// async function updateHideRecipe(req, res) {
+//     const result = await db.updateHideRecipe(req.body.recipe_hide, req.body.username);
+//     res.send(result);
+//     res.end();
+// }
 
 
 // delete user object
@@ -251,24 +244,13 @@ async function readRecipe(req, res) {
     res.end();
 }
 
-function readRecipeErrorHandler(req, res, next) {
-    if (false) {
-        console.log('entered recipe error handler');
-        // sendError(res, 'description-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
-        res.send(JSON.stringify({ result : 'error'}));
-    } else {
-        console.log('entered other part');
-        next();
-    }
-}
-
-function tempReadRecipe(req, res) {
-    console.log('entered readRecipe');
-    // ex. /recipe/read?recipeID=1234
-    console.log('req query recipe id is ' + req.query.recipeID);
-    res.send(db.tempGetRecipeInfo(req.query.recipeID));
-    res.end();
-}
+// function tempReadRecipe(req, res) {
+//     console.log('entered readRecipe');
+//     // ex. /recipe/read?recipeID=1234
+//     console.log('req query recipe id is ' + req.query.recipeID);
+//     res.send(db.tempGetRecipeInfo(req.query.recipeID));
+//     res.end();
+// }
 
 function deleteRecipe(req, res){
     // ex. /recipe/delete?recipeID=1234&username=jay1024

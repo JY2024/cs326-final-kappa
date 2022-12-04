@@ -92,53 +92,33 @@ export async function getOtherRecipes(username) {
     const res3 = await client.query(
         "SELECT * FROM recipe_T WHERE NOT recipe_T.recipe_id = any($1) AND NOT recipe_T.recipe_id = any($2)", [liked, owned]
     );
-    console.log('there are ' + res3.rows.length + ' other recipes');
     // return things that match at least 5 preferences
     return JSON.stringify(res3.rows.filter(recipe => {
         return atLeastFiveMatch(recipe.preferences.split(''), userPreferences);
     }));
 }
 
-export async function updateName(name, username) {
-    const res = await client.query(
-        "UPDATE user_T SET display_name=$1 WHERE username=$2", [name, username]
-    );
-    return JSON.stringify({status: "SUCCESS", username: username});
-}
-
-export async function updateLocation(location, username) {
-    const res = await client.query(
-        "UPDATE user_T SET location=$1 WHERE username=$2", [location, username]
-    );
-    return JSON.stringify({status: "SUCCESS", username: username});
-}
-
-export async function updatePreferences(prefStr, username) {
-    const res = await client.query(
-        "UPDATE user_T SET preferences=$1 WHERE username=$2", [prefStr, username]
-    );
-    return JSON.stringify({status: "SUCCESS", username: username});
-}
-
-export async function updateDescription(username, desc) {
-    const res = await client.query(
-        "UPDATE user_T SET description=$1 WHERE user_T.username=$2", [desc, username]
-    );
-    return JSON.stringify({status: "SUCCESS", username: username});
-}
-
-export async function updateProfilePicture(username, blob) {
-    const res = await client.query(
-        "UPDATE user_T SET profile_picture=$1 WHERE user_T.username=$2", [blob, username]
-    );
-    return JSON.stringify({status: "SUCCESS", username: username});
-}
-
-export async function updateHideRecipe(hidden, username) {
-    const res = await client.query(
-        "UPDATE user_T SET hide_recipes=$1 WHERE user_T.username=$2", [hidden, username]
-    );
-    return JSON.stringify({status: "SUCCESS", username: username});
+export async function updateUser(username, profile_pic, location, pref, desc, hide_recipes, display_name) {
+    console.log('type of hide recipes is ' + typeof hide_recipes);
+    const user_hide_recipes = JSON.parse(await getUserInfo(username)).hide_recipes;
+    let str = 'UPDATE user_T SET';
+    if (profile_pic !== 'same') {
+        str += ' profile_picture = \'' + profile_pic + '\',';
+    }
+    if (location !== 'same') {
+        str += ' location = \'' + location + '\',';
+    }
+    if (pref !== 'same') {
+        str += ' preferences = \'' + pref + '\',';
+    }
+    if (desc !== 'same') {
+        str += ' description = \'' + desc + '\',';
+    }
+    if (display_name !== 'same') {
+        str += ' display_name = \'' + display_name + '\',';
+    }
+    console.log('your query string is: ' + str.substring(0, str.length - 1) + ' where username = $1');
+    await client.query(str + 'hide_recipes=$1 WHERE username = $2', [parseInt(hide_recipes) === -1 ? user_hide_recipes : parseInt(hide_recipes), username]);
 }
 
 export async function existsUser(username) {
@@ -189,36 +169,19 @@ export function existsRecipe(title, author) {
     return false;
 }
 export async function getRecipeInfo(recipeID) {
-    console.log('you reached getRecipeInfo and recipeID is ' + recipeID);
-    // const res = await client.query(
-    //     "CREATE TABLE test_recipes (recipe_id int, recipe_name varchar(50), author varchar(15), recipe_picture varchar(128), instructions varchar(500), ingredients varchar(500), preferences varchar(12), prep_time int, tips_and_notes varchar(500));"
-    // );
-    // console.log('you made ur test table');
-    // const res = await client.query(
-    //     "INSERT INTO test_recipes (recipe_id, recipe_name, author, recipe_picture, instructions, ingredients, preferences, prep_time, tips_and_notes) VALUES (1, 'delicious pizza', 'ilovecs326', 'this is a picture of a pizza', 'go make the pizza', 'dough, sauce', '000010001010', 3, 'save a slice for a friend');"
-    // );
-    // console.log('you inserted into ur test table');
     const res = await client.query(
         "SELECT * FROM test_recipes WHERE recipe_id=1;"
     );
-    // console.log('you selected from the table and rows is ');
-    // for (const row of res.rows) {
-    //     console.log(row);
-    // } 
     console.log('res.rows[0] is ' + res.rows[0]);
     return JSON.stringify(res.rows[0]);
-    // ingredients: [{"Dough": "3 pounds"}, {"Sauce": "2 gallons"}, {"Cheese" : "3 cups"}], recipeID: 197,
-    // instructions: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0],
-    // time: "approx 90 minutes", likes:2, rating: 3.5, "ingredients_notes":"Feel free to experiment with toppings!",
-    // tips_and_notes: "I love pizza, and I bet you do too! Come check out my profile for more pizza recipes! I'd love to hear about your spin on my recipe!"});
 }
 export function deleteRecipeObj(recipeID, username) {
     return {Status: "SUCCESS", recipeID: recipeID};
 }
-export var currentRecipe = 1987;
-export function updateCurrentRecipe(recipeID){
-    currentRecipe = recipeID;
-}
+// export var currentRecipe = 1987;
+// export function updateCurrentRecipe(recipeID){
+//     currentRecipe = recipeID;
+// }
 
 
 // [3] Like Functions
