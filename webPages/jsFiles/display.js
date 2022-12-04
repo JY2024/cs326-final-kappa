@@ -25,8 +25,8 @@ function renderPic() {
     // DO LATER
 }
 
-function saveChanges() {
-    fetch('/user/update', {
+async function saveChanges() {
+    await fetch('/user/update', {
         mode: 'cors',
         method: 'POST',
         headers: {

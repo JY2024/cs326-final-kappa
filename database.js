@@ -64,13 +64,6 @@ export async function getSavedRecipes(username) {
     return JSON.stringify(res.rows);
 }
 
-// export async function getMyRecipes(username) {
-//     const res = await client.query(
-//         "SELECT * FROM recipe_T WHERE author=$1", [username]
-//     );
-//     return JSON.stringify(res.rows);
-// }
-
 export async function getMyRecipes(username) {
     let res = await client.query(SQL.sqlMyRecipes(), [username]);
     return JSON.stringify(res.rows);
@@ -135,22 +128,46 @@ export async function existsUser(username) {
 }
 
 export async function deleteUserObj(username) {
-    // delete a user's likes
-    const res1 = await client.query(
-        "DELETE FROM like_T WHERE username=$1", [username]
-    );
+    console.log('you are in deleteUserObj in database.js');
     // delete a user's comments
-    const res2 = await client.query(
+    await client.query(
         "DELETE FROM comment_T WHERE sender=$1", [username]
     );
+    // delete a user's likes
+    await client.query(
+        "DELETE FROM like_T WHERE username=$1", [username]
+    );
+    // delete likes on a user's recipes
+    const usersRecipes = arrayOfObjectsToArray(JSON.parse(await getMyRecipes(username)), 'recipe_id');
+    for (let i = 0; i < usersRecipes.length; i++) {
+        await client.query(
+            'DELETE FROM like_T WHERE recipe_id=any($1)', [usersRecipes]
+        );
+    }
+    // delete comments on a user's recipes
+    for (let i = 0; i < usersRecipes.length; i++) {
+        await client.query(
+            'DELETE FROM comment_T WHERE recipe_id=any($1)', [usersRecipes]
+        );
+    }
     // delete user's recipes
-    const res3 = await client.query(
+    await client.query(
         "DELETE FROM recipe_T WHERE author=$1", [username]
     );
-    // delete user's chats DO LATER
-    // delete user's messages DO LATER
+    // const chat_ids = (await client.query('SELECT chat_id FROM chat_t WHERE sender_id=$1 OR reciever_id=$1', [username])).rows; // array of objects with chat_ids
+    // const ids = arrayOfObjectsToArray(chat_ids, 'chat_id');
+    // await client.query(
+    //     "DELETE FROM chat_t WHERE sender_id=$1 OR reciever_id=$1", [username]
+    // );
+    // await client.query(
+    //     "DELETE FROM message_t WHERE chat_id = any($1)", [ids]
+    // );
+    // delete password
+    await client.query(
+        "DELETE FROM password_t WHERE username=$1", [username]
+    )
     // delete user
-    const res6 = await client.query(
+    await client.query(
         "DELETE FROM user_T WHERE username=$1", [username]
     );
     return JSON.stringify({Status: "SUCCESS", username: username});

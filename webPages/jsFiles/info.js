@@ -27,13 +27,13 @@ function renderPreferences(preferences) {
     }
 }
 
-function saveChanges() {
+async function saveChanges() {
     let user_pref = '';
     const prefs = Array.from(checkBoxes);
     for (const pref of prefs) {
         user_pref += (pref.checked ? '1' : '0');
     }
-    fetch('/user/update', {
+    await fetch('/user/update', {
         mode: 'cors',
         method: 'POST',
         headers: {

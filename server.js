@@ -85,7 +85,6 @@ app.get('/profile-settings-profile-display.html', (req, res) => {
 });
     // To Settings: Security
 app.get('/profile-settings-security.html', (req, res) => {
-    console.log('security check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-security.html'));
 });
 // [1] User Functions
@@ -93,7 +92,7 @@ app.get('/user/new', createUser);
 app.get('/user/read', readUser);
 app.post('/user/update', updateUser);
 app.post('/user/updatePass', updateUserPass);
-app.get('/user/delete', deleteUser);
+app.post('/user/delete', deleteUser);
 
 // [2] Recipe Functions
 //app.post('/recipe/new', (req, res) => {     res.send(createRecipe(req, res));   });
@@ -225,7 +224,8 @@ async function updateUserPass(req, res) {
 // delete user object
 async function deleteUser(req, res){
     // ex. /user/delete?username=jay1024
-    const result = await db.deleteUserObj(req.body.username);
+    console.log('you are in deleteUser in server.js');
+    const result = await db.deleteUserObj(req.body['username']);
     res.send(result);
     res.end();
 }
