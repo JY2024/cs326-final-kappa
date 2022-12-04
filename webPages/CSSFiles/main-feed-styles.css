@@ -10,3 +10,7 @@ body {
 #recipe-box {
     background-color: rgba(247,242,239,255);
 }
+#picture {
+    width: 500px;
+    height: 500px;
+}

@@ -9,7 +9,7 @@ async function renderRecipe() {
         const json = await response.json();
         curRecipe = json.recipe_id;
         // PICTURE
-        // document.getElementById('picture').setAttribute('src', json.recipe_picture);
+        document.getElementById('picture').setAttribute('src', json.recipe_picture);
         // HEADER INFO
         document.getElementById('recipe_name').innerHTML = json.recipe_name;
         document.getElementById('creator').innerHTML = json.author;
