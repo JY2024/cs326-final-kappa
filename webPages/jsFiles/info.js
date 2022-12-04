@@ -65,4 +65,5 @@ feed.addEventListener('click', () => {
 // EVENT LISTENERS
 saveBtn.addEventListener('click', () => {
     saveChanges();
+    window.alert('Changes successfully saved.');
 });
