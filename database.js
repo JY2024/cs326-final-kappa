@@ -34,67 +34,66 @@ export async function authUserObj(req) {
 }
 
 // [1] User Functions
+//Creates a user obj in database 
+//createUserObj(username: string, password: string, displayName: string): {status: string, username: string, displayName: string}
 export async function createUserObj(username, password, displayName) {
-    const res = await client.query(
-        "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description, hide_recipes) VALUES ($1, $2, $3, $4, $5, $6, $7);", [username, 'default profile picture', displayName, '', '000000000000', '', false]
+    await client.query(
+        "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description, hide_recipes) VALUES ($1, $2, $3, $4, $5, $6, $7);", [username, '', displayName, '', '000000000000', '', false]
     );
-    return JSON.stringify({status: 'SUCCESS', username: username, password: password, displayName: displayName});
+    const mc = new MC();
+    const [salt, hash] = mc.hash(password);
+    await client.query(
+        'INSERT INTO password_t (username, salt, pwencrypted) VALUES ($1, $2, $3)', [username, salt, hash]
+    )
+    return JSON.stringify({status: 'SUCCESS', username: username, displayName: displayName});
 }
-
+//Retrieves user obj info from database
+//getUserInfo(username: string): JSON.stringify({ contains user info })
 export async function getUserInfo(username) {
     const res = await client.query(
         "SELECT * FROM user_T WHERE username=$1", [username]
     );
     return JSON.stringify(res.rows[0]);
 }
-
-// export async function getSavedRecipes(username) {
-//     const res1 = await client.query(
-//         "SELECT recipe_id FROM like_T WHERE username=$1", [username]
-//     );
-//     let recipe_ids = arrayOfObjectsToArray(res1.rows, 'recipe_id');
-//     const res2 = await client.query(
-//         "SELECT * FROM recipe_T LEFT JOIN like_T ON (recipe_T.recipe_id = any($1))", [recipe_ids]
-//     );
-//     return JSON.stringify(res2.rows);
-// }
-
+//Retrieves all recipes saved by the specified user
+//getSavedRecipes(username: string): JSON.stringify(Array<{ contains recipe info}>)
 export async function getSavedRecipes(username) {
     let res = await client.query(SQL.sqlSavedRecipes(), [username]);
     return JSON.stringify(res.rows);
 }
-
+//Retrieves all recipes owned by the specified user
+//getMyRecipes(username: string): JSON.stringify(Array<{ contains recipe info}>)
 export async function getMyRecipes(username) {
     let res = await client.query(SQL.sqlMyRecipes(), [username]);
     return JSON.stringify(res.rows);
 }
-
-
+//Retrieves a full list of recipes that are not owned by or liked by the user AND match at least 5 prefereneces of the user
+//getOtherRecipes(username: string): JSON.stringify(Array<{ contains recipe info}>)
 export async function getOtherRecipes(username) {
-    //This will get full list of recipes that are not owned by or liked by the user AND match the preference of the user
-    //Preferences can be gotten from user table, likes from the likes table.
     const userPreferences = JSON.parse(await getUserInfo(username)).preferences;
     // get liked recipes
     const res1 = await client.query(
         "SELECT recipe_id FROM like_T WHERE username=$1", [username]
     );
     const liked = arrayOfObjectsToArray(res1.rows, 'recipe_id');
-    // get my own recipes
+    // get user's own recipes
     const res2 = await client.query(
         "SELECT recipe_id FROM recipe_T WHERE author=$1", [username]
     );
     const owned = arrayOfObjectsToArray(res2.rows, 'recipe_id');
-    const res3 = await client.query(
+    const other = await client.query(
         "SELECT * FROM recipe_T WHERE NOT recipe_T.recipe_id = any($1) AND NOT recipe_T.recipe_id = any($2)", [liked, owned]
     );
-    // return things that match at least 5 preferences
-    return JSON.stringify(res3.rows.filter(recipe => {
+    // return only rows that match at least 5 preferences
+    return JSON.stringify(other.rows.filter(recipe => {
         return atLeastFiveMatch(recipe.preferences.split(''), userPreferences);
     }));
 }
-
+//Updates user object information in database
+//updateUser(username: string, profile_pic: string, location: string, pref: string, desc: string, hide_recipes: string, display_name: string): void
 export async function updateUser(username, profile_pic, location, pref, desc, hide_recipes, display_name) {
-    const user_hide_recipes = JSON.parse(await getUserInfo(username)).hide_recipes;
+    const user_hide_recipes = JSON.parse(await getUserInfo(username)).hide_recipes; // user's hide recipe setting
+    // build query string
     let str = 'UPDATE user_T SET';
     if (profile_pic !== 'same') {
         str += ' profile_picture = \'' + profile_pic + '\',';
@@ -113,22 +112,24 @@ export async function updateUser(username, profile_pic, location, pref, desc, hi
     }
     await client.query(str + 'hide_recipes=$1 WHERE username = $2', [hide_recipes === 'same' ? user_hide_recipes : parseInt(hide_recipes), username]);
 }
-
+//Updates the specified user's password
+//updateUserPass(username: string, password: string): void
 export async function updateUserPass(username, password) {
     const mc = new MC();
     const [salt, hash] = mc.hash(password);
     await client.query('UPDATE password_t SET salt=$1, pwEncrypted=$2 WHERE username=$3', [salt, hash, username]);
 }
-
+//Returns whether the specified user exists in the database
+//existsUser(username: string): boolean
 export async function existsUser(username) {
     const res = await client.query(
         "SELECT * FROM user_T WHERE username=$1", [username]
     );
     return res.rows.length > 0;
 }
-
+//Deletes the specified user and all content relating to user (except for chats and messages)
+//deleteUserObj(username: string): void
 export async function deleteUserObj(username) {
-    console.log('you are in deleteUserObj in database.js');
     // delete a user's comments
     await client.query(
         "DELETE FROM comment_T WHERE sender=$1", [username]
@@ -138,7 +139,7 @@ export async function deleteUserObj(username) {
         "DELETE FROM like_T WHERE username=$1", [username]
     );
     // delete likes on a user's recipes
-    const usersRecipes = arrayOfObjectsToArray(JSON.parse(await getMyRecipes(username)), 'recipe_id');
+    const usersRecipes = arrayOfObjectsToArray(JSON.parse(await getMyRecipes(username)), 'recipe_id'); // recipes owned by the user
     for (let i = 0; i < usersRecipes.length; i++) {
         await client.query(
             'DELETE FROM like_T WHERE recipe_id=any($1)', [usersRecipes]
@@ -154,14 +155,6 @@ export async function deleteUserObj(username) {
     await client.query(
         "DELETE FROM recipe_T WHERE author=$1", [username]
     );
-    // const chat_ids = (await client.query('SELECT chat_id FROM chat_t WHERE sender_id=$1 OR reciever_id=$1', [username])).rows; // array of objects with chat_ids
-    // const ids = arrayOfObjectsToArray(chat_ids, 'chat_id');
-    // await client.query(
-    //     "DELETE FROM chat_t WHERE sender_id=$1 OR reciever_id=$1", [username]
-    // );
-    // await client.query(
-    //     "DELETE FROM message_t WHERE chat_id = any($1)", [ids]
-    // );
     // delete password
     await client.query(
         "DELETE FROM password_t WHERE username=$1", [username]
@@ -170,7 +163,6 @@ export async function deleteUserObj(username) {
     await client.query(
         "DELETE FROM user_T WHERE username=$1", [username]
     );
-    return JSON.stringify({Status: "SUCCESS", username: username});
 }
 
 // [2] Recipe Functions
@@ -231,51 +223,44 @@ export async function deleteLikeObj(sender, recipe_id) {
 }
 
 // [4] Comment Functions
-async function existsID(id) {
-    const res = await client.query(
-        "SELECT * FROM recipe_T WHERE recipe_id=$1", [id]
-    );
-    return res.rows.length > 0;
-}
+//Makes a comment obj in the database
+//createCommentObj(sender: string, recipeID: string, text: string): void
 export async function createCommentObj(sender, recipeID, text) {
-    const res = await client.query(
-        "INSERT INTO comment_T (sender, recipe_id, content) VALUES ($1, $2, $3);", [sender, recipeID, text]
+    await client.query(
+        "INSERT INTO comment_T (sender, recipe_id, content) VALUES ($1, $2, $3);", [sender, parseInt(recipeID), text]
     );
-    return JSON.stringify({Status: 'SUCCESS'});
 }
+//Returns comment obj information for the specified comment_id
+//getCommentInfo(commentID: string): { contains comment info }
 export async function getCommentInfo(commentID) {
     const res = await client.query(
-        "SELECT * FROM comment_T WHERE comment_id=$1", [commentID]
+        "SELECT * FROM comment_T WHERE comment_id=$1", [parseInt(commentID)]
     );
     return JSON.stringify(res.rows[0]);
 }
+//Updates comment obj information
+//updateCommentObj(commentID: string, text: string): void
 export async function updateCommentObj(commentID, text) {
-    const res = await client.query(
-        "UPDATE comment_T SET content=$1 WHERE comment_T.comment_id=$2", [text, commentID]
+    await client.query(
+        "UPDATE comment_T SET content=$1 WHERE comment_T.comment_id=$2", [text, parseint(commentID)]
     );
-    return JSON.stringify({status: "SUCCESS"});
 }
+//Checks if a certain comment exists
+//existsComment(commentID: string): boolean
 export async function existsComment(commentID) {
     const res = await client.query(
-        "SELECT * FROM comment_T WHERE comment_id=$1", [commentID]
+        "SELECT * FROM comment_T WHERE comment_id=$1", [parseint(commentID)]
     );
     return res.rows.length > 0;
 }
+//Deletes a comment obj from the database
+//deleteCommentObj(commentID: string): void
 export async function deleteCommentObj(commentID) {
-    const res = await client.query(
-        "DELETE FROM comment_T WHERE comment_id=$1", [commentID]
+    await client.query(
+        "DELETE FROM comment_T WHERE comment_id=$1", [parseint(commentID)]
     );
-    return JSON.stringify({Status: "SUCCESS"});
 }
 
-
-export function tempGetRecipeInfo(recipeID) {
-    return JSON.stringify({recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "pizza.jpg",
-    ingredients: [{"Dough": "3 pounds"}, {"Sauce": "2 gallons"}, {"Cheese" : "3 cups"}], recipeID: 197,
-    instructions: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0],
-    time: "approx 90 minutes", likes:2, rating: 3.5, "ingredients_notes":"Feel free to experiment with toppings!",
-    tips_and_notes: "I love pizza, and I bet you do too! Come check out my profile for more pizza recipes! I'd love to hear about your spin on my recipe!"});
-}
 // [5] Chat Functions
 export var currChat;
 export async function createChat(sender, reciever) {

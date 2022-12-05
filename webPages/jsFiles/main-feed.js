@@ -1,7 +1,8 @@
 import { fixURL } from "./utility.js";
-const USERNAME = window.localStorage.username;
-let curRecipe = null, nextRecipe = null; // the id of the current recipe
+const USERNAME = window.localStorage.getItem('username');
+let curRecipe = null, nextRecipe = null;
 
+// Initializes the next recipe
 async function init() {
     const req = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, { method: 'GET' });
     const res = await fetch(req);
@@ -12,6 +13,7 @@ async function init() {
     }
 }
 
+// Renders two pictures of recipes and info of the current recipe
 async function renderRecipe() {
     // load next recipe
     const request1 = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=' + nextRecipe + '&username=' + USERNAME, { method: 'GET' });
@@ -27,15 +29,12 @@ async function renderRecipe() {
         document.getElementById('creator_bottom').innerHTML = json1.author;
         renderPreferences(document.getElementById('preferences'), json1.preferences);
         renderTime(document.getElementById('time'), json1.prep_time)
-
         // INGREDIENTS
         const ingredList = document.getElementById('ingredients');
         renderIngredients(ingredList, json1.ingredients);
-
         // INSTRUCTIONS
         const instructionsHolder = document.getElementById('instructions');
         renderInstructions(instructionsHolder, json1.instructions);
-
         // TIPS AND NOTES
         renderTips(document.getElementById('tips_and_notes'), json1.tips_and_notes);
     }
@@ -55,8 +54,8 @@ async function renderRecipe() {
         nextRecipe = json2.recipe_id;
         document.getElementById('next_pic').setAttribute('src', json2.recipe_picture);
     }
-
 }
+//renderTips(tipsElement: DOM element, tips: string): void
 function renderTips(tipsElement, tips) {
     tips = tips.split('\\n');
     for (let i = 0; i < tips.length; i++) {
@@ -64,10 +63,12 @@ function renderTips(tipsElement, tips) {
         tipsElement.appendChild(document.createElement('br'));
     }
 }
+//renderTime(timeElement: DOM element, prepTime: string): void
 function renderTime(timeElement, prepTime) {
     const times = ['Less than 30 min', 'Approx 30 min', '30 to 90 min', 'Approx 90 min', '90 to 120 min', 'Approx 120 min', 'More than 120 min'];
     timeElement.appendChild(document.createTextNode('  ' + times[prepTime]));
 }
+//renderInstructions(instructList: DOM element, instructions: string): void
 function renderInstructions(instructList, instructions) {
     instructions = instructions.split('\\n');
     for (let i = 0; i < instructions.length; i++) {
@@ -76,6 +77,7 @@ function renderInstructions(instructList, instructions) {
         instructList.appendChild(listItem);
     }
 }
+//renderIngredients(ingredList: DOM element, ingredients: )
 function renderIngredients(ingredList, ingredients) {
     ingredients = JSON.parse(ingredients);
     for (const ingred of Object.keys(ingredients)) {
