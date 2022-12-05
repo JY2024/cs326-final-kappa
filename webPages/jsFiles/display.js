@@ -12,6 +12,7 @@ const pic_selection = document.getElementById('pic');
 const desc = document.getElementById('text-area');
 const saveBtn = document.getElementById('save');
 
+//Loads the initial data of the user
 async function loadData() {
     const request = new Request(fixURL(window.location.href) + '/user/read?username=' + USERNAME, {method: 'GET'});
     const response = await fetch(request);
@@ -23,7 +24,7 @@ async function loadData() {
         CURPIC = json.profile_picture;
     }
 }
-
+//Saves changes maade
 async function saveChanges() {
     await fetch('/user/update', {
         mode: 'cors',
@@ -37,6 +38,7 @@ async function saveChanges() {
     });
 }
 
+// NAVIGATION
 personal.addEventListener('click', () =>{
     window.location = "/profile-settings-personal-info.html";
 });
@@ -50,11 +52,11 @@ feed.addEventListener('click', () =>{
     window.location = "/main-feed.html";
 });
 
+// EVENT LISTENERS
 saveBtn.addEventListener('click', () => {
     saveChanges();
     window.alert('Changes successfully saved.');
 });
-
 pic_selection.addEventListener('change', async () => {
     const picString = await encodeImageAsURL(pic_selection);
     pic.setAttribute('src', picString);

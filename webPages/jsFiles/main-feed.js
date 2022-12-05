@@ -77,7 +77,7 @@ function renderInstructions(instructList, instructions) {
         instructList.appendChild(listItem);
     }
 }
-//renderIngredients(ingredList: DOM element, ingredients: )
+//renderIngredients(ingredList: DOM element, ingredients: string): void
 function renderIngredients(ingredList, ingredients) {
     ingredients = JSON.parse(ingredients);
     for (const ingred of Object.keys(ingredients)) {
@@ -89,6 +89,7 @@ function renderIngredients(ingredList, ingredients) {
         ingredList.appendChild(listItem);
     }
 }
+//renderPreferences(element: DOM element, prefArr: string): void
 function renderPreferences(element, prefArr) {
     const preferencesNames = ['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free', 'Pescetarian', 'Keto', 'Low Carb', 'High Protein', 'No Shellfish', 'No Nuts', 'No Soy', 'Sugar Free'];
     // <span class="badge rounded-pill text-bg-primary">Dairy Free</span> <span class="badge rounded-pill text-bg-danger">Spice</span> <span class="badge rounded-pill text-bg-success">Vegan</span>
@@ -103,7 +104,7 @@ function renderPreferences(element, prefArr) {
         }
     }
 }
-
+//Creates a like object made by the user
 function addLikeByUser() {
     fetch('/recipe/like/new', {
         mode: 'cors',
@@ -113,12 +114,12 @@ function addLikeByUser() {
         },
         body: "username=" + USERNAME + "&recipe_id=" + curRecipe
     })
-        .then(function (data) {
-            alert("Recipe " + recipe_id + " successfully liked\n");
-        })
-        .catch(function (error) {
-            console.log('Request failed', error);
-        });
+    .then(function (data) {
+        alert("Recipe " + recipe_id + " successfully liked\n");
+    })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
 }
 
 // NAVIGATION
@@ -148,6 +149,5 @@ yesBtn.addEventListener('click', () => {
     window.localStorage.setItem('cur_recipe_id', JSON.stringify(curRecipe));
     window.location = "/recipe.html";
 });
-
 
 window.onload = init;

@@ -9,6 +9,7 @@ const saveBtn = document.getElementById('save');
 const location = document.getElementById('location');
 const checkBoxes = document.getElementsByClassName('form-check-input');
 
+//Loads initial data
 async function loadData() {
     const request = new Request(fixURL(window.location.href) + '/user/read?username=' + USERNAME, { method: 'GET' });
     const response = await fetch(request);
@@ -18,6 +19,7 @@ async function loadData() {
         renderPreferences(json.preferences);
     }
 }
+//renderPreferences(preferences: string)
 function renderPreferences(preferences) {
     const prefArr = Array.from(checkBoxes);
     for (let i = 0; i < preferences.length; i++) {
@@ -26,7 +28,7 @@ function renderPreferences(preferences) {
         }
     }
 }
-
+//Saves changes
 async function saveChanges() {
     let user_pref = '';
     const prefs = Array.from(checkBoxes);
@@ -44,7 +46,6 @@ async function saveChanges() {
         console.log('Request failed', error);
     });
 }
-
 
 window.onload = loadData;
 

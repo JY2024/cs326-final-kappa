@@ -8,6 +8,7 @@ const pass = document.getElementById('password');
 const saveBtn = document.getElementById('save');
 const delBtn = document.getElementById('delete_user');
 
+// NAVIGATION
 display.addEventListener('click', () =>{
     window.location = "/profile-settings-profile-display.html";
 });
@@ -21,7 +22,9 @@ feed.addEventListener('click', () =>{
     window.location = "/main-feed.html";
 });
 
+// EVENT LISTENERS
 saveBtn.addEventListener('click', async () => {
+    // update the user's password
     await fetch('/user/updatePass', {
         mode: 'cors',
         method: 'POST',
@@ -49,6 +52,6 @@ delBtn.addEventListener('click', async () => {
             console.log('Request failed', error);
         });
     }
-    window.location = "/";
-    window.localStorage.setItem('username', '');
+    window.location = "/"; // redirect
+    window.localStorage.setItem('username', ''); // clear username in storage
 });
