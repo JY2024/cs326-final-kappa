@@ -10,11 +10,8 @@ CREATE TABLE user_T (
     hide_recipes    BOOLEAN NOT NULL
 );
 
---INSERT INTO user_T (username, profile_picture, display_name, "location", preferences, "description", hide_recipes)
---    VALUES ()
-
 INSERT INTO user_T (username, profile_picture, display_name, "location", preferences, "description", hide_recipes)
-    VALUES ('bellaiscool', 'webPages/images/profilepic.jpg','Bella Chilton', 'Littleton MA', '000000000000', 'Hi, I''m Bella. I like food and I like birds.', false);
+    VALUES ('bellaiscool', './images/profilepic.jpg','Bella Chilton', 'Littleton MA', '111001000001', 'Hi, I''m Bella. I like food and I like birds.', false);
 
 INSERT INTO user_T (username, profile_picture, display_name, "location", preferences, "description", hide_recipes)
     VALUES ('alex1998', 'webPages/images/person.jpg','Alex Chilton', 'Boston MA', '100000000000', 'Hi, I''m Alex. I''m Bella''s brother. Birds are okay I guess.', true);

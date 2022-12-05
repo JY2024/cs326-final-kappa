@@ -14,7 +14,7 @@ const client = new Client({
     user: 'postgres',
     host: 'localhost',
     database: 'postgres',
-    password: '',
+    password: 'Nintendo64!',
     port: 5432,
 })
 client.connect();
@@ -41,6 +41,11 @@ export async function authUserObj(req) {
 export async function createUserObj(username, password, displayName) {
     const res = await client.query(
         "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description, hide_recipes) VALUES ($1, $2, $3, $4, $5, $6, $7);", [username, 'default profile picture', displayName, '', '000000000000', '', false]
+    );
+    let saltHash = auth.encrypt(password);
+    console.log(saltHash);
+    await client.query(
+        "INSERT INTO password_T (username, salt, pwEncrypted) VALUES ($1, $2, $3);", [username, saltHash[0], saltHash[1]]
     );
     return JSON.stringify({status: 'SUCCESS', username: username, password: password, displayName: displayName});
 }

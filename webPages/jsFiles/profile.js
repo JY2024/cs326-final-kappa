@@ -30,7 +30,68 @@ function fetchUserInfo(){
 }
 
 function displayUserInfoParser(userJSON){
+    let username = userJSON.username;
+    let prefNumArr = userJSON.preferences;
+    let desc = userJSON.description;
+    let pic = userJSON.profile_picture;
+    let realname = userJSON.display_name;
+    let prefArr = [];
+    for(const index in prefNumArr){
+        if(index === "0" && prefNumArr[index] === "1"){
+            prefArr.push("Vegetarian");
+        }
+        if(index === "1" && prefNumArr[index] === "1"){
+            prefArr.push("Vegan");
+        }
+        if(index === "2" && prefNumArr[index] === "1"){
+            prefArr.push("Gluten Free");
+        }
+        if(index === "3" && prefNumArr[index] === "1"){
+            prefArr.push("Dairy Free");
+        }
+        if(index === "4" && prefNumArr[index] === "1"){
+            prefArr.push("Pescetarian");
+        }
+        if(index === "5" && prefNumArr[index] === "1"){
+            prefArr.push("Keto");
+        }
+        if(index === "6" && prefNumArr[index] === "1"){
+            prefArr.push("Low Carb");
+        }
+        if(index === "7" && prefNumArr[index] === "1"){
+            prefArr.push("Protein");
+        }
+        if(index === "8" && prefNumArr[index] === "1"){
+            prefArr.push("Shellfish");
+        }
+        if(index === "9" && prefNumArr[index] === "1"){
+            prefArr.push("Nuts");
+        }
+        if(index === "10" && prefNumArr[index] === "1"){
+            prefArr.push("Soy");
+        }
+        if(index === "11" && prefNumArr[index] === "1"){
+            prefArr.push("Sugar Free");
+        }
+    }
+    userCard(username, realname, prefArr, desc, pic);
+}
 
+function userCard(username, realname, prefs, desc, pic){
+    document.getElementById("userName").innerText = username;
+    document.getElementById("realName").innerText = realname;
+    document.getElementById("userDescription").innerText = desc;
+    document.getElementById("profPic").setAttribute("src", pic);
+    let prefCard = document.getElementById("prefIcons");
+    for(const index in prefs){
+        console.log(prefs[index]);
+        let currDiv = document.createElement("span");
+        let currID = "badge" + prefs[index];
+        currDiv.setAttribute("id", currID);
+        currDiv.setAttribute("class", "badge rounded-pill text-bg-success");
+        currDiv.innerText = prefs[index];
+        prefCard.appendChild(currDiv);
+    }
 }
 
 function fetchSavedRecipes(){

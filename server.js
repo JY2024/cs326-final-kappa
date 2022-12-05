@@ -27,7 +27,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/index.html'));
 });
     // Login
-//app.get('/login?:query', async (req, res) => {
 app.post('/login', async (req, res) => {
     console.log('user tried to login');
     const ret = await db.authUserObj(req); 
@@ -100,7 +99,7 @@ app.get('/profile-settings-security.html', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-security.html'));
 });
 // [1] User Functions
-app.get('/user/new', createUser);
+app.post('/user/new', createUser);
 app.get('/user/read', readUser);
 app.post('/user/update/:name', updateName);
 app.post('/user/update/:location', updateLocation);
@@ -167,11 +166,23 @@ async function createUser(req, res) {
     //     req.query.displayName == undefined) {
     //     return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
     // }
-    const result = await db.createUserObj(req.query.username, req.query.password, req.query.displayName);
+    const result = await db.createUserObj(req.body.username, req.body.password, req.body.displayName);
     res.send(result);
     res.end();
 }
-
+/*
+app.post('/login', async (req, res) => {
+    console.log('user tried to login');
+    const ret = await db.authUserObj(req); 
+    console.log("recieved status update ", ret.status);
+    if(ret.status === "ERROR"){
+        res.sendFile(path.join(__dirname, '/webPages/htmlFiles/incorrectLogin.html'));
+    }
+    else{
+        res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
+    }
+});
+*/
 
 // read user info, NOTE: TEST AND THEN FIX THE ROUTES AT THE TOP TO INCLUDE ERROR HANDLERS
 async function readUser(req, res) {
