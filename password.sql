@@ -17,3 +17,12 @@ INSERT INTO password_T (username, salt, pwEncrypted)
 
 INSERT INTO password_T (username, salt, pwEncrypted)
     VALUES ('awesomeDaksh', '7c759b0de813ba702b999b47547f7107', '7a4e1f078bc7800d93d3991005c1edd3abfa77fa0026b1955e2dc107f1d0b48cf50bd7b8ff4e4d2cd369093f5910acc134cf274630e505a408a8a9119a05a8b5');
+
+INSERT INTO password_T (username, salt, pwEncrypted)
+    VALUES ('awesomeMom27', '5bd68f1471fd928932a29becc651699f', 'cc17860ce092147e20287016582462e9af212a17102f91b70070c0f6ea478f507e13fd8cb7e3e4bcf67457723072d1e317742c1510998e0e70206b64e6ba73dd');
+
+INSERT INTO password_T (username, salt, pwEncrypted)
+    VALUES ('jess<3sanimals', '6a859886ffd2c843081bbe70cb1adffc', '716fb0322980ea0a16d874178d00762f11ea186a82e37caf2e0ae1096c8cb0ec0f3c84a732e1bf282e919cee0fffce1d1adce5a3727afc8a369134ce44d79bf7');
+
+INSERT INTO password_T (username, salt, pwEncrypted)
+    VALUES ('tom_is_the_bomb', '6a859886ffd2c843081bbe70cb1adffc', '716fb0322980ea0a16d874178d00762f11ea186a82e37caf2e0ae1096c8cb0ec0f3c84a732e1bf282e919cee0fffce1d1adce5a3727afc8a369134ce44d79bf7');
