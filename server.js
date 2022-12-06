@@ -93,7 +93,7 @@ app.get('/profile-settings-security.html', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-security.html'));
 });
 // [1] User Functions
-app.get('/user/new', createUser);
+app.post('/user/new', createUser);
 app.get('/user/read', readUser);
 app.post('/user/update', updateUser);
 app.post('/user/updatePass', updateUserPass);
@@ -106,7 +106,6 @@ app.get('/recipe/read', readRecipe);
 app.get('/recipe/list/my', async (req, res) => {res.send(await readMyRecipes(req, res));});
 app.get('/recipe/list/saved', async (req, res) => {res.send(await readSavedRecipes(req, res));     });
 app.get('/recipe/detail', (req, res) => {    res.send(readRecipe(req, res));    });
-app.get('/recipe/tempread', tempReadRecipe);
 
 // [3] Like Functions
 app.post('/recipe/like/new', async (req, res) =>       {res.send(await createLike(req, res));   });
@@ -121,7 +120,7 @@ app.get('/comment/read', async (req,res) =>{
 app.post('recipe/comment/update', async (req, res) => {
     res.send(await db.updateCommentObj(req.body['commentID'], req.body['text']));
 })
-app.get('/recipe/comment/delete', deleteComment);
+app.post('/recipe/comment/delete', deleteComment);
 
 // [5] Chat Functions
 app.post('/chat/new?:id', async (req, res) => {
@@ -161,8 +160,8 @@ app.get('/message/view?:id', async (req, res) => {
 
 // USER FUNCTIONS
 async function createUser(req, res) {
-    const result = await db.createUserObj(req.query.username, req.query.password, req.query.displayName);
-    res.send(result);
+    await db.createUserObj(req.body.username, req.body.password, req.body.displayName);
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
     res.end();
 }
 async function readUser(req, res) {
@@ -229,37 +228,17 @@ async function deleteUser(req, res){
         // ex. /recipe/new
         // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
         // JSON status returned
-        res.send(await db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions, req.body.preferences, req.body.time));
+        res.send(await db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions, req.body.preferences, req.body.time, req.body.recipe_picture));
         res.end();
     }
     
     async function readRecipe(req, res) {
         if (parseInt(req.query.recipeID) === 0) {
-            res.send(db.getRandomRecipe(req.query.username));
+            res.send(await db.getRandomRecipe(req.query.username));
         } else {
             const result = await db.getRecipeInfo(req.query.recipeID);
             res.send(result);
         }
-        console.log('you made it to res.end');
-        res.end();
-    }
-    
-    function readRecipeErrorHandler(req, res, next) {
-        if (false) {
-            console.log('entered recipe error handler');
-            // sendError(res, 'description-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
-            res.send(JSON.stringify({ result : 'error'}));
-        } else {
-            console.log('entered other part');
-            next();
-        }
-    }
-    
-    function tempReadRecipe(req, res) {
-        console.log('entered readRecipe');
-        // ex. /recipe/read?recipeID=1234
-        console.log('req query recipe id is ' + req.query.recipeID);
-        res.send(db.tempGetRecipeInfo(req.query.recipeID));
         res.end();
     }
     

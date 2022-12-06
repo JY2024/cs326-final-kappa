@@ -7,8 +7,8 @@ async function init() {
     const req = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, { method: 'GET' });
     const res = await fetch(req);
     if (res.ok) {
-        const json2 = await res.json();
-        nextRecipe = json2.recipe_id;
+        const json = await res.json();
+        nextRecipe = json.recipe_id;
         await renderRecipe();
     }
 }

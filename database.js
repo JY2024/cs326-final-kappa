@@ -11,6 +11,9 @@ client.connect();
 
 import * as SQL from './webPages/jsFiles/querybuilder.js';
 import * as auth from './auth.js';
+import { arrayOfObjectsToArray, atLeastFiveMatch } from './webPages/jsFiles/utility.js';
+import * as miniCrypt from './miniCrypt.js';
+const MC = miniCrypt.MiniCrypt;
 
 // DataBase Functions, NOTE: Still returns dummy data
 // Authorization
@@ -30,7 +33,7 @@ export async function authUserObj(req) {
 // [1] User Functions
 export async function createUserObj(username, password, displayName) {
     const res = await client.query(
-        "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description, hide_recipes) VALUES ($1, $2, $3, $4, $5, $6, $7);", [username, 'default profile picture', displayName, '', '000000000000', '', false]
+        "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description, hide_recipes) VALUES ($1, $2, $3, $4, $5, $6, $7);", [username, '', displayName, '', '000000000000', '', false]
     );
     let saltHash = auth.encrypt(password);
     console.log(saltHash);
@@ -102,7 +105,13 @@ export async function updateUser(username, profile_pic, location, pref, desc, hi
     }
     await client.query(str + 'hide_recipes=$1 WHERE username = $2', [hide_recipes === 'same' ? user_hide_recipes : parseInt(hide_recipes), username]);
 }
-
+//Updates the specified user's password
+//updateUserPass(username: string, password: string): void
+export async function updateUserPass(username, password) {
+    const mc = new MC();
+    const [salt, hash] = mc.hash(password);
+    await client.query('UPDATE password_t SET salt=$1, pwEncrypted=$2 WHERE username=$3', [salt, hash, username]);
+}
 export async function existsUser(username) {
     const res = await client.query(
         "SELECT * FROM user_T WHERE username=$1", [username]
@@ -150,12 +159,12 @@ export async function deleteUserObj(username) {
 
 // [2] Recipe Functions
 export async function getRandomRecipe(username) {
-    const recipes = JSON.parse(getOtherRecipes(username));
+    const recipes = JSON.parse(await getOtherRecipes(username));
     return JSON.stringify(recipes[Math.floor(Math.random() * recipes.length)]);
 }
-export async function createRecipeObj(title, author, ingredients, instructions, preferences, time) {
+export async function createRecipeObj(title, author, ingredients, instructions, preferences, time, pic) {
     try{
-        await client.query(SQL.sqlCreateRecipe(),[title,author,ingredients,instructions,preferences,time]);
+        await client.query(SQL.sqlCreateRecipe(),[title,author,pic,instructions,ingredients,preferences,time, 'Enjoy!']);
     }
     catch(err){
         console.log(err.stack);

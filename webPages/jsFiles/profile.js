@@ -1,3 +1,4 @@
+import { encodeImageAsURL } from "./utility.js";
 const settings = document.getElementById('settings');
 settings.addEventListener('click', () =>{
     window.location = "/profile-settings-personal-info.html";
@@ -81,7 +82,7 @@ function userCard(username, realname, prefs, desc, pic){
     document.getElementById("userName").innerText = username;
     document.getElementById("realName").innerText = realname;
     document.getElementById("userDescription").innerText = desc;
-    document.getElementById("profPic").setAttribute("src", pic);
+    document.getElementById("profPic").setAttribute("src", pic.split(' ').join('+'));
     let prefCard = document.getElementById("prefIcons");
     for(const index in prefs){
         console.log(prefs[index]);
@@ -115,12 +116,14 @@ function fetchMyRecipes(){
     })
 }
 
-function postRecipe(){
+async function postRecipe(){
+    console.log('you are in postRecioe');
  var recipeName=document.getElementById('titleInput').value
  var author= localStorage.getItem('username');
  //var author=document.getElementById('author').value
  var ingredients=document.getElementById('ingredientInput').value
  var instructions=document.getElementById('intructionInput').value
+ const picString = await encodeImageAsURL(document.getElementById('upload'));
  var preferencesArr=[document.getElementById('prefVegetarian').checked, document.getElementById('prefVegan').checked,document.getElementById('prefGlutenFree').checked,document.getElementById('prefDairyFree').checked,document.getElementById('prefPesc').checked,document.getElementById('prefKeto').checked,document.getElementById('prefLowCarb').checked,document.getElementById('prefProtein').checked,document.getElementById('allergenShell').checked,document.getElementById('allergenNuts').checked,document.getElementById('allergenSoy').checked,document.getElementById('prefSugarFree').checked]
  var preferences = "";
  for(let i = 0; i <12;i++){
@@ -149,7 +152,7 @@ function postRecipe(){
     //ingredients: ingredients,
     //instructions: instructions,
     //},
-    body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions + "&preferences=" + preferences + "&time=" + time
+    body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions + "&preferences=" + preferences + "&time=" + time + "&recipe_picture=" + picString
   })
     .then(function (data) {
         console.log('Request succeeded with JSON response', data);
@@ -253,7 +256,7 @@ function displayRecipeParser(recipeList, mine){
         if(mine === true){
             let likes = (recipeList[index])["likes"];
             let comments = (recipeList[index])["comments"];
-            myRecipeCard(curName, likes, comments, curID, img);
+            myRecipeCard(curName, likes, comments, curID, img.split(' ').join('+'));
         }
         else{
             let author = (recipeList[index])["author"];
