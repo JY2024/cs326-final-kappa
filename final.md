@@ -1,6 +1,7 @@
 # Kappa
 ## Nice To Meat You
 Fall 2022
+Link to website: 
 ### Team Members
 Jiaqi "Jay" Ye (JY2024)\
 Daksh Dangi (Kasagi009)\
@@ -45,17 +46,6 @@ There are no special permissions for specific users. All UI views are accessible
 ### Conclusion
 We definitely learned a lot throughout the design and implementation. There are so many tools we were introduced to that we had almost no experience with before: first, we learned how to use a framework (Bootstrap) to layout our HTML pages, introducing us to basic design concepts. Second, we learned how to do DOM surgery to change the visuals of our pages on-demand. Third, we learned a lot about backend development using routing with Express, get and post requests from the client to the backend, managing databases with postgresql, authentication using salts and hashes, and deployment on Heroku. Finally, we also learned what it is really like to do full-stack web development via a collaborative process.
 
-Our team did encounter some difficulties while working on this project. Because we had little to no experience with some aspects of this project, we spent a substantial amount of time learning to use new tools via outside resources and debugging when things went wrong (which was often). 
+Our team did encounter some difficulties while working on this project. Because we had little to no experience with some aspects of this project, we spent a substantial amount of time learning to use new tools via outside resources and debugging when things went wrong (which was often). There were a lot of technical hurdles because we were unfamiliar with how to use those tools. For example, it was hard to get started on using express. We didn't know how to structure the backend of a website. We also learned that it's difficult to work on the project separately because all of our components are so interconnected that it was easy to cause conflicts with other group members' parts if we weren't careful. For example, it was hard to figure out how to merge our code together for milestone3.
 
-Difficulties
-- working while not together
-- merging together code
-- learning things on the spot, using outside resources
-
-What we would've liked to know:
-- a bit more preparation
-- an overview in class / clearer milestone guidelines and instructions
-- additional resources
-
-Technical Hurdles
-- learning things on the spot
+Before starting this project, we would've liked a bit more preparation in regards to the tools that we were required to use. Things such as overviews in class, more in-depth introductions to some of the tools we needed to use, and clearer milestone guidelines and instructions would've been really helpful for our learning and progress. 
