@@ -1,0 +1,130 @@
+<!-- Main Feed-->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./CSSFiles/main-feed-styles.css">
+    <script type="module" src="./jsFiles/main-feed.js" defer></script>
+    <title>Discover</title>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <button class="btn" id="profile"><a class="nav-link" href="#"><i
+                                    class="bi bi-person-circle"></i></a></button>
+                    </li>
+                </ul>
+            </div>
+            <!-- Right -->
+            <div class="d-flex align-items-center">
+                <!-- Profile -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <button class="btn" id="settings"><a class="nav-link" href="#"><i
+                                    class="bi bi-gear-fill"></i></a></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="top-buffer"></div>
+    <div class="container-fluid">
+        <!-- YES/NO Buttons -->
+        <div class="row justify-content-md-center">
+            <div class="col-3 btn-group" role="group">
+                <button type="button" class="btn btn-danger" id="no" value="no"><i
+                        class="bi bi-emoji-frown-fill"></i></button>
+                <button type="button" class="btn btn-success" id="yes" value="yes"><i
+                        class="bi bi-emoji-heart-eyes-fill"></i></button>
+            </div>
+        </div>
+        <div class="top-buffer"></div>
+        <!-- Food Pictures -->
+        <div class="row justify-content-md-center">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <img id="picture">
+            </div>
+            <div class="col-4 justify-content-center">
+                <span id="next_text">Coming Up Next &#128523</span><br><br>
+                <img id="next_pic">
+            </div>
+        </div>
+        <div class="top-buffer"></div>
+        <!-- Recipe Box -->
+        <div class="row justify-content-md-center">
+            <div class="col-6">
+                <div class="container border border-dark" id="recipe-box">
+                    <br>
+                    <h3 id="recipe_name"></h3>
+                    <h5 id="creator"></h5>
+                    <!-- Icons for quick information about the recipe-->
+                    <span id="preferences"></span><br>
+                    <i class="bi bi-alarm-fill"></i><span id="time"></span><br>
+                    <!-- Rating -->
+                    <span id="ratings"></span><br>
+                    <hr>
+                    <!-- Recipe-->
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Ingredients</h5>
+                            </div>
+                            <p class="mb-1">
+                                <ul id="ingredients"></ul>
+                                <small id="ingredients_notes"></small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">How to Make</h5>
+                            </div>
+                            <p class="mb-1">
+                                <span id="instructions"></span>
+                            </p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Tips and Notes</h5>
+                            </div>
+                            <p class="mb-1">
+                                <small id="tips_and_notes"></small><br>
+                                <small class="text-muted" id="creator_bottom"></small>
+                            </p>
+                        </a>
+                    </div>
+                    <a role="button" class="collapsed" data-toggle="collapse" href="#collapseBox"
+                        aria-expanded="false"></a>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br>
+    </div>
+    <!-- Required scripts: jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
