@@ -79,13 +79,10 @@ function renderInstructions(instructList, instructions) {
 }
 //renderIngredients(ingredList: DOM element, ingredients: )
 function renderIngredients(ingredList, ingredients) {
-    ingredients = JSON.parse(ingredients);
-    for (const ingred of Object.keys(ingredients)) {
+    let temp = ingredients.split('\\n');
+    for (const ingred of temp) {
         const listItem = document.createElement('li');
-        const amt = document.createElement('small');
-        amt.appendChild(document.createTextNode(ingredients[ingred]));
-        listItem.appendChild(document.createTextNode(ingred + '  '));
-        listItem.appendChild(amt);
+        listItem.appendChild(document.createTextNode(ingred));
         ingredList.appendChild(listItem);
     }
 }
