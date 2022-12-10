@@ -177,7 +177,7 @@ async function readSavedRecipes(req, res){
     return await db.getSavedRecipes(req.query.username);
 }
 async function updateUser(req, res) {
-    const result = await db.updateUser(req.body['username'], req.body['profile_picture'], req.body['location'], req.body['preferences'], req.body['description'], req.body['hide_recipes'], req.body['display_name']);
+    const result = await db.updateUser(req.body['username'], req.body['profile_picture'], req.body['location'], req.body['preferences'], req.body['description'], req.body['display_name']);
     res.send(result);
     res.end();
 } 

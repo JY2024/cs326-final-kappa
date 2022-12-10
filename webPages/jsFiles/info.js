@@ -39,7 +39,7 @@ async function saveChanges() {
         headers: {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
-        body: "username=" + USERNAME + "&profile_picture=same&location=" + location.value + '&preferences=' + user_pref + '&description=same&hide_recipes=same&display_name=same'
+        body: "username=" + USERNAME + "&profile_picture=same&location=" + location.value + '&preferences=' + user_pref + '&description=same&display_name=same'
     }).catch(function (error) {
         console.log('Request failed', error);
     });

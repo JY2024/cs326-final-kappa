@@ -22,6 +22,7 @@ client.connect();
 import * as SQL from './webPages/jsFiles/querybuilder.js';
 import * as auth from './auth.js';
 import { arrayOfObjectsToArray, atLeastFiveMatch } from './webPages/jsFiles/utility.js';
+import { resources } from './webPages/jsFiles/pic-resources.js';
 import * as miniCrypt from './miniCrypt.js';
 const MC = miniCrypt.MiniCrypt;
 
@@ -43,7 +44,7 @@ export async function authUserObj(req) {
 // [1] User Functions
 export async function createUserObj(username, password, displayName) {
     const res = await client.query(
-        "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description) VALUES ($1, $2, $3, $4, $5, $6);", [username, '', displayName, '', '000000000000', '']
+        "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description) VALUES ($1, $2, $3, $4, $5, $6);", [username, resources[1].default, displayName, '', '000000000000', '']
     );
     let saltHash = auth.encrypt(password);
     console.log(saltHash);
@@ -94,8 +95,7 @@ export async function getOtherRecipes(username) {
     }));
 }
 
-export async function updateUser(username, profile_pic, location, pref, desc, hide_recipes, display_name) {
-    const user_hide_recipes = JSON.parse(await getUserInfo(username)).hide_recipes; // user's hide recipe setting
+export async function updateUser(username, profile_pic, location, pref, desc, display_name) {
     // build query string
     let str = 'UPDATE user_T SET';
     if (profile_pic !== 'same') {
@@ -113,7 +113,7 @@ export async function updateUser(username, profile_pic, location, pref, desc, hi
     if (display_name !== 'same') {
         str += ' display_name = \'' + display_name + '\',';
     }
-    await client.query(str + 'hide_recipes=$1 WHERE username = $2', [hide_recipes === 'same' ? user_hide_recipes : parseInt(hide_recipes), username]);
+    await client.query(str.substring(0, str.length - 1) + 'WHERE username = $1', [username]);
 }
 //Updates the specified user's password
 //updateUserPass(username: string, password: string): void

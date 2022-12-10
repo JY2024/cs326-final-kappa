@@ -31,7 +31,7 @@ async function saveChanges() {
         headers: {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
-        body: 'username=' + USERNAME + '&profile_picture=' + CURPIC + '&location=same&preferences=same&description=' + desc.value + '&hide_recipes=same&display_name=' + display_name.value
+        body: 'username=' + USERNAME + '&profile_picture=' + CURPIC + '&location=same&preferences=same&description=' + desc.value + '&display_name=' + display_name.value
     }).catch(function (error) {
         console.log('Request failed', error);
     });
