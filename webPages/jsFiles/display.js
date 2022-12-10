@@ -43,9 +43,6 @@ personal.addEventListener('click', () =>{
 security.addEventListener('click', () =>{
     window.location = "/profile-settings-security.html";
 });
-profile.addEventListener('click', () =>{
-    window.location = "/profile.html";
-});
 feed.addEventListener('click', () =>{
     window.location = "/main-feed.html";
 });

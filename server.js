@@ -43,6 +43,10 @@ app.post('/login', async (req, res) => {
         res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
     }
 });
+    // Log Out
+app.get('/logout.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/index.html'));
+});
 app.get('/recipe.html', (req, res) => {
     console.log('recipe check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/recipe.html'));

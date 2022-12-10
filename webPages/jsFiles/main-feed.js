@@ -5,7 +5,6 @@ let curRecipe = null, nextRecipe = null;
 
 // Initializes the next recipe
 async function init() {
-    console.log('your username in main feed is ' + USERNAME);
     const req = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, { method: 'GET' });
     const res = await fetch(req);
     if (res.ok) {
@@ -136,13 +135,10 @@ function addLikeByUser() {
 
 // NAVIGATION
 const settings = document.getElementById('settings');
-const profile = document.getElementById('profile');
-profile.addEventListener('click', () => {
-    window.location = "/profile.html";
-});
 settings.addEventListener('click', () => {
     window.location = "/profile-settings-personal-info.html";
 });
+
 
 // EVENT LISTENERS
 const noBtn = document.getElementById('no');

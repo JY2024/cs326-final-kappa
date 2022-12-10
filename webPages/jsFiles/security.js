@@ -14,9 +14,6 @@ display.addEventListener('click', () => {
 personal.addEventListener('click', () => {
     window.location = "/profile-settings-personal-info.html";
 });
-profile.addEventListener('click', () => {
-    window.location = "/profile.html";
-});
 feed.addEventListener('click', () => {
     window.location = "/main-feed.html";
 });
