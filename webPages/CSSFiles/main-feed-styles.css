@@ -11,8 +11,8 @@ body {
     background-color: rgba(247,242,239,255);
 }
 #picture {
-    width: 500px;
-    height: 500px;
+    max-width: 100%;
+    height: auto;
     border: 5px solid rgb(136, 109, 19);
 }
 #next_pic {
