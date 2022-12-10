@@ -170,7 +170,12 @@ export async function deleteUserObj(username) {
 // [2] Recipe Functions
 export async function getRandomRecipe(username) {
     const recipes = JSON.parse(await getOtherRecipes(username));
-    return JSON.stringify(recipes[Math.floor(Math.random() * recipes.length)]);
+    if (recipes.length === 0) {
+        return JSON.stringify({error: 'no more recipes'});
+    }
+    const obj = recipes[Math.floor(Math.random() * recipes.length)];
+    obj['length'] = 1;
+    return JSON.stringify(obj);
 }
 export async function createRecipeObj(title, author, ingredients, instructions, preferences, time, pic) {
     try{

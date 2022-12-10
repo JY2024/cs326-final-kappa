@@ -43,14 +43,6 @@ app.post('/login', async (req, res) => {
         res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
     }
 });
-//Recipe Page
-
-// app.post('/recipe/view?:id', (req, res) => {
-//     console.log('user tried to see recipe: ', req.query.recipeID);
-//     db.updateCurrentRecipe(req.query.recipeID);
-//     res.send(db.tempGetRecipeInfo(req.query.recipeID));
-//     res.end();
-// });
 app.get('/recipe.html', (req, res) => {
     console.log('recipe check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/recipe.html'));
@@ -62,6 +54,10 @@ app.get('/chat.html', (req, res) => {
     // To Main Feed
 app.get('/main-feed.html', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
+});
+    // To Main Feed (Uh Oh)
+app.get('/uhoh.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/uhoh.html'));
 });
     // To Profile Page
 app.get('/profile.html', (req, res) => {
@@ -239,7 +235,9 @@ async function deleteUser(req, res){
     
     async function readRecipe(req, res) {
         if (parseInt(req.query.recipeID) === 0) {
-            res.send(await db.getRandomRecipe(req.query.username));
+            const result = await db.getRandomRecipe(req.query.username);
+            // console.log('result is ' + result);
+            res.send(result);
         } else {
             const result = await db.getRecipeInfo(req.query.recipeID);
             res.send(result);
