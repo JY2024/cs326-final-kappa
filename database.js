@@ -43,7 +43,7 @@ export async function authUserObj(req) {
 // [1] User Functions
 export async function createUserObj(username, password, displayName) {
     const res = await client.query(
-        "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description, hide_recipes) VALUES ($1, $2, $3, $4, $5, $6, $7);", [username, '', displayName, '', '000000000000', '', false]
+        "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description) VALUES ($1, $2, $3, $4, $5, $6);", [username, '', displayName, '', '000000000000', '']
     );
     let saltHash = auth.encrypt(password);
     console.log(saltHash);
@@ -174,7 +174,9 @@ export async function getRandomRecipe(username) {
         return JSON.stringify({error: 'no more recipes'});
     }
     const obj = recipes[Math.floor(Math.random() * recipes.length)];
-    obj['length'] = 1;
+    if (recipes.length === 1) {
+         obj['length'] = 1;
+    }
     return JSON.stringify(obj);
 }
 export async function createRecipeObj(title, author, ingredients, instructions, preferences, time, pic) {
