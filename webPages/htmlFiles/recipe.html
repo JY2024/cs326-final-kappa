@@ -15,25 +15,25 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-lg fixed-top">
-                <button class="btn" id="profile"><i class="fa-solid fa-user"></i></button>
-                <button class="btn" id="settings"><i class="fa-sharp fa-solid fa-gear"></i></button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/profile.html">Profile</a></li>
+                        <li><a href="/main-feed.html">Explore!</a></li>
+                        <li><a href="/chat.html">Chats</a></li>
+                        <li><a href="/profile-settings-personal-info.html">Settings</a></li>
+                        <li><a href="/logout.html">Log Out</a></li>
+                    </ul>
+                </div>
                 <button class="btn" id="messages"><i class="fa-regular fa-comment"></i></button>
-                <!-- <button class="btn" id="profile"><i class="fa-solid fa-check icon-large"></i></button>
-                <button class="btn" id="profile"><i class="fa-sharp fa-solid fa-xmark icon-large"></i></button> -->
-                
             </nav>
         </header>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-2" id = "prefs">
-                    <!-- <p class="plen" >Time Consuming</p>
-                    <br><br>
-                    <p class="pspice" >Very Spicy</p>
-                    <br><br>
-                    <p class="pveg" >Vegetarian</p>
-                    <br><br><br><br><br><br><br><br><br><br><br><br>
-                    <label for="yummy" class="lyum">Yum Meter</label>
-                    <meter id="yummy" value="80" min="0" max="100">80/100</meter><br> -->
                     <br><br><br>
                     <h3>Preferences:</h3>
                         <span id="preferences"></span>
@@ -49,9 +49,6 @@
                         <div class="col-12 scroll" id = "comments">
                             <h3>Comments:</h3>
                             <span id = "comment"></span>
-                            <!-- <p class="com" id="comment"></p> -->
-                            <!-- <p class="com" >Easy AF!</p> -->
-                            <!-- <br><br><br> -->
                             <label for="comment">Enter your comment here:</label>
                             <input type="text" id="commentHere">
                             <button type="subimt" id="message">Send!</button>
@@ -60,8 +57,7 @@
                 <div class="col-4">
                     <h1>Recipe:</h1>
                     <h4>Ingredients:</h4>
-                        <ul id="ingredients"></ul> <!--used to be a ul-->
-                        <!-- <small id="ingredients_notes"></small> -->
+                        <ul id="ingredients"></ul>
                     <br><br>
                     <h4>Instructions:</h4>
                         <span id="instructions"></span>

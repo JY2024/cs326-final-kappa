@@ -8,13 +8,6 @@ const chatBox = document.getElementById('convo');
 
 var currUser = window.localStorage.getItem('chat-user');
 //change this using local storage later
-
-profile.addEventListener('click', () =>{
-    window.location = "/profile.html";
-});
-feed.addEventListener('click', () =>{
-    window.location = "/main-feed.html";
-});
 chatBox.addEventListener('click', async(e) =>{
     if(e.target.id === "message" && e.target.innerText === "Send!"){
         const message = document.getElementById('comment').value;

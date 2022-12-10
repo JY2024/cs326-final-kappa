@@ -11,12 +11,6 @@ let currRecipe = '';
 let prefArray = ["Vegetarian", "Vegan", "Gluten Free", "Dairy Free", "Pescetarian", "Keto", "Low in Carbs", "High in Protein",
                 "Shellfish", "Nuts", "Soy", "Sugar"];
 
-profile.addEventListener('click', () =>{
-    window.location = "/profile.html";
-});
-settings.addEventListener('click', () =>{
-    window.location = "/profile-settings-personal-info.html";
-});
 chat.addEventListener('click', () =>{
     window.localStorage.setItem('chat-user', currUser);
     window.location = "/chat.html";

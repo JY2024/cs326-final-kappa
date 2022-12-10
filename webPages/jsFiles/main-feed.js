@@ -132,13 +132,6 @@ function addLikeByUser() {
         });
 }
 
-// NAVIGATION
-const settings = document.getElementById('settings');
-settings.addEventListener('click', () => {
-    window.location = "/profile-settings-personal-info.html";
-});
-
-
 // EVENT LISTENERS
 const noBtn = document.getElementById('no');
 const yesBtn = document.getElementById('yes');

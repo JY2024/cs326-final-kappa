@@ -15,8 +15,19 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-lg fixed-top">
-                <button class="btn" id="profile"><i class="fa-solid fa-user"></i></button>
-                <button class="btn" id="feed"><i class="fa-solid fa-pizza-slice"></i></button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/profile.html">Profile</a></li>
+                        <li><a href="/main-feed.html">Explore!</a></li>
+                        <li><a href="/chat.html">Chats</a></li>
+                        <li><a href="/profile-settings-personal-info.html">Settings</a></li>
+                        <li><a href="/logout.html">Log Out</a></li>
+                    </ul>
+                </div>
                 <!-- <i class="fa-solid fa-user"></i>
                 <i class="fa-solid fa-pizza-slice"></i> -->
             </nav>
