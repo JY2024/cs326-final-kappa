@@ -57,6 +57,9 @@ saveBtn.addEventListener('click', () => {
 
 pic_selection.addEventListener('change', async () => {
     const picString = await encodeImageAsURL(pic_selection);
+    if (picString.length > 1000000) {
+        window.alert('Image too large.');
+    }
     pic.setAttribute('src', picString);
     CURPIC = picString;
 });
