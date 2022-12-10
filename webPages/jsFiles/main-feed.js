@@ -53,7 +53,6 @@ async function renderRecipe() {
     const response2 = await fetch(request2);
     if (response2.ok) {
         let json2 = await response2.json();
-        console.log('json2.error is ' + json2.error); 
         if (json2.length === 1) {
             document.getElementById('next_pic').setAttribute('src', resources[0].uhoh);
             nextRecipe = null;

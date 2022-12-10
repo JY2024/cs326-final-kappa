@@ -15,19 +15,9 @@ profile.addEventListener('click', () =>{
 feed.addEventListener('click', () =>{
     window.location = "/main-feed.html";
 });
-// diffChat.addEventListener('click', (e) =>{
-//     console.log("i'm here and the target of the click is: ", e);
-//     console.log("i'm here and the target of the click is: ", e.target.classList[0]);
-//     if(e.target.classList[0] === "person"){
-//         console.log("i'm in here");
-//     }
-// });
 chatBox.addEventListener('click', async(e) =>{
-    console.log("i'm here and e.target.id is: ", e.target.id);
-    console.log(e.target);
     if(e.target.id === "message" && e.target.innerText === "Send!"){
         const message = document.getElementById('comment').value;
-        console.log("the message being sent is: ", message, "and the currUser is: ", currUser);
         if(message === ''){
             alert('Please enter some text before trying to send a message!');
         }
@@ -46,10 +36,8 @@ chatBox.addEventListener('click', async(e) =>{
             .then(async function (res) {
             if(res.ok){
                 chatBox.innerHTML = '';
-                console.log("the current user is: ",currUser);
                 const req = new Request(fixURL(window.location.href) + '/message/view?sender=' + window.localStorage.getItem('username') + '&reciever=' + currUser, {method: 'GET'});
                 const res = await fetch(req);
-                console.log(res);
                 if(res.ok){
                     const json = await res.json();
                     for(let i = 0; i < json.length; i++){
@@ -57,7 +45,6 @@ chatBox.addEventListener('click', async(e) =>{
                         const text = document.createElement('p');
                         const time = document.createElement('span');
                         const name = document.createElement('span');
-                        console.log(json[i].sender_id);
                         if(json[i].sender_id === window.localStorage.getItem('username')){ // in the future, take this from localStorage, for now just use temp tbh
                             chat.className = "container darker";
                             text.innerText = json[i].mess;
@@ -101,12 +88,10 @@ chatBox.addEventListener('click', async(e) =>{
 
 diffChat.addEventListener('click', async (e) =>{
     if(e.target.classList[0] === "person" && e.target.innerText !== "Start a new chat!"){
-        console.log("also just the e.target for reference is: ", e.target);
         currUser = e.target.innerText;
         chatBox.innerHTML = '';
         const req = new Request(fixURL(window.location.href) + '/message/view?sender=' + window.localStorage.getItem('username') + '&reciever=' + e.target.innerText, {method: 'GET'});
         const res = await fetch(req);
-        console.log(res);
         if(res.ok){
             const json = await res.json();
             for(let i = 0; i < json.length; i++){
@@ -160,7 +145,6 @@ function fixURL(url) {
 async function renderChat() {
     // return {recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "filename.jpeg", ingredients: [{"dough": "3 pounds"}, {"sauce": "2 gallons"}, {"cheese" : "3 cups"}], instruction: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0], time: "approx 90 minutes", likes:2, rating: 3.4, "ingredients_notes":"Feel free to experiment with toppings!"};
     const userList = document.getElementById('chats');
-    // console.log("here is the return for a nonexistant user: ", json);
     //     if(json.length === 0){
             const chatreq = new Request(fixURL(window.location.href) + '/chat/new?sender=' + window.localStorage.getItem('username') + '&reciever=' + currUser, {method: 'GET'}); ///chat/list?user=test
             const chatres = await fetch(chatreq);
@@ -170,7 +154,6 @@ async function renderChat() {
         // }
     const request = new Request(fixURL(window.location.href) + '/chat/list?user=' + window.localStorage.getItem('username') , {method: 'GET'}); ///chat/list?user=test
     const response = await fetch(request);
-    console.log("IM IN HERE AND THE RESPONSE IS: ", response);
     if (response.ok) {
         const json = await response.json();
         // Users

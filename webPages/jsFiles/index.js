@@ -2,7 +2,6 @@ document.getElementById("loginBtn").addEventListener("click", login);
 document.getElementById("createBtn").addEventListener("click", async (event) => {
     await postUser();
     window.localStorage.setItem('username', document.getElementById('newUsername').value);
-    console.log('you are here');
     window.location = "/main-feed.html";
 });
 async function postUser() {

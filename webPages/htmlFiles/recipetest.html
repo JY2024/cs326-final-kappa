@@ -23,22 +23,16 @@
 
     const temp=document.getElementById('profile');
     temp.addEventListener('click', () =>{
-        console.log("here");
-
         window.location = "/profile.html";
     });
     
     check.addEventListener('submit', function(e){
-        console.log("IN HERE");
-        e.preventDefault()
-    
-        console.log(e)
+        e.preventDefault();
         var recipeName=document.getElementById('recipeName').value
         var author=document.getElementById('author').value
         var ingredients=document.getElementById('ingredients').value
         var instructions=document.getElementById('instructions').value
-    
-        console.log(JSON.stringify({recipeName:recipeName, author:author, ingredients:ingredients, instructions:instructions}))
+
     
         fetch('https://test-326.herokuapp.com/recipe/new', { 
             mode: 'cors',
@@ -55,11 +49,9 @@
             //},
             body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions
         }).then(function(response){return response.json();}).then(function (data) {
-                console.log('Request succeeded with JSON response', data);
                 title=document.getElementById("recipeName");
                 body.innerHTML = data.body;
             }).catch((error) => {
-            console.log('Request failed', error);
         });
     
     });

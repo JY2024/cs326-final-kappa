@@ -59,7 +59,6 @@ app.get('/profile.html', (req, res) => {
 });
     // For Images
 app.get('/images/:imageid', (req, res) => {
-    console.log(req.params.imageid);
     res.sendFile(path.join(__dirname, '/webPages/images/', req.params.imageid));
 });
     // For CSS
@@ -76,7 +75,6 @@ app.get('/profile-settings-personal-info.html', (req, res) => {
 });
     // To Settings: Profile Display
 app.get('/profile-settings-profile-display.html', (req, res) => {
-    console.log('display check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-profile-display.html'));
 });
     // To Settings: Security
@@ -179,7 +177,6 @@ async function createRecipe(req, res){
     // ex. /recipe/new
     // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
     // JSON status returned
-    console.log(req);
     res.send(await db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions, req.body.preferences, req.body.time, req.body.recipe_picture, req.body.tips));
     res.end();
 }

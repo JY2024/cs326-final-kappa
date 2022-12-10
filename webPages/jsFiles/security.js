@@ -37,7 +37,6 @@ saveBtn.addEventListener('click', async () => {
 });
 delBtn.addEventListener('click', async () => {
     if (window.confirm('Are you sure you want to delete your account? This cannot be undone!')) {
-        console.log('you confirmed');
         await fetch('/user/delete', {
             mode: 'cors',
             method: 'POST',

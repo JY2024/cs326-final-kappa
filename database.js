@@ -179,7 +179,6 @@ export async function createRecipeObj(title, author, ingredients, instructions, 
         await client.query(SQL.sqlCreateRecipe(),[title,author,pic,instructions,ingredients,preferences,time, tips]);
     }
     catch(err){
-        console.log(err.stack);
         return {status: "ERROR"};
     }
     return {status: 'SUCCESS'};
@@ -261,11 +260,9 @@ export async function createChat(sender, reciever) {
         "SELECT COUNT(*) FROM chat_t WHERE sender_id=$1 AND reciever_id=$2", [sender, reciever]
         // "SELECT EXISTS (SELECT 1 from chat_t WHERE sender_id=$1 AND reciever_id=$2)", [sender, reciever]
     );
-    console.log("i'm in here and check is: ", check);
     if (check.rows[0]["count"] > 0){
         return JSON.stringify({Status: 'SUCCESS', sender: 'test', reciever: "Jay", time:"11:01"});
     }
-    console.log("i really shouldn't be here why am i here");
     const res = await client.query(
         "INSERT INTO chat_t (sender_id, reciever_id) VALUES ($1, $2)", [sender, reciever]
     );
@@ -276,9 +273,7 @@ export async function getChat(user) {
         // "SELECT * FROM chat_t WHERE sender_id=$1 OR reciever_id=$1", [user]
         "select reciever_id as reciever_id from chat_t where sender_id=$1 UNION select sender_id as reciever_id from chat_t where reciever_id=$1", [user]
     ); //this works, no need to change - it updates the sidebar correctly which shows users person has conversed with
-    console.log("the chat is as follows: ", res.rows);
     return JSON.stringify(res.rows);
-    return JSON.stringify([{sender: 'test', reciever: "Jay"}, {sender: 'test', reciever: "Bella"}, {sender: 'test', reciever: "Daktshh"}]);
 }
 export async function updateChat(sender, chatID, text){
     var today = new Date();
@@ -308,13 +303,11 @@ export async function getMessageID(sender, reciever){
         // "select count(*) from chat_t where (sender_id = $1 and reciever_id = $2) or (sender_id = $2 and reciever_id = $1", [sender, reciever]
     );
     let val = parseInt(check.rows[0]["count"]) + parseInt(check2.rows[0]["count"])
-    console.log("combined we have: ", val)
     if (val < 1){
         return res.status(400).send({ message: 'Invalid User!'});
     }
     const res = await client.query(
         "select chat_id from chat_t where (sender_id = $1 and reciever_id = $2) or (sender_id = $2 and reciever_id = $1)", [sender, reciever]
     );
-    console.log("the chatID is: ", res.rows[0].chat_id);
     return JSON.stringify(res.rows[0].chat_id);
 }

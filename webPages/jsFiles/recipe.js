@@ -31,13 +31,11 @@ chat.addEventListener('click', async () => {
     if (response.ok){
         window.location = "/chat.html";
     }
-    console.log('Completed!', response);
 });
 
 
 async function renderRecipe() {
     currRecipe = window.localStorage.getItem('cur_recipe_id');
-    // console.log("recipeis: ", currRecipe);
     const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=' + currRecipe , {method: 'GET'}); //changed it to tempread
     const response = await fetch(request);
     if (response.ok) {
