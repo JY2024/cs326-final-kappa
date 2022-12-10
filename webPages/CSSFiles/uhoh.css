@@ -1,0 +1,11 @@
+body {
+    background-image: url("https://img.freepik.com/premium-vector/fried-crispy-chicken-legs-seamless-pattern-cartoon-fast-food-drumsticks-isolated-cooking-texture-flat-vector-illustration_502272-681.jpg");
+}
+
+#error-message {
+    text-align: center;
+    font-weight: bold;
+    width: 250px;
+    margin: 2px auto;
+    font-size: xx-large;
+}

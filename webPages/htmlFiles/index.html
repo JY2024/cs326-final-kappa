@@ -3,7 +3,8 @@
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <script type="module" src="./jsFiles/index.js"></script>
+      <link rel="stylesheet" href="./CSSFiles/index-style.css">
+      <script type="module" src="./jsFiles/index.js" defer></script>
   </head>
   <body>
     <center>
@@ -19,14 +20,15 @@
         </div>
         <div class="form-body">
           <p>New user? Sign up!</p>
-            <form action="/user/new" class="the-form" method="post">
+          <!-- onsubmit="return false" -->
+            <form class="the-form">
               <label for="username">Username: </label>
               <input type="text" name="username" id="newUsername" placeholder="Username">
               <label for="displayName">Display Name: </label>
               <input type="text" name="displayName" id="newDisplayName" placeholder="Name">
               <label for="password">Password: </label>
               <input type="password" name="password" id="newPassword" placeholder="Password">
-              <input type="submit" id="createBtn" value="Create Account">
+              <input type="button" id="createBtn" value="Create Account">
             </form>
         </div>
     </center>

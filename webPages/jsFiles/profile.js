@@ -1,3 +1,4 @@
+import { encodeImageAsURL } from "./utility.js";
 const settings = document.getElementById('settings');
 settings.addEventListener('click', () =>{
     window.location = "/profile-settings-personal-info.html";
@@ -5,11 +6,15 @@ settings.addEventListener('click', () =>{
 
 //Listeners
 document.getElementById('buttonPost').addEventListener('click',postRecipe);
+document.getElementById('back').addEventListener('click', toFeed)
 document.getElementById('savedBtn').addEventListener('click', fetchSavedRecipes);
 document.getElementById('myBtn').addEventListener('click', fetchMyRecipes);
-//document.getElementById('liked').addEventListener('click',postUnlike);
 
 initializePage();
+
+function toFeed(){
+    window.location = "/main-feed.html";
+}
 
 function initializePage(){
     console.log("Initializing page...");
@@ -81,7 +86,7 @@ function userCard(username, realname, prefs, desc, pic){
     document.getElementById("userName").innerText = username;
     document.getElementById("realName").innerText = realname;
     document.getElementById("userDescription").innerText = desc;
-    document.getElementById("profPic").setAttribute("src", pic);
+    document.getElementById("profPic").setAttribute("src", pic.split(' ').join('+'));
     let prefCard = document.getElementById("prefIcons");
     for(const index in prefs){
         console.log(prefs[index]);
@@ -115,14 +120,17 @@ function fetchMyRecipes(){
     })
 }
 
-function postRecipe(){
+async function postRecipe(){
+    console.log('you are in postRecioe');
  var recipeName=document.getElementById('titleInput').value
  var author= localStorage.getItem('username');
  //var author=document.getElementById('author').value
  var ingredients=document.getElementById('ingredientInput').value
  var instructions=document.getElementById('intructionInput').value
+ const picString = await encodeImageAsURL(document.getElementById('upload'));
  var preferencesArr=[document.getElementById('prefVegetarian').checked, document.getElementById('prefVegan').checked,document.getElementById('prefGlutenFree').checked,document.getElementById('prefDairyFree').checked,document.getElementById('prefPesc').checked,document.getElementById('prefKeto').checked,document.getElementById('prefLowCarb').checked,document.getElementById('prefProtein').checked,document.getElementById('allergenShell').checked,document.getElementById('allergenNuts').checked,document.getElementById('allergenSoy').checked,document.getElementById('prefSugarFree').checked]
  var preferences = "";
+ var tips = document.getElementById('tipsText').value
  for(let i = 0; i <12;i++){
     if(preferencesArr[i] === true){
         preferences = preferences + "1";
@@ -134,7 +142,7 @@ function postRecipe(){
  console.log(preferences);
  var time=document.getElementById('timeToPrep').value
 
- console.log(JSON.stringify({recipeName:recipeName, author:author, ingredients:ingredients, instructions:instructions,preferences:preferences, time:time}))
+ console.log(JSON.stringify({recipeName:recipeName, author:author, ingredients:ingredients, instructions:instructions,preferences:preferences, time:time, tips:tips}))
 
  fetch('/recipe/new', { 
     mode: 'cors',
@@ -149,11 +157,11 @@ function postRecipe(){
     //ingredients: ingredients,
     //instructions: instructions,
     //},
-    body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions + "&preferences=" + preferences + "&time=" + time
+    body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions + "&preferences=" + preferences + "&time=" + time + "&recipe_picture=" + picString + "&tips=" + tips
   })
     .then(function (data) {
         console.log('Request succeeded with JSON response', data);
-        alert("Recipe " + recipeName + " successfully posted\n" + "Ingredients: " + ingredients +"\n" + "Instructions: " + instructions);
+        location.reload();
     })
     .catch(function (error) {
         console.log('Request failed', error);
@@ -211,6 +219,7 @@ function savedRecipeCard(recipeName, author, colID, img, recID){
     let cardImg = document.createElement("img");
     cardImg.className = "card-img-top";
     cardImg.style = "width: 18rem;";
+    cardImg.setAttribute('id', recID)
     cardImg.src = img;
     newCard.appendChild(cardImg);
     let cardBody = document.createElement("div");
@@ -226,7 +235,8 @@ function savedRecipeCard(recipeName, author, colID, img, recID){
     let likeInfo = document.createElement("p");
     likeInfo.className = "card-text text-start";
     let like = document.createElement("i");
-    like.setAttribute('id', 'liked');
+    let likeID = 'liked' + recID;
+    like.setAttribute('id', likeID);
     like.setAttribute('recID', recID);//recipe_id
     like.className = "bi bi-heart-fill";
     like.style.color = "lightcoral";
@@ -238,8 +248,14 @@ function savedRecipeCard(recipeName, author, colID, img, recID){
     commentInfo.appendChild(comment);
     newCard.appendChild(commentInfo);*/
     document.getElementById(colID).appendChild(newCard);
-    document.getElementById('liked').addEventListener('click',postUnlike);
+    document.getElementById(likeID).addEventListener('click',postUnlike);
+    document.getElementById(recID).addEventListener('click',recipePageFunc);
 };
+
+function recipePageFunc(){
+    window.localStorage.setItem('cur_recipe_id', this.getAttribute('id'));
+    window.location = "/recipe.html";
+}
 
 function displayRecipeParser(recipeList, mine){
     clearRecipes();
@@ -253,7 +269,7 @@ function displayRecipeParser(recipeList, mine){
         if(mine === true){
             let likes = (recipeList[index])["likes"];
             let comments = (recipeList[index])["comments"];
-            myRecipeCard(curName, likes, comments, curID, img);
+            myRecipeCard(curName, likes, comments, curID, img.split(' ').join('+'));
         }
         else{
             let author = (recipeList[index])["author"];
@@ -280,7 +296,8 @@ function postUnlike(){
     })
        .then(function (data) {
            console.log('Request succeeded with JSON response', data);
-           alert("Recipe " + recipe_id + " successfully unliked\n" + "By user: " + user);
+           location.reload();
+           //alert("Recipe " + recipe_id + " successfully unliked\n" + "By user: " + user);
        })
        .catch(function (error) {
            console.log('Request failed', error);

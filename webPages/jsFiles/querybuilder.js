@@ -19,7 +19,7 @@ export function sqlSavedRecipes(){
 
 export function sqlCreateRecipe(){
     return "INSERT INTO recipe_T (recipe_name, author, recipe_picture, instructions, ingredients, preferences, prep_time, tips_and_notes) \
-    VALUES ($1, $2,'images/cover.png', $4, $3, $5, $6, '');";
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8);";
 }
 
 export function sqlCreateLike(){

@@ -1,13 +1,14 @@
-import { fixURL } from "./utility.js";
-const USERNAME = 'Jay'; // DO LATER
+import { encodeImageAsURL, fixURL } from "./utility.js";
+const USERNAME = window.localStorage.getItem('username');
+let CURPIC = '';
 
 const personal = document.getElementById('personal');
 const security = document.getElementById('security');
-const privacy = document.getElementById('privacy');
 const profile = document.getElementById('profile');
 const feed = document.getElementById('feed');
 const display_name = document.getElementById('name');
-const pic = document.getElementById('pic');
+const pic = document.getElementById('picture');
+const pic_selection = document.getElementById('pic');
 const desc = document.getElementById('text-area');
 const saveBtn = document.getElementById('save');
 
@@ -16,40 +17,22 @@ async function loadData() {
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();
-        display_name.setAttribute('placeholder', json.display_name);
-        desc.setAttribute('placeholder', json.description);
-        renderPic(json.profile_pic);
+        display_name.value = json.display_name;
+        desc.innerText= json.description;
+        pic.setAttribute('src', json.profile_picture.split(' ').join('+'));
+        CURPIC = json.profile_picture;
     }
 }
 
-function renderPic() {
-    // DO LATER
-}
-
-function saveChanges() {
-    // display name
-    fetch('/user/update', { 
+async function saveChanges() {
+    await fetch('/user/update', {
         mode: 'cors',
         method: 'POST',
         headers: {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
-        body: "name=" + display_name.value + "&username=" + USERNAME
-    })
-    .catch(function (error) {
-        console.log('Request failed', error);
-    });
-
-    // description
-    fetch('/user/update', { 
-        mode: 'cors',
-        method: 'POST',
-        headers: {
-            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        body: "description=" + description.value + "&username=" + USERNAME
-    })
-    .catch(function (error) {
+        body: 'username=' + USERNAME + '&profile_picture=' + CURPIC + '&location=same&preferences=same&description=' + desc.value + '&display_name=' + display_name.value
+    }).catch(function (error) {
         console.log('Request failed', error);
     });
 }
@@ -60,16 +43,22 @@ personal.addEventListener('click', () =>{
 security.addEventListener('click', () =>{
     window.location = "/profile-settings-security.html";
 });
-privacy.addEventListener('click', () =>{
-    window.location = "/profile-settings-privacy.html";
-});
-profile.addEventListener('click', () =>{
-    window.location = "/profile.html";
-});
 feed.addEventListener('click', () =>{
     window.location = "/main-feed.html";
 });
 
-saveBtn.addEventListener('click', saveChanges);
+saveBtn.addEventListener('click', () => {
+    saveChanges();
+    window.alert('Changes successfully saved.');
+});
+
+pic_selection.addEventListener('change', async () => {
+    const picString = await encodeImageAsURL(pic_selection);
+    if (picString.length > 1000000) {
+        window.alert('Image too large.');
+    }
+    pic.setAttribute('src', picString);
+    CURPIC = picString;
+});
 
 window.onload = loadData;

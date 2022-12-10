@@ -15,7 +15,12 @@ const __dirname = dirname(__filename);
 
 const app = express();
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    parameterLimit: 200000,
+    limit: '100mb',
+    extended: true
+  }));
 app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 
@@ -38,12 +43,9 @@ app.post('/login', async (req, res) => {
         res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
     }
 });
-//Recipe Page
-app.post('/recipe/view?:id', (req, res) => {
-    console.log('user tried to see recipe: ', req.query.recipeID);
-    db.updateCurrentRecipe(req.query.recipeID);
-    res.send(db.tempGetRecipeInfo(req.query.recipeID));
-    res.end();
+    // Log Out
+app.get('/logout.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/index.html'));
 });
 app.get('/recipe.html', (req, res) => {
     console.log('recipe check');
@@ -51,16 +53,18 @@ app.get('/recipe.html', (req, res) => {
 });
 //Chat Page
 app.get('/chat.html', (req, res) => {
-    console.log('new');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/chat.html'));
 });
     // To Main Feed
 app.get('/main-feed.html', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
 });
+    // To Main Feed (Uh Oh)
+app.get('/uhoh.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/uhoh.html'));
+});
     // To Profile Page
 app.get('/profile.html', (req, res) => {
-    console.log('new');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile.html'));
 });
     // For Images
@@ -70,17 +74,14 @@ app.get('/images/:imageid', (req, res) => {
 });
     // For CSS
 app.get('/CSSFiles/:cssid', (req, res) => {
-    console.log(req.params.cssid);
     res.sendFile(path.join(__dirname, '/webPages/CSSFiles/', req.params.cssid));
 });
     // For JS Files
 app.get('/jsFiles/:jsid', (req, res) => {
-    console.log(req.params.jsid);
     res.sendFile(path.join(__dirname, '/webPages/jsFiles/', req.params.jsid));
 });
     // To Settings: Personal Info
 app.get('/profile-settings-personal-info.html', (req, res) => {
-    console.log('profile check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-personal-info.html'));
 });
     // To Settings: Profile Display
@@ -88,36 +89,24 @@ app.get('/profile-settings-profile-display.html', (req, res) => {
     console.log('display check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-profile-display.html'));
 });
-    // To Settings: Privacy
-app.get('/profile-settings-privacy.html', (req, res) => {
-    console.log('privacy check');
-    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-privacy.html'));
-});
     // To Settings: Security
 app.get('/profile-settings-security.html', (req, res) => {
-    console.log('security check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile-settings-security.html'));
 });
 // [1] User Functions
 app.post('/user/new', createUser);
 app.get('/user/read', readUser);
-app.post('/user/update/:name', updateName);
-app.post('/user/update/:location', updateLocation);
-app.post('/user/update/:preferences', updatePreferences);
-app.post('/user/update/:description', updateDescription);
-app.post('/user/update/:recipe_hide', updateHideRecipe);
-app.get('/user/delete', deleteUser);
+app.post('/user/update', updateUser);
+app.post('/user/updatePass', updateUserPass);
+app.post('/user/delete', deleteUser);
 
 // [2] Recipe Functions
-//app.post('/recipe/new', (req, res) => {     res.send(createRecipe(req, res));   });
 app.post('/recipe/new', createRecipe);
 app.get('/recipe/delete', (req, res) => {   res.send(deleteRecipe(req, res));   });
 app.get('/recipe/read', readRecipe);
-// app.get('/recipe/read', (req, res) => {   res.send(readRecipe(req, res));   });
 app.get('/recipe/list/my', async (req, res) => {res.send(await readMyRecipes(req, res));});
 app.get('/recipe/list/saved', async (req, res) => {res.send(await readSavedRecipes(req, res));     });
 app.get('/recipe/detail', (req, res) => {    res.send(readRecipe(req, res));    });
-app.get('/recipe/tempread', tempReadRecipe);
 
 // [3] Like Functions
 app.post('/recipe/like/new', async (req, res) =>       {res.send(await createLike(req, res));   });
@@ -126,83 +115,87 @@ app.post('/recipe/like/delete', async (req, res) =>    {res.send(await deleteLik
 
 // [4] Comment Functions
 app.post('/recipe/comment/new', createComment);
-app.get('/recipe/comment/delete', deleteComment);
-app.get('/comment/read?:id', (req,res) =>{
-    console.log("IN HERE FOR COMMENT", req.query.comment_id);
-    res.send(db.getCommentInfo(req.query.comment_id));
+
+app.get('/comment/read?:id', async (req,res) =>{
+    console.log("getting comments for recipe: ", req.query.recipe_id);
+    res.send(await db.getCommentInfo(req.query.recipe_id));
 });
 
+app.post('recipe/comment/update', async (req, res) => {
+    res.send(await db.updateCommentObj(req.body['commentID'], req.body['text']));
+})
+
+app.post('/recipe/comment/delete', deleteComment);
+
 // [5] Chat Functions
-app.post('/chat/new?:id', async (req, res) => {
+app.get('/chat/new?:id', async (req, res) => { //updated this from post to get
     console.log('user ', req.query.sender, 'conversing with ', req.query.reciever);
-    const result = db.createChat(req.query.sender, req.query.reciever);
+    //need to await db.createChat
+    const result = await db.createChat(req.query.sender, req.query.reciever);
     res.send(result);
     res.end();
 });
 app.get('/chat/list?:id', async (req, res) => {
-    console.log('user ', req.query.user);
-    const result = await db.getChat(req.query.user);
-    res.send(result);
+    console.log('getting chats for user ', req.query.user);
+    // const result = await db.getChat(req.query.user);
+    // res.send(result);
+    res.send(await db.getChat(req.query.user));
     res.end();
 });
+app.post('/chat/update', async (req,res) =>{
+    const chat = await db.getMessageID(req.body.sender, req.body.reciever);
+    console.log("the chat id is: ", chat);
+    res.send(await db.updateChat(req.body.sender, chat, req.body.text));
+    res.end();
+}); //added this
 
 
 // [6] Message Functions
 app.get('/message/view?:id', async (req, res) => {
-    console.log('user ', req.query.user);
-    const result = await db.getMessages('129478129');
-    res.send(result);
+    console.log('sender and reciever', req.query.sender, req.query.reciever);
+    const chat = await db.getMessageID(req.query.sender, req.query.reciever);
+    // const result = await db.getMessages('129478129');
+    // res.send(result);
+    console.log("I'M IN THE MESSAGE FUNCTION AND THE ID IS: ", chat);
+    res.send(await db.getMessages(chat));
     res.end();
 });
 
 // FUNCTIONS
 
-    // USER FUNCTIONS
-// create new user
+// USER FUNCTIONS
 async function createUser(req, res) {
-    // ex. /user/new?username=jay1024&password=123&displayName=Jay
-    // if (req.query.username == undefined ||
-    //     req.query.password == undefined ||
-    //     req.query.displayName == undefined) {
-    //     return {Status: 'ERROR', Username: req.query.username, errMessage: 'Incomplete information'}
-    // }
     const result = await db.createUserObj(req.body.username, req.body.password, req.body.displayName);
-    res.send(result);
-    res.end();
-}
-/*
-app.post('/login', async (req, res) => {
-    console.log('user tried to login');
-    const ret = await db.authUserObj(req); 
-    console.log("recieved status update ", ret.status);
-    if(ret.status === "ERROR"){
-        res.sendFile(path.join(__dirname, '/webPages/htmlFiles/incorrectLogin.html'));
-    }
-    else{
+    if(result.status === "SUCCESS"){
         res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
+        res.end();
     }
-});
-*/
-
-// read user info, NOTE: TEST AND THEN FIX THE ROUTES AT THE TOP TO INCLUDE ERROR HANDLERS
+    else {
+        console.log(result);
+    }
+}
 async function readUser(req, res) {
-    // ex. /user/read?username=Jay1024
     const result = await db.getUserInfo(req.query.username);
     res.send(result);
     res.end();
 }
-
-
 async function readMyRecipes(req, res){
-    // ex. /recipe/list/my?username=jay1024
-
     return await db.getMyRecipes(req.query.username);
 }
-
 async function readSavedRecipes(req, res){
-    // ex. /recipe/list/saved?username=jay1024
     return await db.getSavedRecipes(req.query.username);
 }
+async function updateUser(req, res) {
+    const result = await db.updateUser(req.body['username'], req.body['profile_picture'], req.body['location'], req.body['preferences'], req.body['description'], req.body['display_name']);
+    res.send(result);
+    res.end();
+} 
+async function updateUserPass(req, res) {
+    const result = await db.updateUserPass(req.body['username'], req.body['password']);
+    res.send(result);
+    res.end();
+}
+
 // update user info
 async function updateName(req, res) {
     const result = await db.updateName(req.body.name, req.body.username);
@@ -219,7 +212,6 @@ async function updatePreferences(req, res) {
     res.send(result);
     res.end();
 }
-
 async function updateDescription(req, res) {
     // ex. /user/update?username=Jay1024
     // req.body contains {description: string}
@@ -227,13 +219,11 @@ async function updateDescription(req, res) {
     res.send(result);
     res.end();
 }
-
 async function updateHideRecipe(req, res) {
     const result = await db.updateHideRecipe(req.body.recipe_hide, req.body.username);
     res.send(result);
     res.end();
 }
-
 
 // delete user object
 async function deleteUser(req, res){
@@ -244,49 +234,32 @@ async function deleteUser(req, res){
 }
 
     // RECIPE, NOTE: NEED ERROR HANDLERS, MAYBE UPDATE FUNCTIONALITY\
-async function createRecipe(req, res){
-    // ex. /recipe/new
-    // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
-    // JSON status returned
-    res.send(await db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions, req.body.preferences, req.body.time));
-    res.end();
-}
-
-async function readRecipe(req, res) {
-    if (parseInt(req.query.recipeID) === 0) {
-        res.send(db.getRandomRecipe(req.query.username));
-    } else {
-        const result = await db.getRecipeInfo(req.query.recipeID);
-        res.send(result);
+    async function createRecipe(req, res){
+        // ex. /recipe/new
+        // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
+        // JSON status returned
+        console.log(req);
+        res.send(await db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions, req.body.preferences, req.body.time, req.body.recipe_picture, req.body.tips));
+        res.end();
     }
-    console.log('you made it to res.end');
-    res.end();
-}
-
-function readRecipeErrorHandler(req, res, next) {
-    if (false) {
-        console.log('entered recipe error handler');
-        // sendError(res, 'description-length'); // NOTE: maybe should change this to use express to send error message, but I don't know how right now...
-        res.send(JSON.stringify({ result : 'error'}));
-    } else {
-        console.log('entered other part');
-        next();
+    
+    async function readRecipe(req, res) {
+        if (parseInt(req.query.recipeID) === 0) {
+            const result = await db.getRandomRecipe(req.query.username);
+            // console.log('result is ' + result);
+            res.send(result);
+        } else {
+            const result = await db.getRecipeInfo(req.query.recipeID);
+            res.send(result);
+        }
+        res.end();
     }
-}
-
-function tempReadRecipe(req, res) {
-    console.log('entered readRecipe');
-    // ex. /recipe/read?recipeID=1234
-    console.log('req query recipe id is ' + req.query.recipeID);
-    res.send(db.tempGetRecipeInfo(req.query.recipeID));
-    res.end();
-}
-
-function deleteRecipe(req, res){
-    // ex. /recipe/delete?recipeID=1234&username=jay1024
-    return db.deleteRecipeObj(req.query.recipeID, req.query.username);
-}
-
+    
+    function deleteRecipe(req, res){
+        // ex. /recipe/delete?recipeID=1234&username=jay1024
+        return db.deleteRecipeObj(req.query.recipeID, req.query.username);
+    }
+    
     // LIKE
 async function createLike(req, res){
     // ex. /recipe/like/new?sender=jay1024&recipeID=1234
@@ -300,65 +273,26 @@ async function deleteLike(req, res){
     res.end();
 }
 
-    // COMMENTS
+// COMMENTS FUNCTIONS
 async function createComment(req, res){
-    // ex. /comment/new
     const result = await db.createCommentObj(req.body.sender, req.body.recipeID, req.body.text);
     res.send(result);
     res.end();
 }
-
-
 async function readComment(req, res) {
-    // ex. /recipe/id/comment/read?comment_id=03948774
     const result = await db.getCommentInfo(req.query.comment_id);
     res.send(result);
     res.end();
 }
-
-function readCommentErrorHandler(req, res, next) {
-    // ex. /recipe/id/comment/read?comment_id=03948774
-    const exists = existsComment(req.query.comment_id);
-    if (!exists) {
-        sendError(res, 'comment-nonexistent');
-    } else {
-        next();
-    }
-}
 async function updateComment(req, res) {
-    // ex. /recipe/id/comment/update?comment_id=03948774
-    // req.body contains new text
-    const result = await db.updateCommentObj(req.body.comment_id, req.body.text);
+    const result = await db.updateCommentObj(req.body['comment_id'], req.body['text']);
     res.send(result);
     res.end();
-}
-
-function updateCommentErrorHandler(req, res, next) {
-    // ex. /recipe/id/comment/update?comment_id=03948774
-    // req.body contains new text
-    const exists = existsComment(comment_id);
-    if (!exists) {
-        sendError(res, 'comment-nonexistent');
-    } else if (req.body.text.length === 0) {
-        sendError(res, 'comment-length');
-    } else {
-        next();
-    }
 }
 async function deleteComment(req, res){
-    // ex. /comment/delete?sender=jay1024&recipeID=1234
-    const result = await db.deleteCommentObj(req.body.commentID);
+    const result = await db.deleteCommentObj(req.body['commentID']);
     res.send(result);
     res.end();
-}
-function deleteCommentErrorHandling(req, res, next) {
-    // ex. /recipe/id/comment/delete?comment_id=03948774
-    const exists = existsComment(req.params.comment_id);
-    if (!exists) {
-        sendError(res, 'comment-nonexistent');
-    } else {
-        next();
-    }
 }
 
 app.listen(port, () => {

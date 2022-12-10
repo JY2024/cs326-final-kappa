@@ -31,29 +31,41 @@
 --     (sender text,
 --     recipe_id integer);
 
-DROP TABLE chat_T CASCADE;
-DROP TABLE message_T CASCADE;
+DROP TABLE chat_t CASCADE;
+DROP TABLE message_t CASCADE;
 
-CREATE TABLE chat_T
+CREATE TABLE chat_t
     (chat_id SERIAL PRIMARY KEY,
     sender_id text,
     reciever_id text);
 
-INSERT INTO chat_T(chat_id, sender_id, reciever_id) VALUES ('129478129', 'test', 'Jay');
+INSERT INTO chat_t(chat_id, sender_id, reciever_id) VALUES ('129478129', 'test', 'Jay'); --used to be 129478129
 
-INSERT INTO chat_T(chat_id, sender_id, reciever_id) VALUES ('129478128', 'test', 'Bella');
+INSERT INTO chat_t(chat_id, sender_id, reciever_id) VALUES ('129478130', 'test', 'Bella');
 
-INSERT INTO chat_T(chat_id, sender_id, reciever_id) VALUES ('129478127', 'test', 'Daktshh');
+INSERT INTO chat_t(chat_id, sender_id, reciever_id) VALUES ('129478131', 'test', 'Daktshh');
 
-CREATE TABLE message_T
+CREATE TABLE message_t
     (message_id SERIAL PRIMARY KEY,
     sender_id text,
     chat_id int,
     mess text,
     "time" text);
 
-INSERT INTO message_T(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847192', '129478129', '129478129', 'Hey! I had a couple questions regarding your recipe.', '11:01');
+INSERT INTO message_t(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847192', 'test', '129478129', 'Hey! I had a couple questions regarding your recipe.', '11:01');
 
-INSERT INTO message_T(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847193', '129478128', '129478129', 'Id be happy to help!', '11:02');
+INSERT INTO message_t(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847193', 'Jay', '129478129', 'Id be happy to help!', '11:02');
 
-INSERT INTO message_T(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847194', '129478129', '129478129', 'Are there any substitues we could use for dairy?', '11:05');
+INSERT INTO message_t(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847194', 'test', '129478129', 'Are there any substitues we could use for dairy?', '11:05');
+
+INSERT INTO message_t(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847195', 'test', '129478130', 'Hey Daktshh.', '11:01');
+
+INSERT INTO message_t(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847196', 'Bella', '129478130', 'Yo', '11:02');
+
+INSERT INTO message_t(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847197', 'test', '129478130', 'How are you ?', '11:05');
+
+INSERT INTO message_t(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847198', 'test', '129478131', 'testing 12.', '11:01');
+
+INSERT INTO message_t(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847199', 'Daktshh', '129478131', 'This is jay', '11:02');
+
+INSERT INTO message_t(message_id, sender_id, chat_id, mess, "time") VALUES ('1812847200', 'test', '129478131', 'sup', '11:05');
