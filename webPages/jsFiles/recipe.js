@@ -45,17 +45,10 @@ async function renderRecipe() {
         // INGREDIENTS
         const ingredList = document.getElementById('ingredients');
         const listHolder = document.createElement('div');
-        // console.log(json.ingredients);
         let temp = json.ingredients.split('\\n');
-        console.log("ingredients are: ", temp);
-        // let temp = JSON.parse(json.ingredients);
         for (const ingred of temp){
             const listItem = document.createElement('li');
-            // const amt = document.createElement('small');
-            // amt.appendChild(document.createTextNode(temp[ingred]));
             listItem.appendChild(document.createTextNode(ingred));
-            // listItem.appendChild(amt);
-            // ingredList.appendChild(listItem);
             listHolder.appendChild(listItem);
         }
         ingredList.appendChild(listHolder);
@@ -99,7 +92,8 @@ async function renderRecipe() {
         }
 
         //pictures
-        picture.style.backgroundImage = `url(../${json.recipe_picture})`;
+        picture.style.backgroundImage = `url(${json.recipe_picture})`;
+        // picture.style.backgroundImage = `url(../${json.recipe_picture})`;
     }
 
     //COMMENTS
@@ -108,7 +102,6 @@ async function renderRecipe() {
     const res = await fetch(req);
     if(res.ok){
         const comm = await res.json();
-        console.log("i am here and: ", comm);
         // const content = document.createElement('p');
         for(let i = 0; i < comm.length; i++){
             // const item = document.createElement('p');
@@ -125,11 +118,8 @@ async function renderRecipe() {
 }
 
 commentBox.addEventListener('click', async(e) =>{
-    console.log("i'm here and e.target.id is: ", e.target.id);
-    console.log(e.target);
     if(e.target.id === "message" && e.target.innerText === "Send!"){
         const message = document.getElementById('commentHere').value;
-        console.log("the message being sent is: ", message);
         if(message === ''){
             alert('Please enter some text before trying to send a message!');
         }

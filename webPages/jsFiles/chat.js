@@ -73,7 +73,7 @@ chatBox.addEventListener('click', async(e) =>{
                             time.className = "time-left"; //used to be time-right
                             time.innerText = json[i].time; 
                             name.className = "time-right";
-                            name.innerText = json[i].reciever_id;
+                            name.innerText = json[i].sender_id; //fix this later if it breaks anything, used to be reciever_id like in the diffChat event listener
                         }
                         text.appendChild(name); //added this on
                         chat.appendChild(text);
@@ -129,7 +129,7 @@ diffChat.addEventListener('click', async (e) =>{
                     time.className = "time-left"; //used to be time-right
                     time.innerText = json[i].time; 
                     name.className = "time-right";
-                    name.innerText = json[i].reciever_id;
+                    name.innerText = json[i].sender_id; //fix this later if this breaks anything, used to be reciever_id
                 }
                 text.appendChild(name); //added this on
                 chat.appendChild(text);
@@ -268,7 +268,7 @@ async function renderChat() {
             chat.appendChild(time);
             chatBox.appendChild(chat);
         }
-        const label = document.createElement("Label");
+        const label = document.createElement("label");
         const input = document.createElement("input");
         const button = document.createElement("button");
         label.htmlFor = "comment";
@@ -281,7 +281,6 @@ async function renderChat() {
         chatBox.appendChild(label);
         chatBox.appendChild(input);
         chatBox.appendChild(button);
-
     }
     else{
         const label = document.createElement("Label");

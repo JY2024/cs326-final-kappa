@@ -39,7 +39,6 @@ app.get('/logout.html', (req, res) => {
 });
 // Recipe
 app.get('/recipe.html', (req, res) => {
-    console.log('recipe check');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/recipe.html'));
 });
 //Chat Page
@@ -107,7 +106,6 @@ app.post('/recipe/like/delete', async (req, res) =>    {res.send(await deleteLik
 app.post('/recipe/comment/new', createComment);
 
 app.get('/comment/read?:id', async (req,res) =>{
-    console.log("getting comments for recipe: ", req.query.recipe_id);
     res.send(await db.getCommentInfo(req.query.recipe_id));
 });
 
@@ -124,8 +122,6 @@ app.get('/chat/new?:id', async (req, res) => {
     res.end();
 });
 app.get('/chat/list?:id', async (req, res) => {
-    // const result = await db.getChat(req.query.user);
-    // res.send(result);
     res.send(await db.getChat(req.query.user));
     res.end();
 });
@@ -137,7 +133,6 @@ app.post('/chat/update', async (req,res) =>{
 
 // [6] Message Functions
 app.get('/message/view?:id', async (req, res) => {
-    console.log('sender and reciever', req.query.sender, req.query.reciever);
     const chat = await db.getMessageID(req.query.sender, req.query.reciever);
     res.send(await db.getMessages(chat));
     res.end();
