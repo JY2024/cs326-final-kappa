@@ -35,6 +35,9 @@ app.post('/login', async (req, res) => {
 });
     // Log Out
 app.get('/logout.html', (req, res) => {
+    window.localStorage.removeItem('username');
+    window.localStorage.removeItem('cur_user_viewing');
+    window.localStorage.removeItem('cur_recipe_id');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/index.html'));
 });
 // Recipe

@@ -1,10 +1,12 @@
 import { fixURL } from "./utility.js";
 import { resources } from './pic-resources.js';
 const USERNAME = window.localStorage.getItem('username');
+let CUR_VIEWING = null;
 let curRecipe = null, nextRecipe = null;
 
 // Initializes the next recipe
 async function init() {
+    window.localStorage.setItem('username', USERNAME);
     const req = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, { method: 'GET' });
     const res = await fetch(req);
     if (res.ok) {
@@ -22,6 +24,7 @@ async function init() {
 async function renderRecipe() {
     // load next recipe
     if (nextRecipe === null) {
+        CUR_VIEWING = window.localStorage.getItem('username');
         window.location = "/uhoh.html";
     } else {
         const request1 = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=' + nextRecipe + '&username=' + USERNAME, { method: 'GET' });
@@ -34,6 +37,7 @@ async function renderRecipe() {
             // HEADER INFO
             document.getElementById('recipe_name').innerHTML = json1.recipe_name;
             document.getElementById('creator').innerHTML = json1.author;
+            CUR_VIEWING = json1.author;
             document.getElementById('creator_bottom').innerHTML = json1.author;
             renderPreferences(document.getElementById('preferences'), json1.preferences);
             renderTime(document.getElementById('time'), json1.prep_time)
@@ -149,6 +153,9 @@ yesBtn.addEventListener('click', () => {
     window.localStorage.setItem('cur_recipe_id', JSON.stringify(curRecipe));
     window.location = "/recipe.html";
 });
-
+document.getElementById('creator').addEventListener('click', () => {
+    window.localStorage.setItem('cur_user_viewing', CUR_VIEWING);
+    window.location = "/profile.html";
+});
 
 window.onload = init;
