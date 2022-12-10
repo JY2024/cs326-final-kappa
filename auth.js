@@ -1,7 +1,6 @@
 'use strict';
 
 import * as MC from './miniCrypt.js';
-//const MC = require('./miniCrypt');
 const mc = new MC.MiniCrypt();
 
 export function encrypt(password){

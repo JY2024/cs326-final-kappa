@@ -1,15 +1,19 @@
-// import * as SQL from './webPages/jsFiles/querybuilder.js';
-// import * as auth from './auth.js';
-
 import pg from 'pg';
 const {Client} = pg;
 
+// const client = new Client({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//       rejectUnauthorized: false
+//     }
+// });
 const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
-});
+    user: 'postgres',
+    host: 'localhost',
+    database: 'postgres',
+    password: '',
+    port: 5432,
+})
 client.connect();
 
 import * as SQL from './webPages/jsFiles/querybuilder.js';
@@ -19,7 +23,6 @@ import { resources } from './webPages/jsFiles/pic-resources.js';
 import * as miniCrypt from './miniCrypt.js';
 const MC = miniCrypt.MiniCrypt;
 
-// DataBase Functions, NOTE: Still returns dummy data
 // Authorization
 export async function authUserObj(req) {
     if (req.body.email !== "") {
@@ -172,9 +175,9 @@ export async function getRandomRecipe(username) {
     }
     return JSON.stringify(obj);
 }
-export async function createRecipeObj(title, author, ingredients, instructions, preferences, time, pic) {
+export async function createRecipeObj(title, author, ingredients, instructions, preferences, time, pic, tips) {
     try{
-        await client.query(SQL.sqlCreateRecipe(),[title,author,pic,instructions,ingredients,preferences,time, 'Enjoy!']);
+        await client.query(SQL.sqlCreateRecipe(),[title,author,pic,instructions,ingredients,preferences,time, tips]);
     }
     catch(err){
         console.log(err.stack);
@@ -182,23 +185,12 @@ export async function createRecipeObj(title, author, ingredients, instructions, 
     }
     return {status: 'SUCCESS'};
 }
-export function existsRecipe(title, author) {
-    return false;
-}
 export async function getRecipeInfo(recipeID) {
     const res = await client.query(
         "SELECT * FROM recipe_t WHERE recipe_id=$1", [recipeID]
     );
     return JSON.stringify(res.rows[0]);
 }
-export function deleteRecipeObj(recipeID, username) {
-    return {Status: "SUCCESS", recipeID: recipeID};
-}
-// export var currentRecipe = 1987;
-// export function updateCurrentRecipe(recipeID){
-//     currentRecipe = recipeID;
-// }
-
 
 // [3] Like Functions
 export async function createLikeObj(sender, recipe_id) {
@@ -235,15 +227,11 @@ export async function createCommentObj(sender, recipeID, text) {
 //Returns comment obj information for the specified comment_id
 //getCommentInfo(commentID: string): { contains comment info }
 export async function getCommentInfo(val) {
-    console.log("in the databse and the recipe id is ", val);
     const res = await client.query(
         "SELECT * FROM comment_t WHERE recipe_id=$1", [val]
     );
-    console.log("here are the comments: ", res);
     return JSON.stringify(res.rows);
-} //changed this from before
-
-
+}
 //Updates comment obj information
 //updateCommentObj(commentID: string, text: string): void
 export async function updateCommentObj(commentID, text) {
@@ -267,14 +255,6 @@ export async function deleteCommentObj(commentID) {
     );
 }
 
-
-export function tempGetRecipeInfo(recipeID) {
-    return JSON.stringify({recipe_name: 'Pizza', recipe_author: "Jay", recipe_picture: "pizza.jpg",
-    ingredients: [{"Dough": "3 pounds"}, {"Sauce": "2 gallons"}, {"Cheese" : "3 cups"}], recipeID: 197,
-    instructions: ["knead dough", "spread sauce", "sprinkle cheese"], preferences: [0,1,0,0,0,0,0],
-    time: "approx 90 minutes", likes:2, rating: 3.5, "ingredients_notes":"Feel free to experiment with toppings!",
-    tips_and_notes: "I love pizza, and I bet you do too! Come check out my profile for more pizza recipes! I'd love to hear about your spin on my recipe!"});
-}
 // [5] Chat Functions
 export var currChat;
 export async function createChat(sender, reciever) {
