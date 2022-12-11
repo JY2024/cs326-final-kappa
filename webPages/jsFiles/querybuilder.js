@@ -5,7 +5,9 @@ export function sqlMyRecipes(){
     return "SELECT recipe_id, recipe_name, \
     (SELECT COUNT(*) FROM like_T AS l \
         WHERE l.recipe_id=r.recipe_id) AS likes, \
-    0 AS comments, recipe_picture \
+    (SELECT COUNT(*) FROM comment_T AS c \
+        WHERE c.recipe_id=r.recipe_id) AS comments, \
+    recipe_picture \
     FROM recipe_T AS r \
     WHERE author=$1;";
 }
