@@ -7,7 +7,6 @@ const client = new Client({
       rejectUnauthorized: false
     }
 });
-
 client.connect();
 
 import * as SQL from './webPages/jsFiles/querybuilder.js';
