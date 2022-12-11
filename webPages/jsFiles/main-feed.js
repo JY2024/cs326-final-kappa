@@ -33,7 +33,7 @@ async function renderRecipe() {
             const json1 = await response1.json();
             curRecipe = json1.recipe_id;
             // PICTURES
-            document.getElementById('picture').setAttribute('src', json1.recipe_picture);
+            document.getElementById('picture').setAttribute('src', json1.recipe_picture.split(' ').join('+'));
             // HEADER INFO
             document.getElementById('recipe_name').innerHTML = json1.recipe_name;
             document.getElementById('creator').innerHTML = json1.author;
@@ -58,7 +58,7 @@ async function renderRecipe() {
     if (response2.ok) {
         let json2 = await response2.json();
         if (json2.length === 1) {
-            document.getElementById('next_pic').setAttribute('src', resources[0].uhoh);
+            document.getElementById('next_pic').setAttribute('src', resources[0].uhoh.split(' ').join('+'));
             nextRecipe = null;
         } else {
             while (json2.recipe_id === curRecipe) {
@@ -69,7 +69,7 @@ async function renderRecipe() {
                 }
             }
             nextRecipe = json2.recipe_id;
-            document.getElementById('next_pic').setAttribute('src', json2.recipe_picture);
+            document.getElementById('next_pic').setAttribute('src', json2.recipe_picture.split(' ').join('+'));
         }
     }
 }

@@ -84,7 +84,7 @@ async function renderRecipe() {
         }
 
         //pictures
-        picture.style.backgroundImage = `url(${json.recipe_picture})`;
+        picture.style.backgroundImage = `url(${json.recipe_picture.split(' ').join('+')})`;
         // picture.style.backgroundImage = `url(../${json.recipe_picture})`;
     }
 

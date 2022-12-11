@@ -101,7 +101,8 @@ export async function updateUser(username, profile_pic, location, pref, desc, di
     if (display_name !== 'same') {
         str += ' display_name = \'' + display_name + '\',';
     }
-    await client.query(str.substring(0, str.length - 1) + 'WHERE username = $1', [username]);
+    console.log('your full query string is ' + str.substring(0, str.length - 1) + ' WHERE username = $1');
+    await client.query(str.substring(0, str.length - 1) + ' WHERE username = $1', [username]);
 }
 //Updates the specified user's password
 //updateUserPass(username: string, password: string): void

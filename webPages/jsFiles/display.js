@@ -57,7 +57,7 @@ pic_selection.addEventListener('change', async () => {
     if (picString.length > 1000000) {
         window.alert('Image too large.');
     }
-    pic.setAttribute('src', picString);
+    pic.setAttribute('src', picString.split(' ').join('+'));
     CURPIC = picString;
 });
 
