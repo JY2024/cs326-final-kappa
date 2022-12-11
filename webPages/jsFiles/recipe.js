@@ -1,23 +1,20 @@
-const profile = document.getElementById('profile');
-const settings = document.getElementById('settings');
+import { fixURL } from './utility.js';
+
 const chat = document.getElementById('messages');
-const prefs = document.getElementById('prefs');
 const prefHolder = document.getElementById('preferences');
 const allergenHolder = document.getElementById('allergens');
-const picture = document.querySelector('.imcol'); //used to be EBYID('image')
+const picture = document.querySelector('.imcol');
 const commentBox = document.getElementById('comments');
 let currUser = '';
 let currRecipe = '';
 let prefArray = ["Vegetarian", "Vegan", "Gluten Free", "Dairy Free", "Pescetarian", "Keto", "Low in Carbs", "High in Protein",
                 "Shellfish", "Nuts", "Soy", "Sugar"];
+
+// Event Listeners
 chat.addEventListener('click', () =>{
     window.localStorage.setItem('chat-user', currUser);
     window.location = "/chat.html";
 });
-function fixURL(url) {
-    return url.substring(0, url.lastIndexOf('/'));
-}
-
 chat.addEventListener('click', async () => { 
     const request = new Request(fixURL(window.location.href) + '/chat/new?sender=' + "test" + '&reciever=' + currUser , {method: 'POST'});
     const response = await fetch(request);
@@ -25,7 +22,6 @@ chat.addEventListener('click', async () => {
         window.location = "/chat.html";
     }
 });
-
 
 async function renderRecipe() {
     currRecipe = window.localStorage.getItem('cur_recipe_id');
@@ -38,9 +34,6 @@ async function renderRecipe() {
         const listHolder = document.createElement('div');
         let temp = json.ingredients.split('\\n');
         for (const ingred of temp){
-            if(ingred === ''){
-                continue
-            };
             const listItem = document.createElement('li');
             listItem.appendChild(document.createTextNode(ingred));
             listHolder.appendChild(listItem);
@@ -91,7 +84,6 @@ async function renderRecipe() {
 
         //pictures
         picture.style.backgroundImage = `url(${json.recipe_picture.split(' ').join('+')})`;
-        // picture.style.backgroundImage = `url(../${json.recipe_picture})`;
     }
 
     //COMMENTS
@@ -107,7 +99,6 @@ async function renderRecipe() {
             comments.appendChild(document.createTextNode(comm[i].sender + ' said: ' + comm[i].content + '\n'));
             comments.appendChild(document.createElement("br"));
         }
-        // comments.appendChild(content);
     }
 }
 
@@ -147,4 +138,5 @@ commentBox.addEventListener('click', async(e) =>{
         }
     }
 });
+
 window.onload = renderRecipe;

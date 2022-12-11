@@ -1,25 +1,19 @@
-import { encodeImageAsURL } from "./utility.js";
 const settings = document.getElementById('settings');
-settings.addEventListener('click', () => {
-    window.location = "/profile-settings-personal-info.html";
-});
-
-//Listeners
-document.getElementById('back').addEventListener('click', toFeed)
-
+const back = document.getElementById('back');
 initializePage();
+
+
+async function initializePage() {
+    await fetchMyRecipes();
+    await fetchUserInfo();
+}
 
 function toFeed() {
     window.location = "/main-feed.html";
 }
 
-function initializePage() {
-    fetchMyRecipes();
-    fetchUserInfo();
-}
-
-function fetchUserInfo() {
-    fetch('/user/read?username=' + localStorage.getItem('cur_user_viewing'))
+async function fetchUserInfo() {
+    await fetch('/user/read?username=' + localStorage.getItem('cur_user_viewing'))
         .then(response => response.json())
         .then(response => {
             displayUserInfoParser(response);
@@ -74,6 +68,7 @@ function displayUserInfoParser(userJSON) {
     userCard(username, realname, prefArr, desc, pic);
 }
 
+// render user card
 function userCard(username, realname, prefs, desc, pic) {
     document.getElementById("userName").innerText = username;
     document.getElementById("realName").innerText = realname;
@@ -81,7 +76,6 @@ function userCard(username, realname, prefs, desc, pic) {
     document.getElementById("profPic").setAttribute("src", pic.split(' ').join('+'));
     let prefCard = document.getElementById("prefIcons");
     for (const index in prefs) {
-        console.log(prefs[index]);
         let currDiv = document.createElement("span");
         let currID = "badge" + prefs[index];
         currDiv.setAttribute("id", currID);
@@ -91,14 +85,15 @@ function userCard(username, realname, prefs, desc, pic) {
     }
 }
 
-function fetchMyRecipes() {
-    fetch('/recipe/list/my?username=' + localStorage.getItem('cur_user_viewing'))
+async function fetchMyRecipes() {
+    await fetch('/recipe/list/my?username=' + localStorage.getItem('cur_user_viewing'))
         .then(response => response.json())
         .then(response => {
             displayRecipeParser(response);
         })
 }
 
+// render recipe card
 function myRecipeCard(recipeName, numLikes, numComments, colID, img, recID) {
     let newCard = document.createElement("div");
     newCard.className = "card";
@@ -148,3 +143,9 @@ function displayRecipeParser(recipeList) {
         myRecipeCard(curName, likes, comments, curID, img.split(' ').join('+'), recID);
     }
 }
+
+// Event Listeners
+settings.addEventListener('click', () => {
+    window.location = "/profile-settings-personal-info.html";
+});
+back.addEventListener('click', toFeed)

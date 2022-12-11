@@ -1,35 +1,41 @@
+<!-- Login Page -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="./CSSFiles/index-style.css">
-      <script type="module" src="./jsFiles/index.js" defer></script>
-  </head>
-  <body>
-    <center>
-        <div class="form-body">
-          <p>Sign in:</p>
-            <form class="the-form">
-                <label for="username">Username</label>
-                <input type="text" name="email" id="username" placeholder="Enter your Username">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Enter your password">
-                <input type="button" id="loginBtn" value="Log In">
-            </form>
-        </div>
-        <div class="form-body">
-          <p>New user? Sign up!</p>
-            <form class="the-form">
-              <label for="username">Username: </label>
-              <input type="text" name="username" id="newUsername" placeholder="Username">
-              <label for="displayName">Display Name: </label>
-              <input type="text" name="displayName" id="newDisplayName" placeholder="Name">
-              <label for="password">Password: </label>
-              <input type="password" name="password" id="newPassword" placeholder="Password">
-              <input type="button" id="createBtn" value="Create Account">
-            </form>
-        </div>
-    </center>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./CSSFiles/index-style.css">
+  <script type="module" src="./jsFiles/index.js" defer></script>
+</head>
+
+<body>
+  <center>
+    <div class="form-body">
+      <!-- Login -->
+      <p>Sign in:</p>
+      <form class="the-form">
+        <label for="username">Username</label>
+        <input type="text" name="email" id="username" placeholder="Enter your Username">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Enter your password">
+        <input type="button" id="loginBtn" value="Log In">
+      </form>
+    </div>
+    <div class="form-body">
+      <!-- New User -->
+      <p>New user? Sign up!</p>
+      <form class="the-form">
+        <label for="username">Username: </label>
+        <input type="text" name="username" id="newUsername" placeholder="Username">
+        <label for="displayName">Display Name: </label>
+        <input type="text" name="displayName" id="newDisplayName" placeholder="Name">
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="newPassword" placeholder="Password">
+        <input type="button" id="createBtn" value="Create Account">
+      </form>
+    </div>
+  </center>
+</body>
+
 </html>

@@ -1,32 +1,34 @@
-<!-- Settings: Security-->
+<!-- View and modify security-related settings -->
 <!doctype html>
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./CSSFiles/profile-settings-style.css">
     <script type="module" src="./jsFiles/security.js" defer></script>
-    <title>Security</title>
+    <title>Security Settings</title>
 </head>
 
 <body>
+    <!-- Navigation -->
     <div class="d-flex" id="wrapper">
         <div class="border-end bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading border-bottom bg-light">
                 <h3>Account Settings</h3>
             </div>
             <div class="list-group list-group-flush">
-                <button class="btn" id="personal"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Personal
-                    Information</a></button>
-                <button class="btn" id="display"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile
-                    Display</a></button>
-                <button class="btn"><a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Security <i class="bi bi-caret-left-fill"></i></a></button>
+                <button class="btn" id="personal"><a
+                        class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Personal
+                        Information</a></button>
+                <button class="btn" id="display"><a
+                        class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile
+                        Display</a></button>
+                <button class="btn"><a class="list-group-item list-group-item-action list-group-item-light p-3"
+                        href="#!">Security <i class="bi bi-caret-left-fill"></i></a></button>
             </div>
         </div>
         <div id="page-content-wrapper">
@@ -63,7 +65,8 @@
                         <!-- Settings Icon -->
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <button class="btn" id="feed"><a class="nav-link" href="#"><i class="bi bi-cup-straw"></i></a></button>
+                                <button class="btn" id="feed"><a class="nav-link" href="#"><i
+                                            class="bi bi-cup-straw"></i></a></button>
                             </li>
                         </ul>
                     </div>
@@ -84,8 +87,10 @@
                             <input type="text" class="form-control" id="password" aria-describedby="password"
                                 placeholder="Insert new password">
                         </div>
-                        <button type="button" class="btn btn-primary" id="save" value="save">Save Changes</button><br><br>
-                        <button type="button" class="btn btn-primary" id="delete_user" value="delete_user">Delete Your Account</button>
+                        <button type="button" class="btn btn-primary" id="save" value="save">Save
+                            Changes</button><br><br>
+                        <button type="button" class="btn btn-primary" id="delete_user" value="delete_user">Delete Your
+                            Account</button>
                     </form>
                 </div>
 
@@ -103,4 +108,5 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

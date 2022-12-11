@@ -8,6 +8,7 @@ const pass = document.getElementById('password');
 const saveBtn = document.getElementById('save');
 const delBtn = document.getElementById('delete_user');
 
+// Event Listeners
 display.addEventListener('click', () => {
     window.location = "/profile-settings-profile-display.html";
 });

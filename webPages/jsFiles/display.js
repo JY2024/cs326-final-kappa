@@ -1,10 +1,9 @@
 import { encodeImageAsURL, fixURL } from "./utility.js";
 const USERNAME = window.localStorage.getItem('username');
-let CURPIC = '';
+let CURPIC = ''; // current profile pic
 
 const personal = document.getElementById('personal');
 const security = document.getElementById('security');
-const profile = document.getElementById('profile');
 const feed = document.getElementById('feed');
 const display_name = document.getElementById('name');
 const pic = document.getElementById('picture');
@@ -12,6 +11,7 @@ const pic_selection = document.getElementById('pic');
 const desc = document.getElementById('text-area');
 const saveBtn = document.getElementById('save');
 
+// load intial data
 async function loadData() {
     const request = new Request(fixURL(window.location.href) + '/user/read?username=' + USERNAME, {method: 'GET'});
     const response = await fetch(request);
@@ -24,6 +24,7 @@ async function loadData() {
     }
 }
 
+// updates user object
 async function saveChanges() {
     await fetch('/user/update', {
         mode: 'cors',
@@ -37,6 +38,8 @@ async function saveChanges() {
     });
 }
 
+// Event Listeners
+    // navigation
 personal.addEventListener('click', () =>{
     window.location = "/profile-settings-personal-info.html";
 });
@@ -51,7 +54,6 @@ saveBtn.addEventListener('click', () => {
     saveChanges();
     window.alert('Changes successfully saved.');
 });
-
 pic_selection.addEventListener('change', async () => {
     const picString = await encodeImageAsURL(pic_selection);
     if (picString.length > 1000000) {

@@ -1,27 +1,20 @@
 import pg from 'pg';
 const { Client } = pg;
 
-// const client = new Client({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {
-//       rejectUnauthorized: false
-//     }
-// });
 const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'postgres',
-    password: '',
-    port: 5432,
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
 });
 
 client.connect();
 
 import * as SQL from './webPages/jsFiles/querybuilder.js';
-import * as auth from './auth.js';
+import * as auth from './webPages/jsFiles/auth.js';
 import { arrayOfObjectsToArray, atLeastFiveMatch } from './webPages/jsFiles/utility.js';
 import { resources } from './webPages/jsFiles/pic-resources.js';
-import * as miniCrypt from './miniCrypt.js';
+import * as miniCrypt from './webPages/jsFiles/miniCrypt.js';
 const MC = miniCrypt.MiniCrypt;
 
 // Authorization
@@ -40,7 +33,7 @@ export async function authUserObj(req) {
 
 // [1] User Functions
 export async function createUserObj(username, password, displayName) {
-    const res = await client.query(
+    await client.query(
         "INSERT INTO user_T (username, profile_picture, display_name, location, preferences, description) VALUES ($1, $2, $3, $4, $5, $6);", [username, resources[1].default, displayName, '', '000000000000', '']
     );
     let saltHash = auth.encrypt(password);
@@ -109,7 +102,6 @@ export async function updateUser(username, profile_pic, location, pref, desc, di
     if (display_name !== 'same') {
         str += ' display_name = \'' + display_name + '\',';
     }
-    console.log('your full query string is ' + str.substring(0, str.length - 1) + ' WHERE username = $1');
     await client.query(str.substring(0, str.length - 1) + ' WHERE username = $1', [username]);
 }
 //Updates the specified user's password
@@ -236,6 +228,7 @@ export async function createCommentObj(sender, recipeID, text) {
         "INSERT INTO comment_T (sender, recipe_id, content) VALUES ($1, $2, $3);", [sender, parseInt(recipeID), text]
     );
 }
+
 //Returns comment obj information for the specified comment_id
 //getCommentInfo(commentID: string): { contains comment info }
 export async function getCommentInfo(val) {
@@ -244,6 +237,7 @@ export async function getCommentInfo(val) {
     );
     return JSON.stringify(res.rows);
 }
+
 //Updates comment obj information
 //updateCommentObj(commentID: string, text: string): void
 export async function updateCommentObj(commentID, text) {
@@ -251,6 +245,7 @@ export async function updateCommentObj(commentID, text) {
         "UPDATE comment_T SET content=$1 WHERE comment_T.comment_id=$2", [text, parseint(commentID)]
     );
 }
+
 //Checks if a certain comment exists
 //existsComment(commentID: string): boolean
 export async function existsComment(commentID) {
@@ -259,6 +254,7 @@ export async function existsComment(commentID) {
     );
     return res.rows.length > 0;
 }
+
 //Deletes a comment obj from the database
 //deleteCommentObj(commentID: string): void
 export async function deleteCommentObj(commentID) {
@@ -279,27 +275,25 @@ export async function createChat(sender, reciever) {
     if (check.rows[0]["count"] > 0) {
         return JSON.stringify({ Status: 'SUCCESS', sender: 'test', reciever: "Jay", time: "11:01" });
     }
-    const res = await client.query(
+    await client.query(
         "INSERT INTO chat_t (sender_id, reciever_id) VALUES ($1, $2)", [sender, reciever]
     );
     return JSON.stringify({ Status: 'SUCCESS', sender: 'test', reciever: "Jay", time: "11:01" });
 }
+
 export async function getChat(user) {
     const res = await client.query(
-        // "SELECT * FROM chat_t WHERE sender_id=$1 OR reciever_id=$1", [user]
         "select reciever_id as reciever_id from chat_t where sender_id=$1 UNION select sender_id as reciever_id from chat_t where reciever_id=$1", [user]
-    ); //this works, no need to change - it updates the sidebar correctly which shows users person has conversed with
+    );
     return JSON.stringify(res.rows);
 }
+
 export async function updateChat(sender, chatID, text) {
     var today = new Date();
     await client.query(
         "INSERT INTO message_t (sender_id, chat_id, mess, time) VALUES ($1, $2, $3, $4)", [sender, chatID, text, today.getHours() + ":" + today.getMinutes()]
     );
     return { Status: "SUCCESS" };
-} //added this
-export function deleteChat(user, reciever) {
-    return { Status: "SUCCESS", reciever: reciever };
 }
 
 // [6] Message Functions

@@ -1,10 +1,13 @@
 import { fixURL } from "./utility.js";
 import { resources } from './pic-resources.js';
 const USERNAME = window.localStorage.getItem('username');
-let CUR_VIEWING = null;
+let CUR_VIEWING = null; // author of the current recipe being viewed
 let curRecipe = null, nextRecipe = null;
 
-// Initializes the next recipe
+const noBtn = document.getElementById('no');
+const yesBtn = document.getElementById('yes');
+
+// Initializes the next recipe to be loaded in
 async function init() {
     window.localStorage.setItem('username', USERNAME);
     const req = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=0&username=' + USERNAME, { method: 'GET' });
@@ -73,7 +76,7 @@ async function renderRecipe() {
         }
     }
 }
-//renderTips(tipsElement: DOM element, tips: string): void
+//RENDER
 function renderTips(tipsElement, tips) {
     tips = tips.split('\\n');
     for (let i = 0; i < tips.length; i++) {
@@ -81,12 +84,10 @@ function renderTips(tipsElement, tips) {
         tipsElement.appendChild(document.createElement('br'));
     }
 }
-//renderTime(timeElement: DOM element, prepTime: string): void
 function renderTime(timeElement, prepTime) {
     const times = ['Less than 30 min', 'Approx 30 min', '30 to 90 min', 'Approx 90 min', '90 to 120 min', 'Approx 120 min', 'More than 120 min'];
     timeElement.appendChild(document.createTextNode('  ' + times[prepTime]));
 }
-//renderInstructions(instructList: DOM element, instructions: string): void
 function renderInstructions(instructList, instructions) {
     instructions = instructions.split('\\n');
     for (let i = 0; i < instructions.length; i++) {
@@ -95,7 +96,6 @@ function renderInstructions(instructList, instructions) {
         instructList.appendChild(listItem);
     }
 }
-//renderIngredients(ingredList: DOM element, ingredients: )
 function renderIngredients(ingredList, ingredients) {
     let temp = ingredients.split('\\n');
     for (const ingred of temp) {
@@ -106,7 +106,6 @@ function renderIngredients(ingredList, ingredients) {
 }
 function renderPreferences(element, prefArr) {
     const preferencesNames = ['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free', 'Pescetarian', 'Keto', 'Low Carb', 'High Protein', 'No Shellfish', 'No Nuts', 'No Soy', 'Sugar Free'];
-    // <span class="badge rounded-pill text-bg-primary">Dairy Free</span> <span class="badge rounded-pill text-bg-danger">Spice</span> <span class="badge rounded-pill text-bg-success">Vegan</span>
     for (let i = 0; i < 12; i++) {
         if (parseInt(prefArr[i])) {
             const span = document.createElement('span');
@@ -136,9 +135,7 @@ function addLikeByUser() {
         });
 }
 
-// EVENT LISTENERS
-const noBtn = document.getElementById('no');
-const yesBtn = document.getElementById('yes');
+// Event Listeners
 noBtn.addEventListener('click', () => {
     // clear everything
     document.getElementById('time').innerHTML = '';
@@ -148,12 +145,12 @@ noBtn.addEventListener('click', () => {
     document.getElementById('preferences').innerHTML = '';
     renderRecipe();
 });
-yesBtn.addEventListener('click', () => {
+yesBtn.addEventListener('click', () => { // view current recipe in more detail
     addLikeByUser();
     window.localStorage.setItem('cur_recipe_id', JSON.stringify(curRecipe));
     window.location = "/recipe.html";
 });
-document.getElementById('creator').addEventListener('click', () => {
+document.getElementById('creator').addEventListener('click', () => { // view other user's profile
     window.localStorage.setItem('cur_user_viewing', CUR_VIEWING);
     window.location = "/other-profile.html";
 });

@@ -1,15 +1,20 @@
 import { encodeImageAsURL } from "./utility.js";
 const settings = document.getElementById('settings');
+
+// Event Listeners
 settings.addEventListener('click', () => {
     window.location = "/profile-settings-personal-info.html";
 });
-let CUR_DEL = null;
-
-//Listeners
-document.getElementById('buttonPost').addEventListener('click', postRecipe);
+document.getElementById('buttonPost').addEventListener('click', async () => {
+    await postRecipe();
+});
 document.getElementById('back').addEventListener('click', toFeed)
-document.getElementById('savedBtn').addEventListener('click', fetchSavedRecipes);
-document.getElementById('myBtn').addEventListener('click', fetchMyRecipes);
+document.getElementById('savedBtn').addEventListener('click', async () => {
+    await fetchSavedRecipes();
+});
+document.getElementById('myBtn').addEventListener('click', async () => {
+    fetchMyRecipes();
+});
 
 initializePage();
 
@@ -17,20 +22,15 @@ function toFeed() {
     window.location = "/main-feed.html";
 }
 
-function initializePage() {
-    console.log("Initializing page...");
-    fetchMyRecipes();
-    console.log("MyRecipes fetched: SUCCESS");
-    fetchUserInfo();
-    console.log("UserInfo fetched: SUCCESS");
+async function initializePage() {
+    await fetchMyRecipes();
+    await fetchUserInfo();
 }
 
-function fetchUserInfo() {
-    console.log("User " + localStorage.getItem('username'));
-    fetch('/user/read?username=' + localStorage.getItem('username'))
+async function fetchUserInfo() {
+    await fetch('/user/read?username=' + localStorage.getItem('username'))
         .then(response => response.json())
         .then(response => {
-            console.log(response);
             displayUserInfoParser(response);
         });
 }
@@ -83,6 +83,7 @@ function displayUserInfoParser(userJSON) {
     userCard(username, realname, prefArr, desc, pic);
 }
 
+// render user card
 function userCard(username, realname, prefs, desc, pic) {
     document.getElementById("userName").innerText = username;
     document.getElementById("realName").innerText = realname;
@@ -90,7 +91,6 @@ function userCard(username, realname, prefs, desc, pic) {
     document.getElementById("profPic").setAttribute("src", pic.split(' ').join('+'));
     let prefCard = document.getElementById("prefIcons");
     for (const index in prefs) {
-        console.log(prefs[index]);
         let currDiv = document.createElement("span");
         let currID = "badge" + prefs[index];
         currDiv.setAttribute("id", currID);
@@ -100,21 +100,16 @@ function userCard(username, realname, prefs, desc, pic) {
     }
 }
 
-function fetchSavedRecipes() {
-    console.log("Saved recipes");
-    fetch('/recipe/list/saved?username=' + localStorage.getItem('username'))
+async function fetchSavedRecipes() {
+    await fetch('/recipe/list/saved?username=' + localStorage.getItem('username'))
         .then(response => response.json())
         .then(response => {
-            // Do something with response.
-            //response.send(readSavedRecipes(request,response));
-            console.log(response);
             displayRecipeParser(response, false)
         });
 }
 
-function fetchMyRecipes() {
-    console.log("My Recipes");
-    fetch('/recipe/list/my?username=' + localStorage.getItem('username'))
+async function fetchMyRecipes() {
+    await fetch('/recipe/list/my?username=' + localStorage.getItem('username'))
         .then(response => response.json())
         .then(response => {
             displayRecipeParser(response, true);
@@ -153,7 +148,6 @@ async function postRecipe() {
             body: "title=" + recipeName + "&author=" + author + "&ingredients=" + ingredients + "&instructions=" + instructions + "&preferences=" + preferences + "&time=" + time + "&recipe_picture=" + picString + "&tips=" + tips
         })
             .then(function (data) {
-                console.log('Request succeeded with JSON response', data);
                 location.reload();
             })
             .catch(function (error) {
@@ -162,9 +156,8 @@ async function postRecipe() {
     }
 };
 
-
+// render recipe card
 function myRecipeCard(recipeName, numLikes, numComments, colID, img, recID) {
-    console.log('your recipeID is ' + recID);
     let newCard = document.createElement("div");
     newCard.className = "card";
     let cardImg = document.createElement("img");
@@ -187,7 +180,6 @@ function myRecipeCard(recipeName, numLikes, numComments, colID, img, recID) {
     const delBtn = document.createElement('button');
     delBtn.setAttribute('type', 'button');
     delBtn.innerText = 'Delete';
-    console.log('recID before is ' + recID);
     delBtn.addEventListener('click', async () => {
         await deleteRecipe(recID);
     });
@@ -242,6 +234,7 @@ function clearRecipes() {
     document.getElementById("recipe5").innerHTML = "";
 }
 
+// render saved recipe card
 function savedRecipeCard(recipeName, author, colID, img, recID) {
     let newCard = document.createElement("div");
     newCard.className = "card";
@@ -270,16 +263,11 @@ function savedRecipeCard(recipeName, author, colID, img, recID) {
     let like = document.createElement("i");
     let likeID = 'liked' + recID;
     like.setAttribute('id', likeID);
-    like.setAttribute('recID', recID);//recipe_id
+    like.setAttribute('recID', recID);
     like.className = "bi bi-heart-fill";
     like.style.color = "lightcoral";
     likeInfo.appendChild(like);
     newCard.appendChild(likeInfo);
-    /*let prefInfo = document.createElement("p");
-    prefInfo.className = "card-text text-start";
-    
-    commentInfo.appendChild(comment);
-    newCard.appendChild(commentInfo);*/
     document.getElementById(colID).appendChild(newCard);
     document.getElementById(likeID).addEventListener('click', postUnlike);
     document.getElementById(recID).addEventListener('click', recipePageFunc);
@@ -309,12 +297,11 @@ function displayRecipeParser(recipeList, mine) {
     }
 }
 
-function postUnlike() {
+// unlike a recipe
+async function postUnlike() {
     var recipe_id = Number(this.getAttribute("recid"));
     var user = localStorage.getItem('username');
-
-
-    fetch('/recipe/like/delete', {
+    await fetch('/recipe/like/delete', {
         mode: 'cors',
         method: 'POST',
         headers: {
@@ -323,7 +310,6 @@ function postUnlike() {
         body: "username=" + user + "&recipe_id=" + recipe_id
     })
         .then(function (data) {
-            console.log('Request succeeded with JSON response', data);
             location.reload();
         })
         .catch(function (error) {

@@ -60,10 +60,6 @@ app.get('/profile.html', (req, res) => {
 app.get('/other-profile.html', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/other-profile.html'));
 });
-    // For Images
-app.get('/images/:imageid', (req, res) => {
-    res.sendFile(path.join(__dirname, '/webPages/images/', req.params.imageid));
-});
     // For CSS
 app.get('/CSSFiles/:cssid', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/CSSFiles/', req.params.cssid));
@@ -105,15 +101,12 @@ app.post('/recipe/like/delete', async (req, res) =>    {res.send(await deleteLik
 
 // [4] Comment Functions
 app.post('/recipe/comment/new', createComment);
-
 app.get('/comment/read?:id', async (req,res) =>{
     res.send(await db.getCommentInfo(req.query.recipe_id));
 });
-
 app.post('recipe/comment/update', async (req, res) => {
     res.send(await db.updateCommentObj(req.body['commentID'], req.body['text']));
 })
-
 app.post('/recipe/comment/delete', deleteComment);
 
 // [5] Chat Functions
@@ -147,28 +140,33 @@ async function createUser(req, res) {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
     res.end();
 }
+
 async function readUser(req, res) {
     const result = await db.getUserInfo(req.query.username);
     res.send(result);
     res.end();
 }
+
 async function readMyRecipes(req, res){
     return await db.getMyRecipes(req.query.username);
 }
+
 async function readSavedRecipes(req, res){
     return await db.getSavedRecipes(req.query.username);
 }
+
 async function updateUser(req, res) {
     const result = await db.updateUser(req.body['username'], req.body['profile_picture'], req.body['location'], req.body['preferences'], req.body['description'], req.body['display_name']);
     res.send(result);
     res.end();
 } 
+
 async function updateUserPass(req, res) {
     const result = await db.updateUserPass(req.body['username'], req.body['password']);
     res.send(result);
     res.end();
 }
-// delete user object
+
 async function deleteUser(req, res){
     const result = await db.deleteUserObj(req.body.username);
     res.send(result);
@@ -183,6 +181,7 @@ async function createRecipe(req, res){
     res.send(await db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions, req.body.preferences, req.body.time, req.body.recipe_picture, req.body.tips));
     res.end();
 }
+
 async function readRecipe(req, res) {
     if (parseInt(req.query.recipeID) === 0) {
         const result = await db.getRandomRecipe(req.query.username);
@@ -203,6 +202,7 @@ async function createLike(req, res){
     res.send(await db.createLikeObj(req.body.username, req.body.recipe_id));
     res.end();
 }
+
 async function deleteLike(req, res){
     res.send(await db.deleteLikeObj(req.body.username, req.body.recipe_id));
     res.end();
@@ -214,16 +214,19 @@ async function createComment(req, res){
     res.send(result);
     res.end();
 }
+
 async function readComment(req, res) {
     const result = await db.getCommentInfo(req.query.comment_id);
     res.send(result);
     res.end();
 }
+
 async function updateComment(req, res) {
     const result = await db.updateCommentObj(req.body['comment_id'], req.body['text']);
     res.send(result);
     res.end();
 }
+
 async function deleteComment(req, res){
     const result = await db.deleteCommentObj(req.body['commentID']);
     res.send(result);
