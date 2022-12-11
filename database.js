@@ -1,19 +1,12 @@
 import pg from 'pg';
 const { Client } = pg;
 
-// const client = new Client({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {
-//       rejectUnauthorized: false
-//     }
-// });
 const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'postgres',
-    password: '',
-    port: 5432,
-})
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+});
 client.connect();
 
 import * as SQL from './webPages/jsFiles/querybuilder.js';

@@ -129,6 +129,8 @@ async function postRecipe() {
     const picString = await encodeImageAsURL(document.getElementById('upload'));
     if (recipeName === '' || picString === 'Error' || ingredients === '' || instructions === '') {
         window.alert('You must at least have a recipe name, picture, ingredients, and instructions in order to post a recipe!');
+    } else if (picString.length > 1000000) {
+        window.alert('Image too large.');
     } else {
         var preferencesArr = [document.getElementById('prefVegetarian').checked, document.getElementById('prefVegan').checked, document.getElementById('prefGlutenFree').checked, document.getElementById('prefDairyFree').checked, document.getElementById('prefPesc').checked, document.getElementById('prefKeto').checked, document.getElementById('prefLowCarb').checked, document.getElementById('prefProtein').checked, document.getElementById('allergenShell').checked, document.getElementById('allergenNuts').checked, document.getElementById('allergenSoy').checked, document.getElementById('prefSugarFree').checked]
         var preferences = "";
