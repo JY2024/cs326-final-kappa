@@ -40,7 +40,7 @@ export async function createUserObj(username, password, displayName) {
     await client.query(
         "INSERT INTO password_T (username, salt, pwEncrypted) VALUES ($1, $2, $3);", [username, saltHash[0], saltHash[1]]
     );
-    return JSON.stringify({ status: 'SUCCESS', username: username, password: password, displayName: displayName });
+    return JSON.stringify({ status: 'SUCCESS', username: username, displayName: displayName });
 }
 
 export async function getUserInfo(username) {
