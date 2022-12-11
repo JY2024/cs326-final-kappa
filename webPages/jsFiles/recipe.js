@@ -11,6 +11,12 @@ let currRecipe = '';
 let prefArray = ["Vegetarian", "Vegan", "Gluten Free", "Dairy Free", "Pescetarian", "Keto", "Low in Carbs", "High in Protein",
                 "Shellfish", "Nuts", "Soy", "Sugar"];
 
+profile.addEventListener('click', () =>{
+    window.location = "/profile.html";
+});
+settings.addEventListener('click', () =>{
+    window.location = "/profile-settings-personal-info.html";
+});
 chat.addEventListener('click', () =>{
     window.localStorage.setItem('chat-user', currUser);
     window.location = "/chat.html";
@@ -25,12 +31,13 @@ chat.addEventListener('click', async () => {
     if (response.ok){
         window.location = "/chat.html";
     }
+    console.log('Completed!', response);
 });
 
 
 async function renderRecipe() {
     currRecipe = window.localStorage.getItem('cur_recipe_id');
-    const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=' + currRecipe , {method: 'GET'}); //changed it to tempread
+    const request = new Request(fixURL(window.location.href) + '/recipe/read?recipeID=' + currRecipe , {method: 'GET'});
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();
@@ -39,6 +46,9 @@ async function renderRecipe() {
         const listHolder = document.createElement('div');
         let temp = json.ingredients.split('\\n');
         for (const ingred of temp){
+            if(ingred === ''){
+                continue
+            };
             const listItem = document.createElement('li');
             listItem.appendChild(document.createTextNode(ingred));
             listHolder.appendChild(listItem);
@@ -83,6 +93,10 @@ async function renderRecipe() {
             }
         }
 
+        //recipe name
+        const title = document.getElementById('recipeName');
+        title.innerText = "Recipe: " + json.recipe_name;
+
         //pictures
         picture.style.backgroundImage = `url(${json.recipe_picture.split(' ').join('+')})`;
         // picture.style.backgroundImage = `url(../${json.recipe_picture})`;
@@ -94,11 +108,7 @@ async function renderRecipe() {
     const res = await fetch(req);
     if(res.ok){
         const comm = await res.json();
-        // const content = document.createElement('p');
         for(let i = 0; i < comm.length; i++){
-            // const item = document.createElement('p');
-            // item.innerText = comm[i].sender + ' said: ' + comm[i].content;
-            // content.appendChild(item);
             const content = document.createElement("span");
             content.className = "com";
             comments.appendChild(content);
@@ -124,8 +134,6 @@ commentBox.addEventListener('click', async(e) =>{
                     //"Content-type": "application/json; raw"
                 },
                 body: "sender=" + window.localStorage.getItem('username') + "&recipeID=" + window.localStorage.getItem('cur_recipe_id') + "&text=" + message
-                // use local storage instead of test 
-                // use the above with req.body.title, req.body.author. etcc
             }) // CHANGE THE IDS of the span which has ID comment and the text box which also has ID comment - will fuck up when getting element by id
             .then(async function (res) {
             if(res.ok){
@@ -147,52 +155,4 @@ commentBox.addEventListener('click', async(e) =>{
         }
     }
 });
-
-// async function renderRecipe() {
-//     const request = new Request(fixURL(window.location.href) + '/recipe/tempread?recipeID=' + 1987 , {method: 'GET'}); //changed it to tempread
-//     const response = await fetch(request);
-//     if (response.ok) {
-//         const json = await response.json();
-//         // INGREDIENTS
-//         const ingredList = document.getElementById('ingredients');
-//         const listHolder = document.createElement('div');
-//         for (const ingred of json.ingredients) {
-//             const ingredName = Object.keys(ingred)[0];
-//             const amount = ingred[ingredName];
-//             const listElement = document.createElement('li');
-//             const smallElement = document.createElement('small');
-//             smallElement.appendChild(document.createTextNode(amount));
-//             listElement.appendChild(document.createTextNode(ingredName + ' '));
-//             listElement.appendChild(smallElement);
-//             listHolder.appendChild(listElement);
-//         }
-//         ingredList.appendChild(listHolder);
-//             // INGREDIENTS NOTES
-//         document.getElementById('ingredients_notes').innerHTML = json.ingredients_notes;
-        
-//         // INSTRUCTIONS
-//         const instructionsHolder = document.getElementById('instructions');
-//         for (let i = 1; i <= json.instructions.length; i++) {
-//             instructionsHolder.appendChild(document.createTextNode(i + '. ' + json.instructions[i - 1]));
-//             instructionsHolder.appendChild(document.createElement('br'));
-//         }
-
-//         // TIPS AND NOTES
-//         const tipsSection = document.getElementById('tips_and_notes');
-//         tipsSection.innerHTML = json.tips_and_notes;
-
-//         // CREATOR
-//         const creator = document.getElementById('creator');
-//         creator.innerText = "Created By: " + json.recipe_author;
-//         currUser = json.recipe_author;
-//     }
-//     //COMMENTS
-//     const comments = document.getElementById('comment');
-//     const req = new Request(fixURL(window.location.href) + '/comment/read?comment_id=' + 1987 , {method: 'GET'});
-//     const res = await fetch(req);
-//     if(res.ok){
-//         const json = await res.json();
-//         comments.innerText = json.text;
-//     }
-// }
 window.onload = renderRecipe;
