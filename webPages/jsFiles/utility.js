@@ -26,6 +26,9 @@ export function atLeastFiveMatch(recipePref, userPref) {
 }
 
 export function encodeImageAsURL(element) {
+    if (element.files[0] === undefined) {
+        return 'Error';
+    }
     const file = element.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
