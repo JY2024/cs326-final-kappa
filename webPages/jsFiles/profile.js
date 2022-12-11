@@ -170,7 +170,7 @@ async function postRecipe(){
 };
 
 
-function myRecipeCard(recipeName, numLikes, numComments, colID, img){
+function myRecipeCard(recipeName, numLikes, numComments, colID, img, recID){
     let newCard = document.createElement("div");
     newCard.className = "card";
     let cardImg = document.createElement("img");
@@ -180,9 +180,15 @@ function myRecipeCard(recipeName, numLikes, numComments, colID, img){
     newCard.appendChild(cardImg);
     let cardBody = document.createElement("div");
     cardBody.className = "card-body";
-    let title = document.createElement("h5");
+    //title
+    let title = document.createElement("a");
     title.className = "card-title text-start";
     title.innerText = recipeName;
+    title.addEventListener('click', () => {
+        window.localStorage.setItem('cur_recipe_id', recID);
+        window.location = "/recipe.html";
+    });
+    //
     cardBody.appendChild(title);
     newCard.appendChild(cardBody);
     let likeInfo = document.createElement("p");
@@ -224,9 +230,13 @@ function savedRecipeCard(recipeName, author, colID, img, recID){
     newCard.appendChild(cardImg);
     let cardBody = document.createElement("div");
     cardBody.className = "card-body";
-    let title = document.createElement("h5");
+    let title = document.createElement("a");
     title.className = "card-title text-start";
     title.innerText = recipeName;
+    title.addEventListener('click', () => {
+        window.localStorage.setItem('cur_recipe_id', recID);
+        window.location = "/recipe.html";
+    });
     cardBody.appendChild(title);
     newCard.appendChild(cardBody);
     let creator = document.createElement("h4");
@@ -260,16 +270,14 @@ function recipePageFunc(){
 function displayRecipeParser(recipeList, mine){
     clearRecipes();
     for(const index in recipeList){
-        console.log(recipeList[index]);
         let curName = (recipeList[index])["recipe_name"];
         let curID = "recipe" + index;
         let recID = (recipeList[index])["recipe_id"];
-        //let img = (recipeList[index])["img"];
         let img = (recipeList[index])["recipe_picture"];
         if(mine === true){
             let likes = (recipeList[index])["likes"];
             let comments = (recipeList[index])["comments"];
-            myRecipeCard(curName, likes, comments, curID, img.split(' ').join('+'));
+            myRecipeCard(curName, likes, comments, curID, img.split(' ').join('+'), recID);
         }
         else{
             let author = (recipeList[index])["author"];
