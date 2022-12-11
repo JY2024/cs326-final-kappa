@@ -25,8 +25,8 @@ const MC = miniCrypt.MiniCrypt;
 
 // Authorization
 export async function authUserObj(req) {
-    if (req.body.email !== "") {
-        let res = await client.query(SQL.sqlAuthUser(), [req.body.email]);
+    if (req.body.username !== "") {
+        let res = await client.query(SQL.sqlAuthUser(), [req.body.username]);
         if(res.rowCount !== 0){
             let correct = auth.decrypt(req.body.password, res.rows[0].salt, res.rows[0].pwencrypted);
             if(correct){

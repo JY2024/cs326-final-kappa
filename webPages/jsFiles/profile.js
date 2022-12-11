@@ -17,13 +17,16 @@ function toFeed(){
 }
 
 function initializePage(){
+    console.log("Initializing page...");
     fetchMyRecipes();
+    console.log("MyRecipes fetched: SUCCESS");
     fetchUserInfo();
-    window.localStorage.setItem('cur_user_viewing', window.localStorage.getItem('username'));
+    console.log("UserInfo fetched: SUCCESS");
 }
 
 function fetchUserInfo(){
-    fetch( '/user/read?username=' + localStorage.getItem('cur_user_viewing') )
+    console.log("User " + localStorage.getItem('username'));
+    fetch( '/user/read?username=' + localStorage.getItem('username') )
         .then( response => response.json() )
         .then( response => {
             console.log(response);
@@ -98,7 +101,7 @@ function userCard(username, realname, prefs, desc, pic){
 
 function fetchSavedRecipes(){
     console.log("Saved recipes");
-    fetch( '/recipe/list/saved?username=' + localStorage.getItem('cur_user_viewing'))
+    fetch( '/recipe/list/saved?username=' + localStorage.getItem('username'))
     .then( response => response.json() )
     .then( response => {
         // Do something with response.
@@ -109,7 +112,8 @@ function fetchSavedRecipes(){
 }
 
 function fetchMyRecipes(){
-    fetch( '/recipe/list/my?username=' + localStorage.getItem('cur_user_viewing'))
+    console.log("My Recipes");
+    fetch( '/recipe/list/my?username=' + localStorage.getItem('username'))
     .then( response => response.json() )
     .then( response => {
         displayRecipeParser(response, true);
@@ -117,8 +121,9 @@ function fetchMyRecipes(){
 }
 
 async function postRecipe(){
+    console.log('you are in postRecioe');
  var recipeName=document.getElementById('titleInput').value
- var author= localStorage.getItem('cur_user_viewing');
+ var author= localStorage.getItem('username');
  //var author=document.getElementById('author').value
  var ingredients=document.getElementById('ingredientInput').value
  var instructions=document.getElementById('intructionInput').value

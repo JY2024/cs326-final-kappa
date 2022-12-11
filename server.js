@@ -27,17 +27,13 @@ app.get('/', (req, res) => {
 app.post('/login', async (req, res) => {
     const ret = await db.authUserObj(req); 
     if(ret.status === "ERROR"){
-        res.sendFile(path.join(__dirname, '/webPages/htmlFiles/incorrectLogin.html'));
-    }
-    else{
-        res.sendFile(path.join(__dirname, '/webPages/htmlFiles/main-feed.html'));
+        res.json('Error');
+    } else {
+        res.json('Success');
     }
 });
     // Log Out
 app.get('/logout.html', (req, res) => {
-    window.localStorage.removeItem('username');
-    window.localStorage.removeItem('cur_user_viewing');
-    window.localStorage.removeItem('cur_recipe_id');
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/index.html'));
 });
 // Recipe
@@ -59,6 +55,10 @@ app.get('/uhoh.html', (req, res) => {
     // To Profile Page
 app.get('/profile.html', (req, res) => {
     res.sendFile(path.join(__dirname, '/webPages/htmlFiles/profile.html'));
+});
+    // To Other User's Profile Page
+app.get('/other-profile.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '/webPages/htmlFiles/other-profile.html'));
 });
     // For Images
 app.get('/images/:imageid', (req, res) => {

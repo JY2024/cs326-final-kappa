@@ -155,7 +155,7 @@ yesBtn.addEventListener('click', () => {
 });
 document.getElementById('creator').addEventListener('click', () => {
     window.localStorage.setItem('cur_user_viewing', CUR_VIEWING);
-    window.location = "/profile.html";
+    window.location = "/other-profile.html";
 });
 
 window.onload = init;

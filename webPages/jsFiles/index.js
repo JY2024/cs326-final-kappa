@@ -1,4 +1,6 @@
-document.getElementById("loginBtn").addEventListener("click", login);
+document.getElementById("loginBtn").addEventListener("click", async () => {
+    const result = await login();
+});
 document.getElementById("createBtn").addEventListener("click", async (event) => {
     await postUser();
     window.localStorage.setItem('username', document.getElementById('newUsername').value);
@@ -17,7 +19,21 @@ async function postUser() {
         console.log('Request failed', error);
     });
 }
-function login(){
-    let user = document.getElementById("email").value;
-    window.localStorage.setItem('username', user);
+async function login(){
+    const result = await fetch('/login', {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: 'username=' + document.getElementById('username').value + '&password=' + document.getElementById('password').value
+    });
+    const res = await result.json();
+    if (res === 'Error') {
+        window.alert('Your username or password is incorrect. Try again.');
+    } else {
+        let user = document.getElementById("username").value;
+        window.localStorage.setItem('username', user);
+        window.location = './main-feed.html';
+    }
 }
