@@ -93,7 +93,7 @@ app.post('/user/delete', deleteUser);
 
 // [2] Recipe Functions
 app.post('/recipe/new', createRecipe);
-app.get('/recipe/delete', (req, res) => {   res.send(deleteRecipe(req, res));   });
+app.post('/recipe/delete', deleteRecipe);
 app.get('/recipe/read', readRecipe);
 app.get('/recipe/list/my', async (req, res) => {res.send(await readMyRecipes(req, res));});
 app.get('/recipe/list/saved', async (req, res) => {res.send(await readSavedRecipes(req, res));     });
@@ -193,6 +193,11 @@ async function readRecipe(req, res) {
     }
     res.end();
 }
+
+async function deleteRecipe(req, res){
+    res.send(db.deleteRecipeObj(req.body.recipeID));
+}
+
 // LIKE FUNCTIONS
 async function createLike(req, res){
     res.send(await db.createLikeObj(req.body.username, req.body.recipe_id));

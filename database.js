@@ -1,5 +1,5 @@
 import pg from 'pg';
-const {Client} = pg;
+const { Client } = pg;
 
 // const client = new Client({
 //     connectionString: process.env.DATABASE_URL,
@@ -27,14 +27,14 @@ const MC = miniCrypt.MiniCrypt;
 export async function authUserObj(req) {
     if (req.body.username !== "") {
         let res = await client.query(SQL.sqlAuthUser(), [req.body.username]);
-        if(res.rowCount !== 0){
+        if (res.rowCount !== 0) {
             let correct = auth.decrypt(req.body.password, res.rows[0].salt, res.rows[0].pwencrypted);
-            if(correct){
-                return {status: 'SUCCESS'};
+            if (correct) {
+                return { status: 'SUCCESS' };
             }
         }
     }
-    return {status: 'ERROR'}
+    return { status: 'ERROR' }
 }
 
 // [1] User Functions
@@ -46,7 +46,7 @@ export async function createUserObj(username, password, displayName) {
     await client.query(
         "INSERT INTO password_T (username, salt, pwEncrypted) VALUES ($1, $2, $3);", [username, saltHash[0], saltHash[1]]
     );
-    return JSON.stringify({status: 'SUCCESS', username: username, password: password, displayName: displayName});
+    return JSON.stringify({ status: 'SUCCESS', username: username, password: password, displayName: displayName });
 }
 
 export async function getUserInfo(username) {
@@ -166,22 +166,22 @@ export async function deleteUserObj(username) {
 export async function getRandomRecipe(username) {
     const recipes = JSON.parse(await getOtherRecipes(username));
     if (recipes.length === 0) {
-        return JSON.stringify({error: 'no more recipes'});
+        return JSON.stringify({ error: 'no more recipes' });
     }
     const obj = recipes[Math.floor(Math.random() * recipes.length)];
     if (recipes.length === 1) {
-         obj['length'] = 1;
+        obj['length'] = 1;
     }
     return JSON.stringify(obj);
 }
 export async function createRecipeObj(title, author, ingredients, instructions, preferences, time, pic, tips) {
-    try{
-        await client.query(SQL.sqlCreateRecipe(),[title,author,pic,instructions,ingredients,preferences,time, tips]);
+    try {
+        await client.query(SQL.sqlCreateRecipe(), [title, author, pic, instructions, ingredients, preferences, time, tips]);
     }
-    catch(err){
-        return {status: "ERROR"};
+    catch (err) {
+        return { status: "ERROR" };
     }
-    return {status: 'SUCCESS'};
+    return { status: 'SUCCESS' };
 }
 export async function getRecipeInfo(recipeID) {
     const res = await client.query(
@@ -190,26 +190,40 @@ export async function getRecipeInfo(recipeID) {
     return JSON.stringify(res.rows[0]);
 }
 
+export async function deleteRecipeObj(recipeID) {
+    // delete likes on the recipe
+    await client.query(
+        'DELETE FROM like_T WHERE recipe_id=$1', [recipeID]
+    );
+    // delete comments on the recipe
+    await client.query(
+        'DELETE FROM comment_T WHERE recipe_id=$1', [recipeID]
+    );
+    // delete the recipe
+    await client.query('DELETE FROM recipe_t WHERE recipe_id=$1', [recipeID]);
+    return 'Success';
+}
+
 // [3] Like Functions
 export async function createLikeObj(sender, recipe_id) {
     //if user has already liked this recipe, they cannot like it again, return error.
-    try{
-        await client.query(SQL.sqlCreateLike(),[sender,recipe_id]);
+    try {
+        await client.query(SQL.sqlCreateLike(), [sender, recipe_id]);
     }
-    catch(err){
-        return {status: "ERROR"};
+    catch (err) {
+        return { status: "ERROR" };
     }
-    return {status: 'SUCCESS'};
+    return { status: 'SUCCESS' };
 }
 
 export async function deleteLikeObj(sender, recipe_id) {
-    try{
-        await client.query(SQL.sqlDeleteLike(),[sender,recipe_id]);
+    try {
+        await client.query(SQL.sqlDeleteLike(), [sender, recipe_id]);
     }
-    catch(err){
-        return {status: "ERROR"};
+    catch (err) {
+        return { status: "ERROR" };
     }
-    return {status: 'SUCCESS'};
+    return { status: 'SUCCESS' };
 }
 
 // [4] Comment Functions
@@ -260,13 +274,13 @@ export async function createChat(sender, reciever) {
         "SELECT COUNT(*) FROM chat_t WHERE sender_id=$1 AND reciever_id=$2", [sender, reciever]
         // "SELECT EXISTS (SELECT 1 from chat_t WHERE sender_id=$1 AND reciever_id=$2)", [sender, reciever]
     );
-    if (check.rows[0]["count"] > 0){
-        return JSON.stringify({Status: 'SUCCESS', sender: 'test', reciever: "Jay", time:"11:01"});
+    if (check.rows[0]["count"] > 0) {
+        return JSON.stringify({ Status: 'SUCCESS', sender: 'test', reciever: "Jay", time: "11:01" });
     }
     const res = await client.query(
         "INSERT INTO chat_t (sender_id, reciever_id) VALUES ($1, $2)", [sender, reciever]
     );
-    return JSON.stringify({Status: 'SUCCESS', sender: 'test', reciever: "Jay", time:"11:01"});
+    return JSON.stringify({ Status: 'SUCCESS', sender: 'test', reciever: "Jay", time: "11:01" });
 }
 export async function getChat(user) {
     const res = await client.query(
@@ -275,26 +289,26 @@ export async function getChat(user) {
     ); //this works, no need to change - it updates the sidebar correctly which shows users person has conversed with
     return JSON.stringify(res.rows);
 }
-export async function updateChat(sender, chatID, text){
+export async function updateChat(sender, chatID, text) {
     var today = new Date();
     await client.query(
         "INSERT INTO message_t (sender_id, chat_id, mess, time) VALUES ($1, $2, $3, $4)", [sender, chatID, text, today.getHours() + ":" + today.getMinutes()]
     );
-    return {Status: "SUCCESS"};
+    return { Status: "SUCCESS" };
 } //added this
-export function deleteChat(user, reciever){
-    return {Status: "SUCCESS", reciever: reciever};
+export function deleteChat(user, reciever) {
+    return { Status: "SUCCESS", reciever: reciever };
 }
 
 // [6] Message Functions
-export async function getMessages(chatID) { 
+export async function getMessages(chatID) {
     const res = await client.query(
         "SELECT message_t.sender_id, message_t.mess, message_t.time, chat_t.reciever_id FROM message_t INNER JOIN chat_t ON message_t.chat_id = chat_t.chat_id WHERE message_t.chat_id=$1", [chatID]
-    ); 
+    );
     return JSON.stringify(res.rows);
 }
 
-export async function getMessageID(sender, reciever){
+export async function getMessageID(sender, reciever) {
     const check = await client.query(
         "SELECT COUNT(*) FROM chat_t WHERE sender_id=$1 AND reciever_id=$2", [sender, reciever]
     );
@@ -303,8 +317,8 @@ export async function getMessageID(sender, reciever){
         // "select count(*) from chat_t where (sender_id = $1 and reciever_id = $2) or (sender_id = $2 and reciever_id = $1", [sender, reciever]
     );
     let val = parseInt(check.rows[0]["count"]) + parseInt(check2.rows[0]["count"])
-    if (val < 1){
-        return res.status(400).send({ message: 'Invalid User!'});
+    if (val < 1) {
+        return res.status(400).send({ message: 'Invalid User!' });
     }
     const res = await client.query(
         "select chat_id from chat_t where (sender_id = $1 and reciever_id = $2) or (sender_id = $2 and reciever_id = $1)", [sender, reciever]

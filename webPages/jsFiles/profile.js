@@ -3,6 +3,7 @@ const settings = document.getElementById('settings');
 settings.addEventListener('click', () => {
     window.location = "/profile-settings-personal-info.html";
 });
+let CUR_DEL = null;
 
 //Listeners
 document.getElementById('buttonPost').addEventListener('click', postRecipe);
@@ -161,6 +162,7 @@ async function postRecipe() {
 
 
 function myRecipeCard(recipeName, numLikes, numComments, colID, img, recID) {
+    console.log('your recipeID is ' + recID);
     let newCard = document.createElement("div");
     newCard.className = "card";
     let cardImg = document.createElement("img");
@@ -178,8 +180,18 @@ function myRecipeCard(recipeName, numLikes, numComments, colID, img, recID) {
         window.localStorage.setItem('cur_recipe_id', recID);
         window.location = "/recipe.html";
     });
-    //
     cardBody.appendChild(title);
+    // delete button
+    const delBtn = document.createElement('button');
+    delBtn.setAttribute('type', 'button');
+    delBtn.innerText = 'Delete';
+    console.log('recID before is ' + recID);
+    delBtn.addEventListener('click', async () => {
+        await deleteRecipe(recID);
+    });
+    cardBody.appendChild(document.createElement('br'));
+    cardBody.appendChild(delBtn);
+
     newCard.appendChild(cardBody);
     let likeInfo = document.createElement("p");
     likeInfo.className = "card-text text-start";
@@ -200,6 +212,25 @@ function myRecipeCard(recipeName, numLikes, numComments, colID, img, recID) {
     document.getElementById(colID).appendChild(newCard);
 };
 
+async function deleteRecipe(recID) {
+    if (window.confirm('Are you sure you want to delete this recipe? This cannot be undone!')) {
+        await fetch('/recipe/delete', {
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "recipeID=" + recID
+        })
+            .then(function (data) {
+                location.reload();
+            })
+            .catch(function (error) {
+                console.log('Request failed', error);
+            });
+
+    }
+}
 function clearRecipes() {
     document.getElementById("recipe0").innerHTML = "";
     document.getElementById("recipe1").innerHTML = "";
@@ -277,12 +308,9 @@ function displayRecipeParser(recipeList, mine) {
 }
 
 function postUnlike() {
-    console.log(this)
     var recipe_id = Number(this.getAttribute("recid"));
-    console.log(recipe_id);
     var user = localStorage.getItem('username');
 
-    console.log(JSON.stringify({ username: user, recipe_id: recipe_id }));
 
     fetch('/recipe/like/delete', {
         mode: 'cors',
@@ -295,7 +323,6 @@ function postUnlike() {
         .then(function (data) {
             console.log('Request succeeded with JSON response', data);
             location.reload();
-            //alert("Recipe " + recipe_id + " successfully unliked\n" + "By user: " + user);
         })
         .catch(function (error) {
             console.log('Request failed', error);
