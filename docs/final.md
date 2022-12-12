@@ -17,13 +17,25 @@ This is an innovative idea because there isn't another application that makes fi
 
 
 ### User Interface
+- Login Page: Log in or create an account.
+![Login Page](uiPics/login.png)
 - Main Feed Page: Explore recipes by other users and either reject them or save them to your collection.
+![Feed](uiPics/feed1.png)
+![Feed](uiPics/feed2.png)
 - Personal Information Page: Edit personal information (location and preferences).
+![Personal Info Settings Page](uiPics/info.png)
 - Display Information Page: Edit display-related information (display name, profile picture, description).
+![Display Settings Page](uiPics/display.png)
 - Security Information Page: Change security-related information (change password, delete account).
+![Security Settings Page](uiPics/security.png)
 - Profile Page: Displays a particular user's information (picture, description, saved recipes, owned recipes, etc). You can create recipes and unlike saved recipes from here too.
+![Profile Page](uiPics/profile1.png)
+![Profile Page](uiPics/profile2.png)
+![Profile Page](uiPics/profile3.png)
 - Recipe Page: Displays information for a particular recipe.
+![Recipe Page](uiPics/recipe.png)
 - Chat Page: Displays all chats with other users on the site. From here, you can chat with other people about their recipes/cooking/etc.
+![Chat Page](uiPics/chat.png)
 
 ### APIs
 
