@@ -1,6 +1,9 @@
-To Build Project:
+To See Project:
 
-Option 1: Click the link in milestone2.md to see it deployed on Heroku.
+Visit https://test-326.herokuapp.com/.
 
-Option 2: Download source files from release milestone-2, download node.js, run node server.js, and open on the specified local host.
-Log in with username: test and password: test.
+Test it out with:
+
+Username: alex1998, Password: alex1998
+
+OR make your own account!

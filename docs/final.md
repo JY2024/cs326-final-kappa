@@ -1,7 +1,7 @@
 # Kappa
 ## Nice To Meat You
-Fall 2022
-Link to website: 
+Fall 2022\
+[Link To Website](https://test-326.herokuapp.com/)
 ### Team Members
 Jiaqi "Jay" Ye (JY2024)\
 Daksh Dangi (Kasagi009)\
