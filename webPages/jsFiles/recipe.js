@@ -117,7 +117,7 @@ commentBox.addEventListener('click', async(e) =>{
                     //"Content-type": "application/json; raw"
                 },
                 body: "sender=" + window.localStorage.getItem('username') + "&recipeID=" + window.localStorage.getItem('cur_recipe_id') + "&text=" + message
-            }) // CHANGE THE IDS of the span which has ID comment and the text box which also has ID comment - will fuck up when getting element by id
+            })
             .then(async function (res) {
             if(res.ok){
                 const comments = document.getElementById('comment');

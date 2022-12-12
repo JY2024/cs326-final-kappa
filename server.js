@@ -175,9 +175,6 @@ async function deleteUser(req, res){
 
 // RECIPE FUNCTIONS
 async function createRecipe(req, res){
-    // ex. /recipe/new
-    // POST {title: recipeName, author: author, ingredients:ingredients, instructions:instructions}
-    // JSON status returned
     res.send(await db.createRecipeObj(req.body.title, req.body.author, req.body.ingredients, req.body.instructions, req.body.preferences, req.body.time, req.body.recipe_picture, req.body.tips));
     res.end();
 }

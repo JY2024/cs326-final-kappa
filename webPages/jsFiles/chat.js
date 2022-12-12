@@ -130,12 +130,12 @@ diffChat.addEventListener('click', async (e) => {
 
 async function renderChat() {
     const userList = document.getElementById('chats');
-    const chatreq = new Request(fixURL(window.location.href) + '/chat/new?sender=' + window.localStorage.getItem('username') + '&reciever=' + currUser, { method: 'GET' }); ///chat/list?user=test
+    const chatreq = new Request(fixURL(window.location.href) + '/chat/new?sender=' + window.localStorage.getItem('username') + '&reciever=' + currUser, { method: 'GET' });
     const chatres = await fetch(chatreq);
     if (!chatres.ok) {
         alert("Invalid User");
     }
-    const request = new Request(fixURL(window.location.href) + '/chat/list?user=' + window.localStorage.getItem('username'), { method: 'GET' }); ///chat/list?user=test
+    const request = new Request(fixURL(window.location.href) + '/chat/list?user=' + window.localStorage.getItem('username'), { method: 'GET' }); 
     const response = await fetch(request);
     if (response.ok) {
         const json = await response.json();

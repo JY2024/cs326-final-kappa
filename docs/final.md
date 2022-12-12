@@ -27,11 +27,38 @@ This is an innovative idea because there isn't another application that makes fi
 
 ### APIs
 
-
+![API 1](apiDocs/api1.png)
+![API 2](apiDocs/api2.png)
+![API 3](apiDocs/api3.png)
+![API 4](apiDocs/api4.png)
+![API 5](apiDocs/api5.png)
+![API 6](apiDocs/api6.png)
+![API 7](apiDocs/api7.png)
+![API 8](apiDocs/api8.png)
+![API 9](apiDocs/api9.png)
+![API 10](apiDocs/api10.png)
+![API 11](apiDocs/api11.png)
+![API 12](apiDocs/api12.png)
+![API 13](apiDocs/api13.png)
+![API 14](apiDocs/api14.png)
+![API 15](apiDocs/api15.png)
+![API 16](apiDocs/api16.png)
+![API 17](apiDocs/api17.png)
+![API 18](apiDocs/api18.png)
 
 ### Database
 
+![Database Pic 1](dbPics/db1.png)
+![Database Pic 2](dbPics/db2.png)
+![Database Pic 3](dbPics/db3.png)
+![Database Pic 4](dbPics/db4.png)
+
+They are all mostly interconnected. For example: comment_t stores recipe_id for its associated recipe, connecting it to the recipe_t table. The same goes for some other parts of the database that are connected to each other.
+
 ### URL Routes / Mappings
+
+![Routes Pic 1](routesPics/routes1.png)
+![Routes Pic 2](routesPics/routes2.png)
 
 ### Authentication / Authorization
 Nice to Meat You uses a miniCrypt file (provided for the class) to encrypt and descrypt passwords using salts and hashes.

@@ -277,7 +277,6 @@ export async function createChat(sender, reciever) {
     await client.query(
         "INSERT INTO chat_t (sender_id, reciever_id) VALUES ($1, $2)", [sender, reciever]
     );
-    return JSON.stringify({ Status: 'SUCCESS', sender: 'test', reciever: "Jay", time: "11:01" });
 }
 
 export async function getChat(user) {
